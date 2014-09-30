@@ -1,8 +1,8 @@
 define([], function() {
     App.Controller.ToolbarController = Backbone.View.extend({
         initialize: function() {
-            App.Utils.loadTemplate('toolbar');
-            this.template = _.template($('#toolbar-template').html());
+//            App.Utils.loadTemplate('toolbar');
+//            this.template = _.template($('#toolbar-template').html());
             this.events = {};
             this.events['click #' + this.model.get('componentId') + '-createButton'] = 'create';
             this.events['click #' + this.model.get('componentId') + '-saveButton'] = 'save';
@@ -14,8 +14,7 @@ define([], function() {
             this.listenTo(this.model, 'change', this.render);
         },
         render: function() {
-            this.$el.html(this.template(this.model.toJSON()));
-            return this;
+            
         },
         create: function(event) {
 
