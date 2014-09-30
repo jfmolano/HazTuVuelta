@@ -1,0 +1,9 @@
+{
+    "displayName" : "Cita",
+    "name" : "cita",
+    "templateName" : "cita",
+    "url" : "user.html",
+    "server": "localhost:8080",
+    "context": "/HazTuVuelta.web/webresources/Cita",
+    "el" : "#main"
+}

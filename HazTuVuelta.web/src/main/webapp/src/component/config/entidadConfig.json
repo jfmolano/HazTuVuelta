@@ -1,0 +1,9 @@
+{
+    "displayName" : "Entidad",
+    "name" : "entidad",
+    "templateName" : "entidad",
+    "url" : "user.html",
+    "server": "localhost:8080",
+    "context": "/HazTuVuelta.web/webresources/Entidad",
+    "el" : "#main"
+}

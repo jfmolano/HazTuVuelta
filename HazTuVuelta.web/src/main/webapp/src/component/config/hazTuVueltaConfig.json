@@ -1,0 +1,9 @@
+{
+    "displayName" : "HazTuVuelta",
+    "name" : "hazTuVuelta",
+    "templateName" : "hazTuVuelta",
+    "url" : "user.html",
+    "server": "localhost:8080",
+    "context": "/HazTuVuelta.web/webresources/HazTuVuelta",
+    "el" : "#main"
+}

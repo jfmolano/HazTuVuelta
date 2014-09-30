@@ -1,0 +1,9 @@
+{
+    "displayName" : "Turno",
+    "name" : "turno",
+    "templateName" : "turno",
+    "url" : "user.html",
+    "server": "localhost:8080",
+    "context": "/HazTuVuelta.web/webresources/Turno",
+    "el" : "#main"
+}

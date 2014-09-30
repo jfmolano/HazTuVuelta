@@ -1,0 +1,66 @@
+<script type="text/template" id="sedeList">
+    <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <table class="table striped">
+    <thead>
+    <tr>
+		 <th>Direccion</th>
+		 <th>Telefono</th>
+		 <th>Horario</th>
+		 <th>Name</th>
+		 <th>Turno</th>
+    <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% _.each(sedes, function(sede) { %>
+    <tr>
+		<td><%= htmlEncode(sede.getDisplay('direccion')) %></td>
+		<td><%= htmlEncode(sede.getDisplay('telefono')) %></td>
+		<td><%= htmlEncode(sede.getDisplay('horario')) %></td>
+		<td><%= htmlEncode(sede.getDisplay('name')) %></td>
+		<td><%= htmlEncode(sede.getDisplay('turno')) %></td>
+    <td>
+    <% if(showEdit) {%>
+    <a onclick="Backbone.trigger('<%= componentId %>-sede-edit',{id:<%= sede.id %>}); return false" >Edit</a> |
+	<% } %> 
+	<% if(showDelete) {%>
+    <a onclick="Backbone.trigger('<%= componentId %>-sede-delete',{id:<%= sede.id %>}); return false" >Delete</a> 
+	<% } %>    
+	</td>
+    </tr>
+    <% }); %>
+    </tbody>
+    </table>
+    </div>
+</script>
+
+<script type="text/template" id="sede">
+    <div class="form-group">
+    <form role="form" id="<%= componentId %>-sedeForm">
+    <% if(sede.id) {%>
+    <input type="hidden" name="id" value="<%= sede.id %>"/>
+    <% }%>
+		<div class="form-group" >
+		<label for="direccion">Direccion</label>
+    	<input type="text" class="form-control" id="direccion" name="direccion" placeholder="Enter value" value="<%= sede.get('direccion') %>"/>	
+		</div>
+		<div class="form-group" >
+		<label for="telefono">Telefono</label>
+    	<input type="text" class="form-control" id="telefono" name="telefono" placeholder="Enter value" value="<%= sede.get('telefono') %>"/>	
+		</div>
+		<div class="form-group" >
+		<label for="horario">Horario</label>
+    	<input type="text" class="form-control" id="horario" name="horario" placeholder="Enter value" value="<%= sede.get('horario') %>"/>	
+		</div>
+		<div class="form-group" >
+		<label for="name">Name</label>
+    	<input type="text" class="form-control" id="name" name="name" placeholder="Enter value" value="<%= sede.get('name') %>"/>	
+		</div>
+		<div class="form-group" >
+		<label for="turno">Turno</label>
+    	<input type="text" class="form-control" id="turno" name="turno" placeholder="Enter value" value="<%= sede.get('turno') %>"/>	
+		</div>
+    </form>
+    </div>
+</script> 

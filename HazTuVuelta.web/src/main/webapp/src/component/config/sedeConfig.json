@@ -1,0 +1,9 @@
+{
+    "displayName" : "Sede",
+    "name" : "sede",
+    "templateName" : "sede",
+    "url" : "user.html",
+    "server": "localhost:8080",
+    "context": "/HazTuVuelta.web/webresources/Sede",
+    "el" : "#main"
+}

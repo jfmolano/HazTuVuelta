@@ -1,0 +1,42 @@
+<script type="text/template" id="hazTuVueltaList">
+    <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <table class="table striped">
+    <thead>
+    <tr>
+		 <th>Name</th>
+    <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% _.each(hazTuVueltas, function(hazTuVuelta) { %>
+    <tr>
+		<td><%= htmlEncode(hazTuVuelta.getDisplay('name')) %></td>
+    <td>
+    <% if(showEdit) {%>
+    <a onclick="Backbone.trigger('<%= componentId %>-hazTuVuelta-edit',{id:<%= hazTuVuelta.id %>}); return false" >Edit</a> |
+	<% } %> 
+	<% if(showDelete) {%>
+    <a onclick="Backbone.trigger('<%= componentId %>-hazTuVuelta-delete',{id:<%= hazTuVuelta.id %>}); return false" >Delete</a> 
+	<% } %>    
+	</td>
+    </tr>
+    <% }); %>
+    </tbody>
+    </table>
+    </div>
+</script>
+
+<script type="text/template" id="hazTuVuelta">
+    <div class="form-group">
+    <form role="form" id="<%= componentId %>-hazTuVueltaForm">
+    <% if(hazTuVuelta.id) {%>
+    <input type="hidden" name="id" value="<%= hazTuVuelta.id %>"/>
+    <% }%>
+		<div class="form-group" >
+		<label for="name">Name</label>
+    	<input type="text" class="form-control" id="name" name="name" placeholder="Enter value" value="<%= hazTuVuelta.get('name') %>"/>	
+		</div>
+    </form>
+    </div>
+</script> 

@@ -1,0 +1,74 @@
+<script type="text/template" id="citaList">
+    <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <table class="table striped">
+    <thead>
+    <tr>
+		 <th>Hora Ini</th>
+		 <th>Hora Fin</th>
+		 <th>Name</th>
+		 <th>Sedecita Id</th>
+    <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% _.each(citas, function(cita) { %>
+    <tr>
+		<td><%= htmlEncode(cita.getDisplay('horaIni')) %></td>
+		<td><%= htmlEncode(cita.getDisplay('horaFin')) %></td>
+		<td><%= htmlEncode(cita.getDisplay('name')) %></td>
+		<td><%= htmlEncode(cita.getDisplay('sedecitaId')) %></td>
+    <td>
+    <% if(showEdit) {%>
+    <a onclick="Backbone.trigger('<%= componentId %>-cita-edit',{id:<%= cita.id %>}); return false" >Edit</a> |
+	<% } %> 
+	<% if(showDelete) {%>
+    <a onclick="Backbone.trigger('<%= componentId %>-cita-delete',{id:<%= cita.id %>}); return false" >Delete</a> 
+	<% } %>    
+	</td>
+    </tr>
+    <% }); %>
+    </tbody>
+    </table>
+    </div>
+</script>
+
+<script type="text/template" id="cita">
+    <div class="form-group">
+    <form role="form" id="<%= componentId %>-citaForm">
+    <% if(cita.id) {%>
+    <input type="hidden" name="id" value="<%= cita.id %>"/>
+    <% }%>
+		<div class="form-group" >
+			<label for="horaIni">Hora Ini</label>
+    		<input type="text" data-converter="date" data-date-format="dd/mm/yyyy" class="form-control" id="horaIni"  name="horaIni" placeholder="Enter value" />
+    		<%= '<scr'+'ipt>' %>
+        	$('#horaIni').datepicker({autoclose:true});
+        	$('#horaIni').datepicker('setDate',App.Utils.Converter.date.toDate("<%= cita.get('horaIni') %>"));
+    		<%= '</scr'+'ipt>' %>
+		</div>
+		<div class="form-group" >
+			<label for="horaFin">Hora Fin</label>
+    		<input type="text" data-converter="date" data-date-format="dd/mm/yyyy" class="form-control" id="horaFin"  name="horaFin" placeholder="Enter value" />
+    		<%= '<scr'+'ipt>' %>
+        	$('#horaFin').datepicker({autoclose:true});
+        	$('#horaFin').datepicker('setDate',App.Utils.Converter.date.toDate("<%= cita.get('horaFin') %>"));
+    		<%= '</scr'+'ipt>' %>
+		</div>
+		<div class="form-group" >
+		<label for="name">Name</label>
+    	<input type="text" class="form-control" id="name" name="name" placeholder="Enter value" value="<%= cita.get('name') %>"/>	
+		</div>
+		<div class="form-group" >
+ 
+			<label for="sedecitaidId">Sedecita Id</label> 
+            <select class="form-control" id="sedecitaId" name="sedecitaId">
+			  <option value="">None</option>
+            <% sedeCita.each(function(sedecitaid) { %> 
+              <option value="<%=sedecitaid.get('id')%>" <% if(cita.get('sedecitaId')==sedecitaid.get('id')) {%>selected<%}%> ><%=sedecitaid.get('name')%></option>
+            <% }); %>                
+            </select>  
+		</div>
+    </form>
+    </div>
+</script> 
