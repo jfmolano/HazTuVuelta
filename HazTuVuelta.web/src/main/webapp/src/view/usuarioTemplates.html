@@ -64,3 +64,63 @@
     </form>
     </div>
 </script> 
+
+<script type="text/template" id="tipoVuelta">
+    
+     <div class="row placeholders">
+            <div class="col-xs-6 col-sm-6 placeholder">
+             <img src="imagenes/RTiempo.png" class="img-responsive" >
+             <div>
+              <button id="<%= componentId %>-pedirTurno" class="btn btn-large btn-primary" 
+                        onclick="Backbone.trigger('<%= componentId %>-pedirTurno',{}); return false" 
+                        type="button" class="btn btn-info">
+
+                    Pide un turno
+                    </button>
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 placeholder">
+              <img src="imagenes/RTurno.png" class="img-responsive" >
+              <div>
+              <button id="<%= componentId %>-reservarCita" class="btn btn-large btn-danger" 
+                        onclick="Backbone.trigger('<%= componentId %>-reservarCita',{}); return false" 
+                        type="button" class="btn btn-danger">
+
+                    Reserva una cita
+                    </button>
+              </div>
+            </div>
+            
+          </div>
+    
+</script>
+
+<script type="text/template" id="pedirTurno">
+    
+     <div class="row placeholders">
+            <div class="col-xs-6 col-sm-6 placeholder">
+             <img src="imagenes/RTiempo.png" class="img-responsive" >
+             <div>
+              <button id="<%= componentId %>-pedirTurno" class="btn btn-large btn-primary" 
+                        onclick="Backbone.trigger('<%= componentId %>-pedirTurno',{}); return false" 
+                        type="button" class="btn btn-info">
+
+                    Pide un turno
+                    </button>
+              </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 placeholder">
+              <img src="imagenes/RTurno.png" class="img-responsive" >
+              <div>
+              <button id="<%= componentId %>-reservarCita" class="btn btn-large btn-danger" 
+                        onclick="Backbone.trigger('<%= componentId %>-reservarCita',{}); return false" 
+                        type="button" class="btn btn-danger">
+
+                    Reserva una cita
+                    </button>
+              </div>
+            </div>
+            
+          </div>
+    
+</script>
