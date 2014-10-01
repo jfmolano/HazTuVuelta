@@ -96,11 +96,28 @@
 </script>
 
 <script type="text/template" id="pedirTurno">
-     <div>
-        <div id="contenedor" style="width:70%;">
-            <div id="numero">
-                <%= htmlEncode(sede.getDisplay('turno')) %>
-            </div>
-        </div>
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="col-lg-4"><br>
+        <h1 style="color: black; font-size: 22px;">Turno Actual</h1>
+        <div style="background-color:black; width:50%; padding:10px;">
+        <h1 style = "color: red; font-family: 'Segment7'; font-weight: normal; font-style: italic; font-size: 120px; height: 150px; border-radius: 0%;"><%= htmlEncode(sede.getDisplay('turno')) %></h1></div>
+            <br><br><button type="button" 
+            onclick="document.getElementById('divturno').style.visibility = 'visible'">
+            Pide tu turno
+            </button><br><br>
+        <div id="divturno" style="background-color:black; width:50%; padding:10px;visibility: hidden;"><h1 style = "color: white; font-weight: normal; font-size: 30px;">Tu turno es: </h1>
+        <h1 style = "color: red; font-family: 'Segment7'; font-weight: normal; font-style: italic; font-size: 120px; height: 150px; border-radius: 0%;"><%= parseInt(htmlEncode(sede.getDisplay('turno')))+5 %></h1></div>
+        </div><!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+	       <img class="img-circle" src="imagenes/graficasgif.gif" alt="Generic placeholder image" style="width: 420px; border-radius: 0%;">  
+        </div><!-- /.col-lg-4 -->
+      </div><!-- /.row -->
      </div>
 </script>
