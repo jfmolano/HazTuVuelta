@@ -36,6 +36,7 @@ define(['model/usuarioModel'], function(usuarioModel) {
             this.showDelete = true;
             this.editTemplate = _.template($('#usuario').html());
             this.listTemplate = _.template($('#usuarioList').html());
+            this.turnoTemplate = _.template($('#pedirTurno').html());
             this.tipoVueltaTemplate = _.template($('#tipoVuelta').html());
             if (!options || !options.componentId) {
                 this.componentId = _.random(0, 100) + "";

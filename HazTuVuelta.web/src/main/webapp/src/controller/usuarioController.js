@@ -40,8 +40,35 @@ define(['controller/_usuarioController','delegate/usuarioDelegate'], function() 
         pedirTurno: function (params){
             
             
+        },
+        verTurno: function (){
+            var self = this;
+            self.usuarioDelegate = new App.Delegate.UsuarioDelegate();
+            self.usuarioDelegate.verTurnoDelegate(
+                function(data) {
+                    console.log("Ver tutno: "+JSON.stringify(data));
+                    self.currentSede=new App.Model.sedeModel();
+                    self.currentSede.set('direccion', 'Cra 13');
+                    self.currentSede.set('telefono', '2348756');
+                    self.currentSede.set('horario', 'Lunes a viernes:8am a 5pm, Sábado:10am a 1pm');
+                    self.currentSede.set('name', 'AvVillas Cra. 13');
+                    self.currentSede.set('turno',data); 
+                    self.renderTurno();
+                }, 
             
+                function(data) {
+                    Backbone.trigger(self.componentId + '-' + 'error', {event: 'cliente-login', view: self, id: '', data: data, error: 'No se pudo iniciar sesion'});
+                    alert("Error en ver el historial de bonos");
+                }
+            );
+        },
+        renderTurno: function() {
             
+            var self = this;
+            this.$el.slideUp("fast", function() {
+                self.$el.html(self.turnoTemplate({sede: self.currentSede}));
+                self.$el.slideDown("fast");
+            });
         }
     });
     return App.Controller.UsuarioController;
