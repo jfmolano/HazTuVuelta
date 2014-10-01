@@ -40,3 +40,15 @@
     </form>
     </div>
 </script> 
+
+<script type="text/template" id="inicio">
+    
+    <div>
+        <button id="<%= componentId %>-aumentarTurno" class="btn btn-large btn-danger" 
+                        onclick="Backbone.trigger('<%= componentId %>-aumentarTurno',{}); return false" 
+                        type="button" class="btn btn-danger">
+
+                    Aumentar Turno
+        </button>
+    <div>
+</script> 

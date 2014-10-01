@@ -35,5 +35,13 @@ import javax.inject.Singleton;
 import co.edu.uniandes.csw.Arquidalgos.sede.logic.api.ISedeLogicService;
 @Singleton
 public class SedeMockLogicService extends _SedeMockLogicService implements ISedeLogicService {
+
+    public String aumentarTurno() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String turnoActual() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 	
 }

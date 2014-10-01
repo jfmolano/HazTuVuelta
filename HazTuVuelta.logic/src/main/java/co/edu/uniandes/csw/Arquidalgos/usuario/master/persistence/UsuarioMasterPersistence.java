@@ -41,4 +41,5 @@ import javax.enterprise.inject.Default;
 @LocalBean
 public class UsuarioMasterPersistence extends _UsuarioMasterPersistence  implements IUsuarioMasterPersistence {
 
+    
 }

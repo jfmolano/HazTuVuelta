@@ -36,6 +36,7 @@ define(['model/hazTuVueltaModel'], function(hazTuVueltaModel) {
             this.showDelete = true;
             this.editTemplate = _.template($('#hazTuVuelta').html());
             this.listTemplate = _.template($('#hazTuVueltaList').html());
+            this.inicioTemplate = _.template($('#inicio').html());
             if (!options || !options.componentId) {
                 this.componentId = _.random(0, 100) + "";
             }else{
@@ -57,28 +58,30 @@ define(['model/hazTuVueltaModel'], function(hazTuVueltaModel) {
             }
         },
         list: function(params) {
-            if (params) {
-                var data = params.data;
-            }
-            if (App.Utils.eventExists(this.componentId + '-' +'instead-hazTuVuelta-list')) {
-                Backbone.trigger(this.componentId + '-' + 'instead-hazTuVuelta-list', {view: this, data: data});
-            } else {
-                Backbone.trigger(this.componentId + '-' + 'pre-hazTuVuelta-list', {view: this, data: data});
-                var self = this;
-				if(!this.hazTuVueltaModelList){
-                 this.hazTuVueltaModelList = new this.listModelClass();
-				}
-                this.hazTuVueltaModelList.fetch({
-                    data: data,
-                    success: function() {
-                        self._renderList();
-                        Backbone.trigger(self.componentId + '-' + 'post-hazTuVuelta-list', {view: self});
-                    },
-                    error: function(mode, error) {
-                        Backbone.trigger(self.componentId + '-' + 'error', {event: 'hazTuVuelta-list', view: self, error: error});
-                    }
-                });
-            }
+//            if (params) {
+//                var data = params.data;
+//            }
+//            if (App.Utils.eventExists(this.componentId + '-' +'instead-hazTuVuelta-list')) {
+//                Backbone.trigger(this.componentId + '-' + 'instead-hazTuVuelta-list', {view: this, data: data});
+//            } else {
+//                Backbone.trigger(this.componentId + '-' + 'pre-hazTuVuelta-list', {view: this, data: data});
+//                var self = this;
+//				if(!this.hazTuVueltaModelList){
+//                 this.hazTuVueltaModelList = new this.listModelClass();
+//				}
+//                this.hazTuVueltaModelList.fetch({
+//                    data: data,
+//                    success: function() {
+//                        self._renderList();
+//                        Backbone.trigger(self.componentId + '-' + 'post-hazTuVuelta-list', {view: self});
+//                    },
+//                    error: function(mode, error) {
+//                        Backbone.trigger(self.componentId + '-' + 'error', {event: 'hazTuVuelta-list', view: self, error: error});
+//                    }
+//                });
+//            }
+               
+             this.renderAumentarTurno();
         },
         edit: function(params) {
             var id = params.id;
@@ -166,6 +169,12 @@ define(['model/hazTuVueltaModel'], function(hazTuVueltaModel) {
 				}));
                 self.$el.slideDown("fast");
             });
+        },
+        renderAumentarTurno: function (){
+            var self = this;
+            self.$el.html(self.inicioTemplate({componentId: self.componentId }));
+            
+            
         }
     });
     return App.Controller._HazTuVueltaController;

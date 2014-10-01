@@ -32,4 +32,6 @@ package co.edu.uniandes.csw.Arquidalgos.usuario.master.persistence.api;
 
 public interface IUsuarioMasterPersistence extends _IUsuarioMasterPersistence {
 	
+    
+ 
 }
