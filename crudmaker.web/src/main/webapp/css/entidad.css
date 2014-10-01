@@ -1,0 +1,15 @@
+#contenedor{
+margin-left:0px;
+margin-top:0px;
+padding:0 0 0 0;
+width:auto;
+position:relative;
+left: -20px;
+}
+.divcontenido{
+    float:left;
+    margin-left:0px;
+    padding:10px;
+    width:400px;
+    text-align:left;
+}

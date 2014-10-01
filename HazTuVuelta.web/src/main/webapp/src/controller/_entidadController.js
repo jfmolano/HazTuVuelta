@@ -154,7 +154,7 @@ define(['model/entidadModel'], function(entidadModel) {
         _renderList: function() {
             var self = this;
             this.$el.slideUp("fast", function() {
-                self.$el.html(self.listTemplate({entidads: self.entidadModelList.models, componentId: self.componentId, showEdit : self.showEdit , showDelete : self.showDelete}));
+                self.$el.html(self.listTemplate({entidads: self.entidadModelList.models, componentId: self.componentId, showEdit : true , showDelete : false}));
                 self.$el.slideDown("fast");
             });
         },

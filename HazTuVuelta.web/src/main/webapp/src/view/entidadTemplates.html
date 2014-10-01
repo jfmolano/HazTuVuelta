@@ -1,31 +1,45 @@
 <script type="text/template" id="entidadList">
-    <div class="panel panel-default">
+    <div class="panel panel-default" id="contenedor"> 
+
+    <div class="divcontenido">
+    <% if(showEdit) {%>
+        <button id="<%= componentId %>-loginFacebook" class="btn btn-large btn-primary"
+                        type="button">
+                            <img src="img/mapa2.png"/>
+              
+        </button>
+    <% }%>
+    <% if(!showEdit) {%>
+        <button id="<%= componentId %>-reservar" class="btn btn-large btn-primary" 
+                        onclick="Backbone.trigger('<%= componentId %>-reservar',{}); return false" 
+                        type="button">
+                            <img src="img/mapa1.png"/>
+              
+        </button>
+    <% }%>
+    </div>
+    <div class="divcontenido">
     <!-- Default panel contents -->
     <table class="table striped">
     <thead>
     <tr>
-		 <th>Name</th>
-		 <th>Tipo</th>
-    <th>Actions</th>
+	<th>Entidades</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
     <% _.each(entidads, function(entidad) { %>
     <tr>
-		<td><%= htmlEncode(entidad.getDisplay('name')) %></td>
-		<td><%= htmlEncode(entidad.getDisplay('tipo')) %></td>
-    <td>
-    <% if(showEdit) {%>
-    <a onclick="Backbone.trigger('<%= componentId %>-entidad-edit',{id:<%= entidad.id %>}); return false" >Edit</a> |
-	<% } %> 
-	<% if(showDelete) {%>
-    <a onclick="Backbone.trigger('<%= componentId %>-entidad-delete',{id:<%= entidad.id %>}); return false" >Delete</a> 
-	<% } %>    
+        <td><%= htmlEncode(entidad.getDisplay('name')) %></td>
+        <td>
+           <a onclick="Backbone.trigger('<%= componentId %>-entidad-verSedes',{}); return false" >Ver Sedes</a> 
 	</td>
     </tr>
     <% }); %>
     </tbody>
     </table>
+    </div>
+    
     </div>
 </script>
 
