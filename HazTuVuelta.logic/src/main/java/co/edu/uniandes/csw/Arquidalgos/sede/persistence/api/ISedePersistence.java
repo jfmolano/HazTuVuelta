@@ -32,4 +32,7 @@ package co.edu.uniandes.csw.Arquidalgos.sede.persistence.api;
 
 public interface ISedePersistence extends _ISedePersistence {
 
+    public int turnoActual();
+    
+    public int aumentarTurno();
 }

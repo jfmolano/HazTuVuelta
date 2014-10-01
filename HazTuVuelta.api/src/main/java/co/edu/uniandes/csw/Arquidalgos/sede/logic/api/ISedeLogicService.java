@@ -32,4 +32,8 @@ package co.edu.uniandes.csw.Arquidalgos.sede.logic.api;
 
 public interface ISedeLogicService extends _ISedeLogicService {
 
+    
+    public String aumentarTurno();
+    
+    public String turnoActual();
 }

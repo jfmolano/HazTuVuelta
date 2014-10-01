@@ -44,4 +44,14 @@ import co.edu.uniandes.csw.Arquidalgos.sede.logic.api.ISedeLogicService;
 @LocalBean
 public class SedeLogicService extends _SedeLogicService implements ISedeLogicService {
 
+    public String aumentarTurno() {
+        
+        return persistance.aumentarTurno()+"";
+    }
+    
+    public String turnoActual(){
+        
+        return persistance.turnoActual()+"";
+    }
+
 }
