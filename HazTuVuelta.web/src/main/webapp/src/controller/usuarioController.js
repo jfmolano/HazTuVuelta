@@ -37,17 +37,13 @@ define(['controller/_usuarioController','delegate/usuarioDelegate'], function() 
             });
             
         },
-        pedirTurno: function (params){
-            
-            
-        },
-        verTurno: function (){
+        pedirTurno: function (){
             var self = this;
             self.usuarioDelegate = new App.Delegate.UsuarioDelegate();
-            self.usuarioDelegate.verTurnoDelegate(
+            self.usuarioDelegate.darTurnoDelegate(
                 function(data) {
-                    console.log("Ver tutno: "+JSON.stringify(data));
-                    self.currentSede=new App.Model.sedeModel();
+                    console.log("Ver turno: "+JSON.stringify(data));
+                    self.currentSede = new App.Model.SedeModel();
                     self.currentSede.set('direccion', 'Cra 13');
                     self.currentSede.set('telefono', '2348756');
                     self.currentSede.set('horario', 'Lunes a viernes:8am a 5pm, Sábado:10am a 1pm');
