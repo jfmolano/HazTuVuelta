@@ -50,7 +50,7 @@ define(['controller/_entidadController','delegate/entidadDelegate'], function() 
             });
         },
         redirectFrame:function(url) {
-            location.href = 'http://157.253.222.232:8080/HazTuVuelta.web/usuario.html';
+            location.href = 'usuario.html';
         }
     });
     return App.Controller.EntidadController;
