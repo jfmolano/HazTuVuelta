@@ -1,15 +1,132 @@
+ .cuadrado{
+	position: absolute;
+	width:330px;
+	height:200px;
+	background-color:blue;
+}
+
+.rojo {
+	background-color:red;
+}
+
+.menuIndex {
+	border-radius: 0px;
+	max-width: 100%;
+	margin-bottom: 0px;
+	min-height: 20px;
+	max-height: 42px;
+	left:0%;
+}
+
+.nombreNavBar {
+	color:#bc6c15;
+    
+}
+
+.paddingNavBar {
+	padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.htvIndex {
+	color:white;
+	font-family: "Century Gothic";
+	font-weight: 900;
+	left: 25%;
+	top: 70%;
+	position:absolute;
+}
+
+.ucInput {
+	right: 10%;
+	position:absolute;
+}
+
+
+
+.ucIndex {
+	color:white;
+	font-family: "Century Gothic";
+	font-size: 16px;
+	right: 35%;
+	position:absolute;
+}
+
+#usuarioIndex {
+	top:45%;
+}
+
+#contrasenaIndex {
+	top:50%;
+}
+
+.btnIndex {
+  border-radius: 8;
+  border-radius: 0;
+  border-radius: 8px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 13px;
+  background: #272525;
+  padding: 5px 20px 5px 20px;
+  text-decoration: none;
+  position:absolute;
+  top:58%;
+}
+
+.btnIndex:hover {
+  background: #5c5c5c;
+  text-decoration: none;
+}
+
+#btnIngresar {
+	right:10%;
+}
+
+#btnRegistrarse {
+	right:20%;
+}
+
+#map {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#map {
+    background: #58B;
+}
+
+#background {
+	position: absolute;
+  max-height: 94%;
+  min-height: 94%;
+  max-width: 100%;
+  min-width: 100%;
+  left: 0%;
+   /*margin-top: -50%;
+   margin-left: -50%;
+   position: absolute;
+   top: 50%;*/
+}
+
+body {
+	background-color: #000000;
+
+}
 #contenedor{
 margin-left:0px;
 margin-top:0px;
 padding:0 0 0 0;
-width:auto;
-position:relative;
-left: -20px;
+width:100%;
 }
 .divcontenido{
     float:left;
     margin-left:0px;
-    padding:10px;
-    width:400px;
+    width:auto;
     text-align:left;
+}
+#panelMap{
+    padding-left: 16px;
+    padding-right: 16px;
 }

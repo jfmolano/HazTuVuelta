@@ -6,7 +6,10 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/entidad.css">
+        <link rel="stylesheet" href="css/mapa.css">
         <link rel="stylesheet" href="css/datepicker.css">
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+        <script type="text/javascript" src="./js/vendor/gmaps.js"></script>
         <script>
             loadComponents = [
             {
@@ -29,8 +32,13 @@
         <![endif]-->
     </head>
     <body>
-        <div class="container">
-            <div id="main" ></div>
+        <img src="img/index.jpg" id="background" alt="">
+        <div>
+            <div id="panelMap">
+                <div id="map" style="width:50%;height:400px;"></div>
+            
+                <div id="main" ></div>
+            </div>
         </div>
     </body>
 </html>

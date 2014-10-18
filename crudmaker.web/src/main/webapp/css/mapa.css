@@ -1,0 +1,115 @@
+#map {
+    min-height: 50%;
+    max-height: 50%;
+    min-width: 92%;
+    max-width: 92%;
+    border-radius: 20px;
+    padding: 20px;
+    left: 4%;
+}
+
+#map {
+    background: #58B;
+}
+
+.sucursal {
+	position: absolute;
+	left: 5%;
+	min-width: 25%;
+	max-width: 25%;
+	min-height: 35%;
+	background-color: white;
+	opacity: 0.7;
+	border-radius: 10px;
+}
+
+.int {
+	padding: 20px;
+}
+
+.infoTurnoAtendido {
+	position: absolute;
+	left: 38%;
+	min-width: 25%;
+	max-width: 25%;
+	min-height: 35%;
+	background-color: white;
+	opacity: 0.7;
+	border-radius: 10px;
+	display: table-cell; 
+  vertical-align: middle; 
+  text-align: center; 
+}
+
+.pedirTurno {
+	position: absolute;
+	left: 70%;
+	min-width: 25%;
+	max-width: 25%;
+	min-height: 35%;
+	background-color: white;
+	opacity: 0.7;
+	border-radius: 10px;
+	display: table-cell; 
+  vertical-align: middle; 
+  text-align: center; 
+}
+
+#background {
+	position: absolute;
+  max-height: 94%;
+  min-height: 94%;
+  max-width: 100%;
+  min-width: 100%;
+  left: 0%;
+}
+
+
+.menuIndex {
+	border-radius: 0px;
+	max-width: 100%;
+	margin-bottom: 0px;
+	left:0%;
+}
+
+.nombreNavBar {
+	color:#bc6c15;
+}
+
+.turno {
+	font-family: 'Segment7';
+	font-weight: normal;
+	font-style: italic;
+	font-size: 120px;
+	height:100px;
+	padding: 0px;
+	color: red;
+}
+
+.codigoColores {
+	min-width: 260px;
+	max-width: 260px;
+	position:absolute;
+	right:6%;
+	bottom:42%;
+	border-radius: 10px;
+}
+
+.btbPedirTurno {
+  -webkit-border-radius: 9;
+  -moz-border-radius: 9;
+  border-radius: 9px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  background: #d93434;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  opacity:1;
+}
+
+.btbPedirTurno:hover {
+  background: #fc3c3c;
+  text-decoration: none;
+  opacity:1;
+}

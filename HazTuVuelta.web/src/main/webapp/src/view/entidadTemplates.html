@@ -1,46 +1,34 @@
 <script type="text/template" id="entidadList">
-    <div  id="contenedor"> 
 
-    <div class="divcontenido">
-    <% if(showEdit) {%>
-        <button id="<%= componentId %>-loginFacebook" class="btn btn-large btn-primary"
-                        type="button">
-                            <img src="img/mapa2.png"/>
-              
-        </button>
-    <% }%>
-    <% if(!showEdit) {%>
-        <button id="<%= componentId %>-reservar" class="btn btn-large btn-primary" 
-                        onclick="Backbone.trigger('<%= componentId %>-reservar',{}); return false" 
-                        type="button">
-                            <img src="img/mapa1.png"/>
-              
-        </button>
-    <% }%>
+    <div>
+        <select class="selectTramites" style="z-index:-3">
+            <option value="0">Registro Distrital Automotor</option>
+            <option value="1">Registro Distrital de Conductores</option>
+            <option value="2">Registro Distrital de Tarjeta de OperaciÃ³n</option>
+            <option value="3">Audi</option>
+        </select>
     </div>
-    <div class="divcontenido">
-    <!-- Default panel contents -->
-    <table class="table striped">
-    <thead>
-    <tr>
-	<th>Entidades</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% _.each(entidads, function(entidad) { %>
-    <tr>
-        <td><%= htmlEncode(entidad.getDisplay('name')) %></td>
-        <td>
-           <a onclick="Backbone.trigger('<%= componentId %>-entidad-verSedes',{}); return false" >Ver Sedes</a> 
-	</td>
-    </tr>
-    <% }); %>
-    </tbody>
-    </table>
+    <img src="img/coloresMapa.png" class="codigoColores" alt="">
+    <div class="sucursal">
+        <div class="int">
+            <p>Sucursal Seleccionada:</p>
+            <div class="infoSucursal"></div>
+        </div>
     </div>
-    
+    <div class="infoTurnoAtendido">
+        <div class="int">
+            <div><p>Turno siendo atendido actualmente:</p></div>
+            <div class="turno"></div>
+        </div>
     </div>
+    <div class="pedirTurno">
+        <div class="int">
+            <div class="infoEspera">
+                <p style="font-size:20px;color:red;">Por favor seleccione una sucursal del mapa</p>
+            </div>
+        </div>
+    </div>
+
 </script>
 
 <script type="text/template" id="entidad">
@@ -49,14 +37,14 @@
     <% if(entidad.id) {%>
     <input type="hidden" name="id" value="<%= entidad.id %>"/>
     <% }%>
-		<div class="form-group" >
-		<label for="name">Name</label>
-    	<input type="text" class="form-control" id="name" name="name" placeholder="Enter value" value="<%= entidad.get('name') %>"/>	
-		</div>
-		<div class="form-group" >
-		<label for="tipo">Tipo</label>
-    	<input type="text" class="form-control" id="tipo" name="tipo" placeholder="Enter value" value="<%= entidad.get('tipo') %>"/>	
-		</div>
+    <div class="form-group" >
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" name="name" placeholder="Enter value" value="<%= entidad.get('name') %>"/>	
+    </div>
+    <div class="form-group" >
+    <label for="tipo">Tipo</label>
+    <input type="text" class="form-control" id="tipo" name="tipo" placeholder="Enter value" value="<%= entidad.get('tipo') %>"/>	
+    </div>
     </form>
     </div>
 </script> 
