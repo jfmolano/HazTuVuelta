@@ -39,12 +39,15 @@ import co.edu.uniandes.csw.Arquidalgos.usuario.logic.dto.UsuarioDTO;
 import co.edu.uniandes.csw.Arquidalgos.usuario.master.logic.dto.UsuarioMasterDTO;
 import co.edu.uniandes.csw.Arquidalgos.usuario.master.persistence.api._IUsuarioMasterPersistence;
 import co.edu.uniandes.csw.Arquidalgos.usuario.persistence.api.IUsuarioPersistence;
+import co.edu.uniandes.csw.Arquidalgos.usuario.persistence.converter.UsuarioConverter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import utilidadesHTV.ConstantesYMetodos;
+import utilidadesHTV.Tiempo;
 
 public class _UsuarioMasterPersistence implements _IUsuarioMasterPersistence {
 
@@ -89,6 +92,9 @@ public class _UsuarioMasterPersistence implements _IUsuarioMasterPersistence {
         }
         return resp;
     }
+    
+    
+    
     public UsuarioturnoUsuarioEntity createUsuarioturnoUsuarioEntity(UsuarioturnoUsuarioEntity entity) {
         entityManager.persist(entity);
         return entity;

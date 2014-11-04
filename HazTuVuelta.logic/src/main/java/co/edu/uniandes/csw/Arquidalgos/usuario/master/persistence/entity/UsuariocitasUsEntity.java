@@ -47,6 +47,7 @@ import org.eclipse.persistence.annotations.JoinFetch;
 @IdClass(UsuariocitasUsEntityId.class)
 @NamedQueries({
     @NamedQuery(name = "UsuariocitasUsEntity.getByMasterId", query = "SELECT  u FROM UsuariocitasUsEntity u WHERE u.usuarioId=:usuarioId"),
+    @NamedQuery(name = "UsuariocitasUsEntity.getByCitaId", query = "SELECT  u FROM UsuariocitasUsEntity u WHERE u.citasUsId=:citasUsId"),
     @NamedQuery(name = "UsuariocitasUsEntity.deleteUsuariocitasUsEntity", query = "DELETE FROM UsuariocitasUsEntity u WHERE u.usuarioId=:usuarioId and  u.citasUsId=:citasUsId")
 })
 public class UsuariocitasUsEntity implements Serializable {

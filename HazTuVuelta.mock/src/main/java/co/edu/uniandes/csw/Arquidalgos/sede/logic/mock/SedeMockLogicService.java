@@ -46,7 +46,7 @@ public class SedeMockLogicService extends _SedeMockLogicService implements ISede
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int asignarSiguienteTurno(Long idSede) {
+    public int asignarSiguienteTurno(Long idSede, String cedula) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -66,12 +66,14 @@ public class SedeMockLogicService extends _SedeMockLogicService implements ISede
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Date darHoraAproximadaAtencion(CitaDTO cita) {
+    public Date darHoraAproximadaAtencion(String cedula) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void reservarCita(CitaDTO nuevaCita) {
+    public void reservarCita(CitaDTO nuevaCita, String cedula) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+
 	
 }
