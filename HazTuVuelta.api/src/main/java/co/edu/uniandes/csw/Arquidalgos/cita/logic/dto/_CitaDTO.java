@@ -42,16 +42,52 @@ public abstract class _CitaDTO {
 	private Long id;
 	
 
-	private String horaIni;
+	private Date horaIni;
 	
 
-	private String horaFin;
+	private Date horaFin;
 	
 
+        private Date fechaCita;
+        
+        
 	private String name;
 	
 
 	private Long sedecitaId;
+        
+        private boolean espera;
+
+        private int turnoAsignado;
+
+        public int getTurnoAsignado() {
+            return turnoAsignado;
+        }
+
+        public void setTurnoAsignado(int turnoAsignado) {
+            this.turnoAsignado = turnoAsignado;
+        }
+
+        
+        
+        public boolean isEspera() {
+            return espera;
+        }
+
+        public void setEspera(boolean espera) {
+            this.espera = espera;
+        }
+        
+        
+        
+
+        public Date getFechaCita() {
+            return fechaCita;
+        }
+
+        public void setFechaCita(Date fechaCita) {
+            this.fechaCita = fechaCita;
+        }
 
 
 
@@ -64,20 +100,20 @@ public abstract class _CitaDTO {
 	}
 
 
-	public String getHoraIni() {
+	public Date getHoraIni() {
 		return horaIni;
 	}
  
-	public void setHoraIni(String horaini) {
+	public void setHoraIni(Date horaini) {
 		this.horaIni = horaini;
 	}
 
 
-	public String getHoraFin() {
+	public Date getHoraFin() {
 		return horaFin;
 	}
  
-	public void setHoraFin(String horafin) {
+	public void setHoraFin(Date horafin) {
 		this.horaFin = horafin;
 	}
 

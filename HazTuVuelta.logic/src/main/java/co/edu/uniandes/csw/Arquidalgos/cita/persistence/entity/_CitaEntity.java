@@ -48,8 +48,40 @@ public abstract class _CitaEntity {
 	private Date horaIni;
 	@Temporal(TemporalType.DATE)
 	private Date horaFin;
-	private String name;
+        @Temporal(TemporalType.DATE)
+	private Date fechaCita;
+        private String name;
 	private Long sedecitaId;
+        private boolean espera;
+        private int turnoAsignado;
+
+        public int getTurnoAsignado() {
+            return turnoAsignado;
+        }
+
+        public void setTurnoAsignado(int turnoAsignado) {
+            this.turnoAsignado = turnoAsignado;
+        }
+        
+        
+
+        public boolean isEspera() {
+            return espera;
+        }
+
+        public void setEspera(boolean espera) {
+            this.espera = espera;
+        }
+
+        public Date getFechaCita() {
+            return fechaCita;
+        }
+
+        public void setFechaCita(Date fechaCita) {
+            this.fechaCita = fechaCita;
+        }
+
+            
 
 	public Long getId(){
 		return id;

@@ -50,6 +50,9 @@ public abstract class _TurnoConverter {
 					dto.setName(entity.getName());
 					dto.setTurno(entity.getTurno());
 					dto.setSedeturnoId(entity.getSedeturnoId());
+                                        dto.setFechaTurno(entity.getFechaTurno());
+                                        dto.setHoraFinal(entity.getHoraFinal());
+                                        dto.setHoraInicio(entity.getHoraInicio());
 			return dto;
 		}else{
 			return null;
@@ -66,6 +69,11 @@ public abstract class _TurnoConverter {
 					entity.setTurno(dto.getTurno());
 			
 					entity.setSedeturnoId(dto.getSedeturnoId());
+                                        
+                                        entity.setFechaTurno(dto.getFechaTurno());
+                                        entity.setHoraFinal(dto.getHoraFinal());
+                                        entity.setHoraInicio(dto.getHoraInicio());
+                                        
 			
 			return entity;
 		}else {

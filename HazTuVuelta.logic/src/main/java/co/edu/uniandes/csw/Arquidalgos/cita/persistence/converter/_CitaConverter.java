@@ -51,14 +51,20 @@ public abstract class _CitaConverter {
 					dto.setId(entity.getId());
  
 			    if(entity.getHoraIni() != null){
-					dto.setHoraIni(DATE_FORMAT.format(entity.getHoraIni()));
+					dto.setHoraIni((entity.getHoraIni()));
 				}	
  
 			    if(entity.getHoraFin() != null){
-					dto.setHoraFin(DATE_FORMAT.format(entity.getHoraFin()));
+					dto.setHoraFin((entity.getHoraFin()));
 				}	
 					dto.setName(entity.getName());
 					dto.setSedecitaId(entity.getSedecitaId());
+                                        
+                            dto.setEspera(entity.isEspera());
+                            dto.setTurnoAsignado(entity.getTurnoAsignado());
+                             if(entity.getFechaCita()!= null){
+					dto.setFechaCita(entity.getFechaCita());
+				}
 			return dto;
 		}else{
 			return null;
@@ -73,7 +79,7 @@ public abstract class _CitaConverter {
  
 			      try{ 
 			        if(dto.getHoraIni() != null){
-						entity.setHoraIni(DATE_FORMAT.parse(dto.getHoraIni()));
+						entity.setHoraIni((dto.getHoraIni()));
 					}
 				  } catch (Exception ex) {
                         Logger.getLogger(_CitaConverter.class.getName()).log(Level.SEVERE, null, ex);
@@ -82,14 +88,14 @@ public abstract class _CitaConverter {
  
 			      try{ 
 			        if(dto.getHoraFin() != null){
-						entity.setHoraFin(DATE_FORMAT.parse(dto.getHoraFin()));
+						entity.setHoraFin((dto.getHoraFin()));
 					}
 				  } catch (Exception ex) {
                         Logger.getLogger(_CitaConverter.class.getName()).log(Level.SEVERE, null, ex);
                   }	
 			
 					entity.setName(dto.getName());
-			
+                                        entity.setTurnoAsignado(dto.getTurnoAsignado());
 					entity.setSedecitaId(dto.getSedecitaId());
 			
 			return entity;

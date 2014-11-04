@@ -47,7 +47,36 @@ public abstract class _TurnoEntity {
 	private String name;
 	private Integer turno;
 	private Long sedeturnoId;
+        private Date horaInicio;
+        private Date horaFinal;
+        private Date fechaTurno;
 
+        public Date getHoraInicio() {
+            return horaInicio;
+        }
+
+        public void setHoraInicio(Date horaInicio) {
+            this.horaInicio = horaInicio;
+        }
+
+        public Date getHoraFinal() {
+            return horaFinal;
+        }
+
+        public void setHoraFinal(Date horaFinal) {
+            this.horaFinal = horaFinal;
+        }
+
+        public Date getFechaTurno() {
+            return fechaTurno;
+        }
+
+        public void setFechaTurno(Date fechaTurno) {
+            this.fechaTurno = fechaTurno;
+        }
+
+        
+        
 	public Long getId(){
 		return id;
 	}

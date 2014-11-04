@@ -6,6 +6,7 @@
 package utilidadesHTV;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +19,7 @@ public class Simulador extends Thread{
     public static void main (String[] args)
     {
         new Simulador(180, PP_7AM, 9, Calendar.PM).start();
+        
     }
     
     Calendar cal;
