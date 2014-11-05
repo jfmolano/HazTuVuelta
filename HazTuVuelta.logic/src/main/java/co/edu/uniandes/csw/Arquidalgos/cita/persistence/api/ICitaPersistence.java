@@ -38,4 +38,8 @@ public interface ICitaPersistence extends _ICitaPersistence {
 
     
     public List<CitaDTO> darCitasRango (Date fecha);
+    
+    public List<CitaDTO> darCitasEsperaHora ( Date fecha);
+    
+    public List <CitaDTO> darCitasHoy ();
 }

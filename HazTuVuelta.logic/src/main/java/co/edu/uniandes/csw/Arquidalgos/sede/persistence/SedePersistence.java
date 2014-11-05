@@ -44,6 +44,7 @@ import co.edu.uniandes.csw.Arquidalgos.turno.persistence.api.ITurnoPersistence;
 import co.edu.uniandes.csw.Arquidalgos.turno.persistence.converter.TurnoConverter;
 import co.edu.uniandes.csw.Arquidalgos.usuario.logic.dto.UsuarioDTO;
 import co.edu.uniandes.csw.Arquidalgos.usuario.master.logic.dto.UsuarioMasterDTO;
+import co.edu.uniandes.csw.Arquidalgos.usuario.master.persistence.UsuarioMasterPersistence;
 import co.edu.uniandes.csw.Arquidalgos.usuario.master.persistence.api.IUsuarioMasterPersistence;
 import co.edu.uniandes.csw.Arquidalgos.usuario.master.persistence.api._IUsuarioMasterPersistence;
 import co.edu.uniandes.csw.Arquidalgos.usuario.persistence.api.IUsuarioPersistence;
@@ -87,6 +88,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         
         SedeDTO sedeActual = getSede(1L);
         
+    
         sedeActual.setTurno(sedeActual.getTurno()+1);
         
         updateSede(sedeActual);
@@ -298,6 +300,14 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         
         if ( user != null){
         
+            int cupoCitasHora = ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN/ConstantesYMetodos.DURACION_APROX_TURNO_MIN;
+            
+            // Verifica que no se pase el cupo máximo de citas que se pueden reservar a esa hora
+            if ( citaPersistance.darCitasEsperaHora(nuevaCita.getHoraIni()).size() >= cupoCitasHora){
+                
+                throw new Exception("No se pueden reservar más turnos a esa hora");
+            }
+            
             CitaDTO cita = new CitaDTO();
             cita.setEspera(true);
             cita.setFechaCita(Tiempo.getCurrentDate());
@@ -317,6 +327,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
             
             userMaster.setId(user.getId());
             userMaster.setListcitasUs(citaPersistir);
+            
             
         }
         else{
