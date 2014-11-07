@@ -139,6 +139,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
      * @return
      * @throws Exception 
      */
+    //TODO Verificar si hay citas en espera que puedan ser asignadas después de mi
     public int asignarSiguienteTurno ( Long idSede, String cedula)throws Exception{
         
         
@@ -202,7 +203,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         }
         // pasar todas las citas en espera a la fila, si se cumple
         
-        List <CitaDTO> citas = citaPersistance.darCitasRango(turnos.get(turnos.size()-1).getHoraFinal());
+        List <CitaDTO> citas = citaPersistance.darCitasAnteriores(turnos.get(turnos.size()-1).getHoraFinal());
         
         for (CitaDTO cita : citas) {
             try {
@@ -210,6 +211,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
                 asignarSiguienteTurno(idSede,usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCedula());
                 cita.setEspera(false);
             } catch (Exception ex) {
+                ex.printStackTrace();
                 Logger.getLogger(SedePersistence.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -287,7 +289,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
    
     /**
      * Se le reserva una cita al usuario en el horario dado
-     * @param nuevaCita
+     * @param nuevaCita TIENEN QUE PASARLE LA HORA INICIAL DEL RANGO, NO DEL PUESTO DE LA CITA EN EL RANGO
      * @param cedula
      * @throws Exception 
      */
@@ -317,7 +319,8 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         cHoraFin.setTime(horaFinUltimaCita);
         
         Calendar cFinNuevaCita = new GregorianCalendar();
-        cFinNuevaCita.setTime(nuevaCita.getHoraFin());
+       
+        cFinNuevaCita.setTime(new Date(nuevaCita.getHoraIni().getTime()+ConstantesYMetodos.RANGO_RESERVAR_TURNO_MILISEGUNDOS));
         
         // Verifica que todavia se pueda reservar una cita en ese rango, es decir, que el ultimo puesto de la fila vaya antes del fin del rango
         if ( cHoraFin.after(cFinNuevaCita) ){
@@ -341,7 +344,19 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
             CitaDTO cita = new CitaDTO();
             cita.setEspera(true);
             cita.setFechaCita(Tiempo.getCurrentDate());
-            cita.setHoraIni(nuevaCita.getHoraIni());
+            
+            // Verifica en que posición del rango se piensa asignar la cita
+            List <CitaDTO> citasRango = citaPersistance.darCitasRango(nuevaCita.getHoraIni());
+            
+            if ( citasRango.size()<1){
+                
+                cita.setHoraIni(nuevaCita.getHoraIni());
+            }
+            else{
+                
+                cita.setHoraIni(citasRango.get(citasRango.size()-1).getHoraFin());
+            }
+            
             cita.setHoraFin(new Date (cita.getHoraIni().getTime()+ConstantesYMetodos.RANGO_RESERVAR_TURNO_MILISEGUNDOS));
             cita.setSedecitaId(nuevaCita.getSedecitaId());
             cita.setTurnoAsignado(-1);

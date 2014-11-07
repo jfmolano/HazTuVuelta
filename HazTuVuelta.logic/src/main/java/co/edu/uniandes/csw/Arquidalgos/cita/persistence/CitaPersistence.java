@@ -49,13 +49,14 @@ import utilidadesHTV.Tiempo;
 @LocalBean
 public class CitaPersistence extends _CitaPersistence  implements ICitaPersistence {
 
-    public List<CitaDTO> darCitasRango (Date fecha){
+    //TODO Falta verificar que si se agrega la primera cita reservada, se agregen las seguidas
+    public List<CitaDTO> darCitasAnteriores (Date fecha){
         
-        List<CitaDTO> citas = getCitas();
+        List<CitaDTO> citas = darCitasHoy();
         List<CitaDTO> resp = new ArrayList<CitaDTO>();
         for (CitaDTO cita : citas) {
             
-            if ( fecha.before(cita.getHoraIni())&&fecha.after(cita.getHoraFin())&&cita.isEspera()){
+            if ( cita.isEspera() && (fecha.after(cita.getHoraIni())|| fecha.equals(cita.getHoraIni()))){
                 
                 
                 resp.add(cita);
@@ -66,7 +67,25 @@ public class CitaPersistence extends _CitaPersistence  implements ICitaPersisten
         return resp;
     }
     
-    
+    public List<CitaDTO> darCitasRango (Date inicioRango){
+        
+        List<CitaDTO> resp = new ArrayList<CitaDTO>();
+        
+        Date finRango = new Date (inicioRango.getTime()+ConstantesYMetodos.RANGO_RESERVAR_TURNO_MILISEGUNDOS);
+        
+        List <CitaDTO> citas = darCitasHoy();
+       
+        for (CitaDTO citaActual : citas) {
+            
+            if ( citaActual.getHoraIni().after(inicioRango) && citaActual.getHoraFin().before(finRango)){
+                
+                resp.add(citaActual);
+            }
+            
+        }
+        
+        return resp;
+    }
     public List<CitaDTO> darCitasEsperaHora ( Date fecha){
         
         Calendar c1 = new GregorianCalendar();
