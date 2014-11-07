@@ -37,6 +37,7 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.MappedSuperclass;
+import static javax.persistence.TemporalType.DATE;
 
 @MappedSuperclass
 public abstract class _TurnoEntity {
@@ -47,8 +48,11 @@ public abstract class _TurnoEntity {
 	private String name;
 	private Integer turno;
 	private Long sedeturnoId;
+        @Temporal(DATE)
         private Date horaInicio;
+        @Temporal(DATE)
         private Date horaFinal;
+        @Temporal(DATE)
         private Date fechaTurno;
 
         public Date getHoraInicio() {
