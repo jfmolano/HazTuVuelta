@@ -91,4 +91,9 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         persistance.reservarCita(nuevaCita,cedula);
     }
 
+    public int turnoActual(Long idSede) {
+    
+        return persistance.turnoActual(idSede);
+    }
+
 }

@@ -37,10 +37,9 @@ import java.util.List;
 public interface ICitaPersistence extends _ICitaPersistence {
 
     
-    public List<CitaDTO> darCitasAnteriores (Date fecha);
+    public List<CitaDTO> darCitasAnterioresOYa (Date fecha);
     
-    public List<CitaDTO> darCitasEsperaHora ( Date fecha);
-    
+        
     public List <CitaDTO> darCitasHoy ();
     
     public List<CitaDTO> darCitasRango (Date inicioRango);

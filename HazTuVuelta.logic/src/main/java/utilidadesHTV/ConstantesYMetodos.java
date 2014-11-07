@@ -30,7 +30,22 @@ public class ConstantesYMetodos {
         Calendar c2 = new GregorianCalendar();
         c2.setTime(d2);
         
-        return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
+        return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) && 
+               c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
+        
+    }
+    
+    public static boolean citasMismoMinuto (Date d1, Date d2){
+        
+        Calendar c1 = new GregorianCalendar();
+        c1.setTime(d1);
+        Calendar c2 = new GregorianCalendar();
+        c2.setTime(d2);
+        
+        return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) && 
+               c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR) &&
+               c1.get(Calendar.HOUR_OF_DAY) == c2.get(Calendar.HOUR_OF_DAY)&&
+               c1.get(Calendar.MINUTE) == c2.get(Calendar.MINUTE);
         
     }
 }

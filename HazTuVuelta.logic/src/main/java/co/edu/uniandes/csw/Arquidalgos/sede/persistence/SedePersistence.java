@@ -167,6 +167,8 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
 
         turnosHoy.add(nuevoTurno);
 
+        int turnoAsignado = turnosHoy.size();
+        
         // Relacionar turno y usuario
 
         List<TurnoDTO> turnoPersistir = new ArrayList<TurnoDTO>();
@@ -176,8 +178,24 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         userMaster.setId(usuario.getId());
         userMaster.setListturnoUsuario(turnoPersistir);
 
+        
+        // Verificar si hay citas en espera, y añadirlas a la fila
+        
+         List <CitaDTO> citas = citaPersistance.darCitasAnterioresOYa(turnosHoy.get(turnosHoy.size()-1).getHoraFinal());
+        
+        for (CitaDTO cita : citas) {
+            try {
+                //Falta relacionar cita-turno-usuario
+                cita.setEspera(false);
+                asignarSiguienteTurno(idSede,usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCedula());
+                
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                Logger.getLogger(SedePersistence.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
-        return turnosHoy.size();        
+        return turnoAsignado;        
             
     }
 
@@ -203,13 +221,14 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         }
         // pasar todas las citas en espera a la fila, si se cumple
         
-        List <CitaDTO> citas = citaPersistance.darCitasAnteriores(turnos.get(turnos.size()-1).getHoraFinal());
+        List <CitaDTO> citas = citaPersistance.darCitasAnterioresOYa(turnos.get(turnos.size()-1).getHoraFinal());
         
         for (CitaDTO cita : citas) {
             try {
-                //Falta relacionar cita-turno-usuario
-                asignarSiguienteTurno(idSede,usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCedula());
+                //Falta relacionar cita-turno-usuario}
                 cita.setEspera(false);
+                asignarSiguienteTurno(idSede,usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCedula());
+                
             } catch (Exception ex) {
                 ex.printStackTrace();
                 Logger.getLogger(SedePersistence.class.getName()).log(Level.SEVERE, null, ex);
@@ -309,7 +328,9 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         int cupoCitasHora = ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN/ConstantesYMetodos.DURACION_APROX_TURNO_MIN;
 
         // Verifica que no se pase el cupo máximo de citas que se pueden reservar a esa hora
-        if ( citaPersistance.darCitasEsperaHora(nuevaCita.getHoraIni()).size() >= cupoCitasHora){
+        
+               
+        if ( citaPersistance.darCitasRango(nuevaCita.getHoraIni()).size()>= cupoCitasHora){
 
             throw new Exception("No se pueden reservar más turnos a esa hora");
         }
@@ -374,6 +395,16 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
             userMaster.setListcitasUs(citaPersistir);
             
         }
+    }
+
+    /**
+     * Retorna el turno que se está atendiendo actualmente en la sede
+     * @param idSede
+     * @return 
+     */
+    public int turnoActual(Long idSede) {
+        
+        return getSede(idSede).getTurno();
     }
     
 

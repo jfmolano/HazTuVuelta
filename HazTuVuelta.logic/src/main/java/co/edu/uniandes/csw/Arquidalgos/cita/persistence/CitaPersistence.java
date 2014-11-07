@@ -50,14 +50,13 @@ import utilidadesHTV.Tiempo;
 public class CitaPersistence extends _CitaPersistence  implements ICitaPersistence {
 
     //TODO Falta verificar que si se agrega la primera cita reservada, se agregen las seguidas
-    public List<CitaDTO> darCitasAnteriores (Date fecha){
+    public List<CitaDTO> darCitasAnterioresOYa (Date fecha){
         
         List<CitaDTO> citas = darCitasHoy();
         List<CitaDTO> resp = new ArrayList<CitaDTO>();
         for (CitaDTO cita : citas) {
             
-            if ( cita.isEspera() && (fecha.after(cita.getHoraIni())|| fecha.equals(cita.getHoraIni()))){
-                
+            if ( cita.isEspera() && (fecha.after(cita.getHoraIni())|| ConstantesYMetodos.citasMismoMinuto(fecha, cita.getHoraIni()))){
                 
                 resp.add(cita);
             }
@@ -67,6 +66,11 @@ public class CitaPersistence extends _CitaPersistence  implements ICitaPersisten
         return resp;
     }
     
+    /**
+     * Retorna todas las citas que se encuentran dentro del rango dado por parámetro
+     * @param inicioRango
+     * @return 
+     */
     public List<CitaDTO> darCitasRango (Date inicioRango){
         
         List<CitaDTO> resp = new ArrayList<CitaDTO>();
@@ -77,7 +81,7 @@ public class CitaPersistence extends _CitaPersistence  implements ICitaPersisten
        
         for (CitaDTO citaActual : citas) {
             
-            if ( citaActual.getHoraIni().after(inicioRango) && citaActual.getHoraFin().before(finRango)){
+            if ( citaActual.getHoraIni().after(inicioRango) && citaActual.getHoraIni().before(finRango)){
                 
                 resp.add(citaActual);
             }
@@ -86,29 +90,13 @@ public class CitaPersistence extends _CitaPersistence  implements ICitaPersisten
         
         return resp;
     }
-    public List<CitaDTO> darCitasEsperaHora ( Date fecha){
-        
-        Calendar c1 = new GregorianCalendar();
-        c1.setTime(fecha);
-        List <CitaDTO> resp = new ArrayList<CitaDTO>();
-        
-        List<CitaDTO> citasHoy = darCitasHoy();
-        
-        for (CitaDTO citaActual : citasHoy) {
-            
-            Calendar c = new GregorianCalendar();
-            c.setTime(citaActual.getHoraIni());
-            if ( c.get(Calendar.HOUR_OF_DAY) == c1.get(Calendar.HOUR_OF_DAY) &&
-                    c.get(Calendar.MINUTE)==c1.get(Calendar.MINUTE)){
-                
-                resp.add(citaActual);
-            }
-            
-        }
-        
-        return resp;
-    }
-
+    
+    
+    
+    /**
+     * Retorna todas las citas que estan agendadas para hoy
+     * @return 
+     */
     public List <CitaDTO> darCitasHoy (){
         
         List <CitaDTO> resp = new ArrayList<CitaDTO>();
