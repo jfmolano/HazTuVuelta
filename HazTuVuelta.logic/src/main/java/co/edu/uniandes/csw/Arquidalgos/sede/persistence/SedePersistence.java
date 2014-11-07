@@ -139,6 +139,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
      * @return
      * @throws Exception 
      */
+    //TODO Verificar si hay citas en espera que puedan ser asignadas después de mi
     public int asignarSiguienteTurno ( Long idSede, String cedula)throws Exception{
         
         
@@ -146,37 +147,38 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         
         UsuarioDTO usuario = usuarioPersistance.buscarUsuarioCedula(cedula);
         
-        if ( usuario != null){
-            
-            List <TurnoDTO> turnosHoy = getTurnosSedeHoy(idSede);
-
-            TurnoDTO nuevoTurno = new TurnoDTO();
-
-            nuevoTurno.setFechaTurno(Tiempo.getCurrentDate());
-            nuevoTurno.setHoraInicio(turnosHoy.get(turnosHoy.size()-1).getHoraFinal());
-            nuevoTurno.setHoraFinal(new Date(nuevoTurno.getHoraInicio().getTime()
-                    +(ConstantesYMetodos.DURACION_APROX_TURNO_MIN*60000)));
-            nuevoTurno.setSedeturnoId(idSede);
-            nuevoTurno.setTurno(turnosHoy.size()+1);
-            
-            turnosHoy.add(nuevoTurno);
-
-            // Relacionar turno y usuario
-            
-            List<TurnoDTO> turnoPersistir = new ArrayList<TurnoDTO>();
-            turnoPersistir.add(nuevoTurno);
-            UsuarioMasterDTO userMaster = new UsuarioMasterDTO();
-            
-            userMaster.setId(usuario.getId());
-            userMaster.setListturnoUsuario(turnoPersistir);
-            
-            
-            return turnosHoy.size();        
-        }
-        else{
+        
+        if ( usuario == null){
             
             throw new Exception ("No existe un usuario con ese documento de identificación");
-        }       
+
+        }   
+            
+        List <TurnoDTO> turnosHoy = getTurnosSedeHoy(idSede);
+
+        TurnoDTO nuevoTurno = new TurnoDTO();
+
+        nuevoTurno.setFechaTurno(Tiempo.getCurrentDate());
+        nuevoTurno.setHoraInicio(turnosHoy.get(turnosHoy.size()-1).getHoraFinal());
+        nuevoTurno.setHoraFinal(new Date(nuevoTurno.getHoraInicio().getTime()
+                +(ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS)));
+        nuevoTurno.setSedeturnoId(idSede);
+        nuevoTurno.setTurno(turnosHoy.size()+1);
+
+        turnosHoy.add(nuevoTurno);
+
+        // Relacionar turno y usuario
+
+        List<TurnoDTO> turnoPersistir = new ArrayList<TurnoDTO>();
+        turnoPersistir.add(nuevoTurno);
+        UsuarioMasterDTO userMaster = new UsuarioMasterDTO();
+
+        userMaster.setId(usuario.getId());
+        userMaster.setListturnoUsuario(turnoPersistir);
+
+
+        return turnosHoy.size();        
+            
     }
 
     /**
@@ -196,12 +198,12 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
             
             TurnoDTO actual = turnos.get(i);
             actual.setHoraInicio(temp);
-            actual.setHoraFinal(new Date(actual.getHoraInicio().getTime()+ConstantesYMetodos.DURACION_APROX_TURNO_MIN*60000));
+            actual.setHoraFinal(new Date(actual.getHoraInicio().getTime()+ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS));
             temp = actual.getHoraFinal();
         }
         // pasar todas las citas en espera a la fila, si se cumple
         
-        List <CitaDTO> citas = citaPersistance.darCitasRango(turnos.get(turnos.size()-1).getHoraFinal());
+        List <CitaDTO> citas = citaPersistance.darCitasAnteriores(turnos.get(turnos.size()-1).getHoraFinal());
         
         for (CitaDTO cita : citas) {
             try {
@@ -209,6 +211,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
                 asignarSiguienteTurno(idSede,usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCedula());
                 cita.setEspera(false);
             } catch (Exception ex) {
+                ex.printStackTrace();
                 Logger.getLogger(SedePersistence.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -271,7 +274,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
                 Long inicioUltimoTurno = darUltimoInicioDeCita(cita.getSedecitaId()).getTime();
                 int turnoActual = darUltimoTurnoAtendido(cita.getSedecitaId());
 
-                return new Date(inicioUltimoTurno+(cita.getTurnoAsignado()-turnoActual)*ConstantesYMetodos.DURACION_APROX_TURNO_MIN*60000);
+                return new Date(inicioUltimoTurno+(cita.getTurnoAsignado()-turnoActual)*ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS);
 
             } 
         
@@ -286,7 +289,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
    
     /**
      * Se le reserva una cita al usuario en el horario dado
-     * @param nuevaCita
+     * @param nuevaCita TIENEN QUE PASARLE LA HORA INICIAL DEL RANGO, NO DEL PUESTO DE LA CITA EN EL RANGO
      * @param cedula
      * @throws Exception 
      */
@@ -298,40 +301,78 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         
         UsuarioDTO user = usuarioPersistance.buscarUsuarioCedula(cedula);
         
-        if ( user != null){
-        
-            int cupoCitasHora = ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN/ConstantesYMetodos.DURACION_APROX_TURNO_MIN;
+        if ( user == null){
             
-            // Verifica que no se pase el cupo máximo de citas que se pueden reservar a esa hora
-            if ( citaPersistance.darCitasEsperaHora(nuevaCita.getHoraIni()).size() >= cupoCitasHora){
-                
-                throw new Exception("No se pueden reservar más turnos a esa hora");
-            }
+            throw new Exception ("No existe un usuario con ese documento de identificación");
+            
+        }
+        int cupoCitasHora = ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN/ConstantesYMetodos.DURACION_APROX_TURNO_MIN;
+
+        // Verifica que no se pase el cupo máximo de citas que se pueden reservar a esa hora
+        if ( citaPersistance.darCitasEsperaHora(nuevaCita.getHoraIni()).size() >= cupoCitasHora){
+
+            throw new Exception("No se pueden reservar más turnos a esa hora");
+        }
+        
+        Date horaFinUltimaCita = new Date(darUltimoInicioDeCita(nuevaCita.getSedecitaId()).getTime()+ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS);
+        Calendar cHoraFin = new GregorianCalendar();
+        cHoraFin.setTime(horaFinUltimaCita);
+        
+        Calendar cFinNuevaCita = new GregorianCalendar();
+       
+        cFinNuevaCita.setTime(new Date(nuevaCita.getHoraIni().getTime()+ConstantesYMetodos.RANGO_RESERVAR_TURNO_MILISEGUNDOS));
+        
+        // Verifica que todavia se pueda reservar una cita en ese rango, es decir, que el ultimo puesto de la fila vaya antes del fin del rango
+        if ( cHoraFin.after(cFinNuevaCita) ){
+            
+            throw new Exception("No se pueden reservar turno a esa hora, reservar en otro rango de horas.");
+
+        }
+        
+        Calendar cInicioNuevaCita = new GregorianCalendar();
+        cInicioNuevaCita.setTime(nuevaCita.getHoraIni());
+        
+        // Si ya hay turnos en el rango, en lugar de reservar cita, se pide el turno siguiente
+        if ( cHoraFin.after(cInicioNuevaCita)){
+            
+            asignarSiguienteTurno(nuevaCita.getSedecitaId(), cedula);
+            
+        }
+        
+        else{
             
             CitaDTO cita = new CitaDTO();
             cita.setEspera(true);
             cita.setFechaCita(Tiempo.getCurrentDate());
-            cita.setHoraIni(nuevaCita.getHoraIni());
-            cita.setHoraFin(new Date (cita.getHoraIni().getTime()+ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN*60000));
+            
+            // Verifica en que posición del rango se piensa asignar la cita
+            List <CitaDTO> citasRango = citaPersistance.darCitasRango(nuevaCita.getHoraIni());
+            
+            if ( citasRango.size()<1){
+                
+                cita.setHoraIni(nuevaCita.getHoraIni());
+            }
+            else{
+                
+                cita.setHoraIni(citasRango.get(citasRango.size()-1).getHoraFin());
+            }
+            
+            cita.setHoraFin(new Date (cita.getHoraIni().getTime()+ConstantesYMetodos.RANGO_RESERVAR_TURNO_MILISEGUNDOS));
             cita.setSedecitaId(nuevaCita.getSedecitaId());
             cita.setTurnoAsignado(-1);
 
             citaPersistance.createCita(cita);
-            
-            
+
+
              // Relacionar cita y usuario
-            
+
             List<CitaDTO> citaPersistir = new ArrayList<CitaDTO>();
             citaPersistir.add(cita);
             UsuarioMasterDTO userMaster = new UsuarioMasterDTO();
-            
+
             userMaster.setId(user.getId());
             userMaster.setListcitasUs(citaPersistir);
             
-            
-        }
-        else{
-             throw new Exception ("No existe un usuario con ese documento de identificación");
         }
     }
     

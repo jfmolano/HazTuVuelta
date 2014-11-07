@@ -17,8 +17,11 @@ public class ConstantesYMetodos {
  
     public static final int DURACION_APROX_TURNO_MIN = 5;
     
-    public static final int RANGO_RESERVAR_TURNO_MIN = 30;
+    public static final int RANGO_RESERVAR_TURNO_MIN = 60;
     
+    public static final int RANGO_RESERVAR_TURNO_MILISEGUNDOS = RANGO_RESERVAR_TURNO_MIN*60000;
+    
+    public static final int DURACION_APROX_TURNO_MILISEGUNDOS = DURACION_APROX_TURNO_MIN*60000;
     
     public static boolean citasMismoDia(Date d1, Date d2){
         
