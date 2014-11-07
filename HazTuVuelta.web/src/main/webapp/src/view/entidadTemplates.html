@@ -1,32 +1,39 @@
 <script type="text/template" id="entidadList">
-
-    <div>
-        <select class="selectTramites" style="z-index:-3">
-            <option value="0">Registro Distrital Automotor</option>
-            <option value="1">Registro Distrital de Conductores</option>
-            <option value="2">Registro Distrital de Tarjeta de OperaciÃ³n</option>
-            <option value="3">Audi</option>
-        </select>
-    </div>
-    <img src="img/coloresMapa.png" class="codigoColores" alt="">
-    <div class="sucursal">
-        <div class="int">
-            <p>Sucursal Seleccionada:</p>
-            <div class="infoSucursal"></div>
-        </div>
-    </div>
-    <div class="infoTurnoAtendido">
-        <div class="int">
-            <div><p>Turno siendo atendido actualmente:</p></div>
-            <div class="turno"></div>
-        </div>
-    </div>
-    <div class="pedirTurno">
-        <div class="int">
-            <div class="infoEspera">
-                <p style="font-size:20px;color:red;">Por favor seleccione una sucursal del mapa</p>
+    <div class="infoTurnoAtendido2" style="height: 654px; vertical-align: top">
+        <h1><font color = "red">Paso 2: </font><font color = "black">escoje la hora</font> </h1>
+            <p><b>Informonación de la sucursal</b>
+            <div class = "panelInterno" style="float:left;widht:50%">
+                <p>SIM Cedritos
+                <p>Calle 147 #19-66 L31
+                <p>Lunes-Viernes: 7:00am-6:00pm
+                <p>Sábado: 8:00am-1:00pm
             </div>
-        </div>
+            <div class = "panelInterno" style="float:right;widht:50%">
+                Turno Actual:
+                <div class="turno" id="turnoAtendido">20</div>
+            </div>
+            <p><p><p><b>Siguiente turno disponible:</b>
+            <div class = "panelInterno">
+                <botton class="btn" style ="width: 340px" href>Ver siguiente turno disponible</botton>
+            </div>
+            <p><p><p><b>Reserva un turno a la hora que quieras</b>
+            <div class = "panelInterno" style="float:left;widht:50%">
+                <p><b>En la mañana:</b>
+                <p><botton class="btn" onclick="Backbone.trigger('<%= componentId %>select',{id:7}); return false">7:00 am</botton>
+                <p><botton class="btn" href>8:00 am</botton>
+                <p><botton class="btn" href>9:00 am</botton>
+                <p><botton class="btn" href>10:00 am</botton>
+                <p><botton class="btn" href>11:00 am</botton>
+            </div>
+            <div class = "panelInterno" style="float:left;widht:50%">
+                <p><b>En la tarde:</b> 
+                <p><botton class="btn" href>12:00 m</botton>  
+                <p><botton class="btn" href>1:00 pm</botton>
+                <p><botton class="btn" href>2:00 pm</botton>
+                <p><botton class="btn" href>3:00 pm</botton>
+                <p><botton class="btn" href>4:00 pm</botton>
+            </div>
+    
     </div>
 
 </script>

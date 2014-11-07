@@ -40,17 +40,23 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             Backbone.on(this.componentId + '-hideMap', function (params) {
                 self.hideMap();
             });
+            Backbone.on(this.componentId + 'select', function (params) {
+                console.log('Seleción de una hora');
+                self.resizeMap();
+            });
+            document.getElementById("pnlReservarTurno").style.display = 'none';
             this.initMap();
             this.bool = false;
             if (this.isMobile())
             {
                 document.getElementById("map").style.width = '100%';
             }
+            
             this.listTemplate = _.template($('#entidadList').html());
         },
         hideMap: function () {
             console.log('Hide Map');
-            var elem = document.getElementById("map");
+            var elem = document.getElementById("contenedorMap");
             if (this.bool)
             {
                 elem.style.display = 'block';
@@ -63,6 +69,14 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             this.bool = !this.bool;
 
 
+        },
+        resizeMap: function () {
+            console.log('Hide Map');
+            document.getElementById("map").style.height="227px";
+            document.getElementById("infoColores").style.display = 'none';
+            document.getElementById("contenedor2Map").style.height="327px";
+            document.getElementById("pnlReservarTurno").style.display = 'block';
+            
         },
         isMobile: function () {
 
@@ -84,25 +98,45 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             var marcadorRojo = 'http://inthespace.net/graphics/icon_google_maps2.png';
             var marcadorAmarillo = 'http://static.batchgeo.com/images/icons/yellow_shadow_Marker.png';
             var coloresMarcadores = [marcadorVerde, marcadorAmarillo, marcadorRojo];
+            var coloresHorario = ["gray", "#2dcc70", "#e67d22", "#e74b3c", "#27ae61", "#d25400", "#c1392b"];
+            var clasesHorario = ["horarioActivado", "horarioDesactivado"];
+            var anteriorHorarioSel = -1;
 
             //Lista tramites
             var lisaTramites;
 
             //Lista sucursares
             var sucursales = [
-                {"nombre": "SIM Cedritos", "lat": 4.7299483948472725, "lng": -74.04592265136054, "estado": 0, "entidad": 0, "dire": "Calle 147 #19-66 L31", "turnoAtencion": 20, "turnoPedido": 25},
-                {"nombre": "SIM Autopista 106", "lat": 4.694117579050114, "lng": -74.05666892177871, "estado": 1, "entidad": 0, "dire": "Autopista Norte #106-25/ Piso 2", "turnoAtencion": 10, "turnoPedido": 30},
-                {"nombre": "SIM Nizza", "lat": 4.708157148841132, "lng": -74.07222036964706, "estado": 2, "entidad": 0, "dire": "Transversal 60 #124-20 Int. 5", "turnoAtencion": 1, "turnoPedido": 50},
-                {"nombre": "SIM Siete de Agosto", "lat": 4.658609066756216, "lng": -74.0692739630442, "estado": 2, "entidad": 0, "dire": "Calle 68 #23-27", "turnoAtencion": 33, "turnoPedido": 34},
-                {"nombre": "SIM Chapinero", "lat": 4.645954660919973, "lng": -74.06414423830321, "estado": 0, "entidad": 0, "dire": "Calle 59 #13-97", "turnoAtencion": 15, "turnoPedido": 18},
-                {"nombre": "SIM Galerías", "lat": 4.640811028448222, "lng": -74.07519292778781, "estado": 1, "entidad": 0, "dire": "Calle 52 #25-35", "turnoAtencion": 80, "turnoPedido": 100},
-                {"nombre": "SIM San Diego", "lat": 4.612054519536214, "lng": -74.0695636416178, "estado": 2, "entidad": 0, "dire": "Carrera 7 #26-16 L5", "turnoAtencion": 2, "turnoPedido": 5},
-                {"nombre": "SIM Terminal", "lat": 4.65322291854579, "lng": -74.11504854209235, "estado": 1, "entidad": 0, "dire": "Diagonal 23 #69-60 Módulo 1 (amarillo) L122", "turnoAtencion": 2, "turnoPedido": 20},
-                {"nombre": "SIM Ricaurte", "lat": 4.611026548823848, "lng": -74.0885369176369, "estado": 0, "entidad": 0, "dire": "Calle 13 #26-66 y/o 25-88 Esquina", "turnoAtencion": 43, "turnoPedido": 50},
-                {"nombre": "SIM Restrepo", "lat": 4.583770747387098, "lng": -74.10166230745128, "estado": 2, "entidad": 0, "dire": "Carrera 17 #19A-32 Sur", "turnoAtencion": 65, "turnoPedido": 110},
-                {"nombre": "SIM Sur", "lat": 4.6144392989245215, "lng": -74.13515169865897, "estado": 0, "entidad": 0, "dire": "Carrera 69 Bis #28-21 Sur", "turnoAtencion": 71, "turnoPedido": 83},
-                {"nombre": "SIM Sevillana", "lat": 4.591812981502772, "lng": -74.14576318807414, "estado": 1, "entidad": 0, "dire": "Carrera 57 #45A-08 Sur Int. 1 Centro Automotriz-La Sevillana", "turnoAtencion": 3, "turnoPedido": 22}
+                {"nombre": "SIM Cedritos", "lat": 4.7299483948472725, "lng": -74.04592265136054, "estado": 0, "entidad": 0, "dire": "Calle 147 #19-66 L31", "turnoAtencion": 20, "turnoPedido": 22, "horas": [0, 0, 0, 1, 2, 3, 2, 1, 1, 1, 1]},
+                {"nombre": "SIM Autopista 106", "lat": 4.694117579050114, "lng": -74.05666892177871, "estado": 1, "entidad": 0, "dire": "Autopista Norte #106-25/ Piso 2", "turnoAtencion": 10, "turnoPedido": 30, "horas": [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]},
+                {"nombre": "SIM Nizza", "lat": 4.708157148841132, "lng": -74.07222036964706, "estado": 2, "entidad": 0, "dire": "Transversal 60 #124-20 Int. 5", "turnoAtencion": 1, "turnoPedido": 50, "horas": [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1]},
+                {"nombre": "SIM Siete de Agosto", "lat": 4.658609066756216, "lng": -74.0692739630442, "estado": 2, "entidad": 0, "dire": "Calle 68 #23-27", "turnoAtencion": 33, "turnoPedido": 34, "horas": [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]},
+                {"nombre": "SIM Chapinero", "lat": 4.645954660919973, "lng": -74.06414423830321, "estado": 0, "entidad": 0, "dire": "Calle 59 #13-97", "turnoAtencion": 15, "turnoPedido": 18, "horas": [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]},
+                {"nombre": "SIM Galer&#237as", "lat": 4.640811028448222, "lng": -74.07519292778781, "estado": 1, "entidad": 0, "dire": "Calle 52 #25-35", "turnoAtencion": 80, "turnoPedido": 100, "horas": [0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1]},
+                {"nombre": "SIM San Diego", "lat": 4.612054519536214, "lng": -74.0695636416178, "estado": 2, "entidad": 0, "dire": "Carrera 7 #26-16 L5", "turnoAtencion": 2, "turnoPedido": 5, "horas": [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]},
+                {"nombre": "SIM Terminal", "lat": 4.65322291854579, "lng": -74.11504854209235, "estado": 1, "entidad": 0, "dire": "Diagonal 23 #69-60 M&#243dulo 1 (amarillo) L122", "turnoAtencion": 2, "turnoPedido": 20, "horas": [0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1]},
+                {"nombre": "SIM Ricaurte", "lat": 4.611026548823848, "lng": -74.0885369176369, "estado": 0, "entidad": 0, "dire": "Calle 13 #26-66 y/o 25-88 Esquina", "turnoAtencion": 43, "turnoPedido": 45, "horas": [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]},
+                {"nombre": "SIM Restrepo", "lat": 4.583770747387098, "lng": -74.10166230745128, "estado": 2, "entidad": 0, "dire": "Carrera 17 #19A-32 Sur", "turnoAtencion": 65, "turnoPedido": 110, "horas": [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1]},
+                {"nombre": "SIM Sur", "lat": 4.6144392989245215, "lng": -74.13515169865897, "estado": 0, "entidad": 0, "dire": "Carrera 69 Bis #28-21 Sur", "turnoAtencion": 71, "turnoPedido": 71, "horas": [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1]},
+                {"nombre": "SIM Sevillana", "lat": 4.591812981502772, "lng": -74.14576318807414, "estado": 1, "entidad": 0, "dire": "Carrera 57 #45A-08 Sur Int. 1 Centro Automotriz-La Sevillana", "turnoAtencion": 3, "turnoPedido": 22, "horas": [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1]}
             ]
+
+            var celdasHorarios = [
+                {"id": 0, "nombre": "7:00 AM", "estado": 0},
+                {"id": 1, "nombre": "8:00 AM", "estado": 0},
+                {"id": 2, "nombre": "9:00 AM", "estado": 0},
+                {"id": 3, "nombre": "10:00 AM", "estado": 0},
+                {"id": 4, "nombre": "11:00 AM", "estado": 0},
+                {"id": 5, "nombre": "12:00 AM", "estado": 0},
+                {"id": 6, "nombre": "1:00 PM", "estado": 0},
+                {"id": 7, "nombre": "2:00 PM", "estado": 0},
+                {"id": 8, "nombre": "3:00 PM", "estado": 0},
+                {"id": 9, "nombre": "4:00 PM", "estado": 0},
+                {"id": 100, "nombre": "5:00 PM", "estado": 0}
+            ]
+
+            //celdasHorario[i].estado=1;
+
 
             //Mapa
             var map = new GMaps({
@@ -112,10 +146,10 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
                 zoom: 11,
                 click: function (e) {
 
-                    alert(map.getCenter())
+                    //alert(map.getCenter())
                 },
                 dragend: function (e) {
-                    alert('drag')
+                    //alert('drag')
                 }
             });
 
@@ -134,15 +168,7 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
                     },
                     click: function (e) {
                         var marcadorActual = parseInt(this.getTitle())
-                        $('.infoSucursal').empty()
-                        $('.turno').empty()
-                        $('.infoEspera').empty()
-                        $('.infoSucursal').append('<p>' + sucursales[marcadorActual].nombre + '</p>')
-                        $('.infoSucursal').append('<p>' + sucursales[marcadorActual].dire + '</p>')
-                        $('.turno').append('<p>' + sucursales[marcadorActual].turnoAtencion + '</p>')
-                        $('.infoEspera').append('<p>Espera estimada de:</p>')
-                        $('.infoEspera').append('<p style="font-size:30px">' + calcularTiempoEsperaSucursal(marcadorActual) + ' minutos</p>')
-                        $('.infoEspera').append('<button class="btbPedirTurno">Pedir Turno</button>')
+                        refrescarInfoSucursal(marcadorActual);
                     }
                 });
                 marcadores[marcadores.length] = marker1;
@@ -154,8 +180,8 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
 
             //Mostrar marcadores
             $('.selectTramites').change(function () {
-                var entidadActual = parseInt($('.selectTramites').val());
-                mostrarMarcadoresEntidad(entidadActual);
+                //var entidadActual = parseInt($('.selectTramites').val());
+                mostrarMarcadoresEntidad();
             });
 
             function calcularTiempoEsperaSucursal(iMarcador) {
@@ -180,22 +206,99 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             }
             ;
 
-            function mostrarMarcadoresEntidad(iEntidad)
+            function mostrarMarcadoresEntidad()
             {
                 map.removeMarkers();
                 for (var i = 0; i < marcadores.length; i++)
                 {
-                    if (sucursales[i].entidad == iEntidad)
-                    {
-                        var estado = calcularEstadoSucursal(i);
-                        marcadores[i].icon = coloresMarcadores[estado];
-                        map.addMarker(marcadores[i]);
-                    }
+                    //if (sucursales[i].entidad==iEntidad)
+                    //{
+                    var estado = calcularEstadoSucursal(i);
+                    marcadores[i].icon = coloresMarcadores[estado];
+                    map.addMarker(marcadores[i]);
+                    //}
                 }
             }
             ;
 
+            function refrescarInfoSucursal(iMarcadorActual)
+            {
+                var marcadorActual = iMarcadorActual;
+                $('.infoSucursal').empty();
+                $('.turno').empty();
+                $('.infoEspera').empty();
+                $('.infoOpcionA').empty();
+                $('.infoSucursal').append('<p>' + sucursales[marcadorActual].nombre + '</p>');
+                $('.infoSucursal').append('<p>' + sucursales[marcadorActual].dire + '</p>');
+                $('.turno').append('<p>' + sucursales[marcadorActual].turnoAtencion + '</p>');
+                $('.infoEspera').append('<p>&#191Tienes tiempo de realizar tu vuelta en este momento? Pide el siguiente turno disponible</p>');
+                $('.infoEspera').append('<br>');
+                $('.infoEspera').append('<p>Espera estimada de:</p>');
+                $('.infoEspera').append('<p style="font-size:30px">' + calcularTiempoEsperaSucursal(marcadorActual) + ' minutos</p>');
+                $('.infoEspera').append('<a href="turnos.html"><button class="btbPedirTurno">Pedir Turno</button></a>');
+                $('.infoOpcionA').append('<p>Selecciona una hora en la que quieras hacer tu vuelta. Las horas en verde se encuentran disponibles.</p>');
+                $('.infoOpcionA').append('<br>');
+                refrescarEstadoHorarios(iMarcadorActual);
+            }
+            ;
 
+
+            $(".tablaHorario").click(function () {
+                if (anteriorHorarioSel != -1)
+                {
+                    desSeleccionarHorario(anteriorHorarioSel);
+                    //$('.horariosDisponiblesDiv').append();
+                }
+                var horaSel = parseInt($(this).attr('title'));
+                if (celdasHorarios[horaSel].estado != 0)
+                {
+                    //$('.horariosDisponiblesDiv').append(9);
+                    $(this).css('background-color', coloresHorario[parseInt(celdasHorarios[horaSel].estado + 3)]);
+                }
+                anteriorHorarioSel = horaSel;
+            });
+
+            $(".tablaHorario").mouseenter(function () {
+                var horaSel = parseInt($(this).attr('title'));
+                if (celdasHorarios[horaSel].estado != 0)
+                {
+                    $(this).css('background-color', coloresHorario[parseInt(celdasHorarios[horaSel].estado + 3)]);
+                }
+            });
+
+            $(".tablaHorario").mouseleave(function () {
+                //if (anteriorHorarioSel != -1)
+                //{
+                //	desSeleccionarHorario(anteriorHorarioSel);
+                //$('.horariosDisponiblesDiv').append();
+                //}
+                var horaSel = parseInt($(this).attr('title'));
+                if (celdasHorarios[horaSel].estado != 0)
+                {
+                    //$('.horariosDisponiblesDiv').append(9);
+                    if (horaSel != anteriorHorarioSel)
+                    {
+                        $(this).css('background-color', coloresHorario[parseInt(celdasHorarios[horaSel].estado)]);
+                    }
+                }
+                //anteriorHorarioSel = horaSel;
+            });
+
+            function desSeleccionarHorario(ihorario)
+            {
+                $("div[title='" + ihorario + "']").css('background-color', coloresHorario[parseInt(celdasHorarios[anteriorHorarioSel].estado)]);
+            }
+            ;
+
+            function refrescarEstadoHorarios(iEntidad)
+            {
+                for (var i = 0; i < celdasHorarios.length; i++)
+                {
+                    celdasHorarios[i].estado = sucursales[iEntidad].horas[i];
+                    $("div[title='" + i + "']").css('background-color', coloresHorario[parseInt(celdasHorarios[i].estado)]);
+                }
+            }
+            ;
 
 
         },
