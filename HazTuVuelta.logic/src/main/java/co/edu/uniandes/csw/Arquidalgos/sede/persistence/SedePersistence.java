@@ -160,7 +160,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         nuevoTurno.setFechaTurno(Tiempo.getCurrentDate());
         nuevoTurno.setHoraInicio(turnosHoy.get(turnosHoy.size()-1).getHoraFinal());
         nuevoTurno.setHoraFinal(new Date(nuevoTurno.getHoraInicio().getTime()
-                +(ConstantesYMetodos.DURACION_APROX_TURNO_MIN*60000)));
+                +(ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS)));
         nuevoTurno.setSedeturnoId(idSede);
         nuevoTurno.setTurno(turnosHoy.size()+1);
 
@@ -197,7 +197,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
             
             TurnoDTO actual = turnos.get(i);
             actual.setHoraInicio(temp);
-            actual.setHoraFinal(new Date(actual.getHoraInicio().getTime()+ConstantesYMetodos.DURACION_APROX_TURNO_MIN*60000));
+            actual.setHoraFinal(new Date(actual.getHoraInicio().getTime()+ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS));
             temp = actual.getHoraFinal();
         }
         // pasar todas las citas en espera a la fila, si se cumple
@@ -272,7 +272,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
                 Long inicioUltimoTurno = darUltimoInicioDeCita(cita.getSedecitaId()).getTime();
                 int turnoActual = darUltimoTurnoAtendido(cita.getSedecitaId());
 
-                return new Date(inicioUltimoTurno+(cita.getTurnoAsignado()-turnoActual)*ConstantesYMetodos.DURACION_APROX_TURNO_MIN*60000);
+                return new Date(inicioUltimoTurno+(cita.getTurnoAsignado()-turnoActual)*ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS);
 
             } 
         
@@ -312,7 +312,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
             throw new Exception("No se pueden reservar más turnos a esa hora");
         }
         
-        Date horaFinUltimaCita = new Date(darUltimoInicioDeCita(nuevaCita.getSedecitaId()).getTime()+ConstantesYMetodos.DURACION_APROX_TURNO_MIN*60000);
+        Date horaFinUltimaCita = new Date(darUltimoInicioDeCita(nuevaCita.getSedecitaId()).getTime()+ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS);
         Calendar cHoraFin = new GregorianCalendar();
         cHoraFin.setTime(horaFinUltimaCita);
         
@@ -342,7 +342,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
             cita.setEspera(true);
             cita.setFechaCita(Tiempo.getCurrentDate());
             cita.setHoraIni(nuevaCita.getHoraIni());
-            cita.setHoraFin(new Date (cita.getHoraIni().getTime()+ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN*60000));
+            cita.setHoraFin(new Date (cita.getHoraIni().getTime()+ConstantesYMetodos.RANGO_RESERVAR_TURNO_MILISEGUNDOS));
             cita.setSedecitaId(nuevaCita.getSedecitaId());
             cita.setTurnoAsignado(-1);
 
