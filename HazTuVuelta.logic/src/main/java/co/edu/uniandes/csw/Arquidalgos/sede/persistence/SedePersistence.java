@@ -397,15 +397,6 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         }
     }
 
-    /**
-     * Retorna el turno que se está atendiendo actualmente en la sede
-     * @param idSede
-     * @return 
-     */
-    public int turnoActual(Long idSede) {
-        
-        return getSede(idSede).getTurno();
-    }
     
 
 }

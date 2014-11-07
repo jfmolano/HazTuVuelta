@@ -39,7 +39,7 @@ public interface ISedePersistence extends _ISedePersistence {
     
     public int aumentarTurno(); 
     
-    public int turnoActual(Long idSede); 
+    
     
     public void atenderTurno(Long idSede);
     

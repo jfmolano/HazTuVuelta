@@ -40,8 +40,6 @@ public interface ISedeLogicService extends _ISedeLogicService {
     
     public String turnoActual();
     
-    public int turnoActual(Long idSede); 
-    
     public int asignarSiguienteTurno(Long idSede, String cedula) throws Exception;
     
     public void atenderTurno(Long idSede);
