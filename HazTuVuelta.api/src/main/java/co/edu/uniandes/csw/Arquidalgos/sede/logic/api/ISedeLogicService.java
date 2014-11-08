@@ -53,4 +53,6 @@ public interface ISedeLogicService extends _ISedeLogicService {
     public Date darHoraAproximadaAtencion(String cedula)throws Exception;
     
     public void reservarCita(CitaDTO nuevaCita, String cedula)throws Exception;
+    
+    public int darTurnosNoAtendidosSede ( Long idSede);
 }
