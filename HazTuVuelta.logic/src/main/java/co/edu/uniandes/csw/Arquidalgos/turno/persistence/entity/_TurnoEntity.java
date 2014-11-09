@@ -48,11 +48,12 @@ public abstract class _TurnoEntity {
 	private String name;
 	private Integer turno;
 	private Long sedeturnoId;
-        @Temporal(DATE)
+       
+        @Temporal(TemporalType.TIMESTAMP)
         private Date horaInicio;
-        @Temporal(DATE)
+        @Temporal(TemporalType.TIMESTAMP)
         private Date horaFinal;
-        @Temporal(DATE)
+        @Temporal(TemporalType.TIMESTAMP)
         private Date fechaTurno;
 
         public Date getHoraInicio() {

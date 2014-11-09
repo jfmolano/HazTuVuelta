@@ -23,7 +23,7 @@ public class Tiempo {
     public static Date getCurrentDate ()
     {
         if ( Tiempo.date == null){
-            return new Date();
+            return new Date(System.currentTimeMillis());
         }
         else return Tiempo.date; 
     }
