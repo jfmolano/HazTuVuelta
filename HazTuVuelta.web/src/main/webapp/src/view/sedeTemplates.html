@@ -24,7 +24,12 @@
     </div>
     <div  class="infoTurnoAtendido2" style="height: 654px; vertical-align: top">
         <div class="panelInterno" style="float:left;width:60%">
-            <div class="informacionSucursal" style="width: 212px"><p>SIM Siete de Agosto</p><p>Calle 68 #23-27</p><p>Lunes-Viernes: 7:00am-6:00pm</p><p>Sábado: 8:00am-1:00pm</p></div> 
+            <div class="informacionSucursal" style="width: 212px">
+                <p>SIM Cedritos</p>
+                <p>Calle 147 #19-66 L31</p>
+                <p>Lunes-Viernes: 7:00am-6:00pm</p>
+                <p>Sábado: 8:00am-1:00pm</p>
+            </div> 
         </div>
         <div class="panelInterno" style="float:right;width:40%">
             Turno Actual:
@@ -34,31 +39,86 @@
 </script>
 
 <script type="text/template" id="sede">
+    <div  class="infoTurnoAtendido2" style="height: 654px;width: 420px; vertical-align: top;margin:10px">
+    <!-- Default panel contents -->
+    <table class="table striped">
+        <thead>
+            <tr>
+                <th>Sedes de SIM</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% _.each(sedes, function(sede) { %>
+
+            <tr>
+                <td>
+                <% if(sede.id === sedeSelected.id) {%>
+                    
+                    <button class="btn" style = "width: 400px;background-image: -webkit-linear-gradient(top, #57bfff, #0e8fe6);
+                      background-image: -moz-linear-gradient(top, #57bfff, #0e8fe6);
+                      background-image: -ms-linear-gradient(top, #57bfff, #0e8fe6);
+                      background-image: -o-linear-gradient(top, #57bfff, #0e8fe6);
+                      background-image: linear-gradient(to bottom, #57bfff, #0e8fe6);
+                      "onclick="Backbone.trigger('<%= componentId %>-sede-edit',{id:<%= sede.id %>}); return false" >
+                        <%= htmlEncode(sede.getDisplay('name')) %>	
+                    </button>
+                <% }%>
+                <% if(sede.id !== sedeSelected.id) {%>
+                    <button class="btn" style = "width: 400px"onclick="Backbone.trigger('<%= componentId %>-sede-edit',{id:<%= sede.id %>}); return false" >
+                        <%= htmlEncode(sede.getDisplay('name')) %>	
+                    </button>
+                <% }%>  
+                </td>
+            </tr>
+
+            <% }); %>
+        </tbody>
+    </table>
+    </div>
+    <div  class="infoTurnoAtendido2" style="height: 654px; vertical-align: top">
+        <div class="panelInterno" style="float:left;width:60%">
+            <div class="informacionSucursal">
+                <p><%= htmlEncode(sedeSelected.get('name')) %></p>
+                <p><%= htmlEncode(sedeSelected.get('direccion')) %></p>
+                <p>Lunes-Viernes: 7:00am-6:00pm</p>
+                <p>Sábado: 8:00am-1:00pm</p>
+            </div> 
+        </div>
+        <div class="panelInterno" style="float:right;width:40%">
+            Turno Actual:
+            <div class="turno" id="turnoAtendido" style="width: 106px">
+                <p><%= htmlEncode(sedeSelected.get('turno')) %></p>\n\
+            </div>
+        </div>
+    </div>
+    
+</script> 
+<script type="text/template" id="sedeEdit">
     <div class="form-group">
     <form role="form" id="<%= componentId %>-sedeForm">
     <% if(sede.id) {%>
     <input type="hidden" name="id" value="<%= sede.id %>"/>
     <% }%>
-		<div class="form-group" >
-		<label for="direccion">Direccion</label>
-    	<input type="text" class="form-control" id="direccion" name="direccion" placeholder="Enter value" value="<%= sede.get('direccion') %>"/>	
-		</div>
-		<div class="form-group" >
-		<label for="telefono">Telefono</label>
-    	<input type="text" class="form-control" id="telefono" name="telefono" placeholder="Enter value" value="<%= sede.get('telefono') %>"/>	
-		</div>
-		<div class="form-group" >
-		<label for="horario">Horario</label>
-    	<input type="text" class="form-control" id="horario" name="horario" placeholder="Enter value" value="<%= sede.get('horario') %>"/>	
-		</div>
-		<div class="form-group" >
-		<label for="name">Name</label>
-    	<input type="text" class="form-control" id="name" name="name" placeholder="Enter value" value="<%= sede.get('name') %>"/>	
-		</div>
-		<div class="form-group" >
-		<label for="turno">Turno</label>
-    	<input type="text" class="form-control" id="turno" name="turno" placeholder="Enter value" value="<%= sede.get('turno') %>"/>	
-		</div>
+    <div class="form-group" >
+    <label for="direccion">Direccion</label>
+    <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Enter value" value="<%= sede.get('direccion') %>"/>	
+    </div>
+    <div class="form-group" >
+    <label for="telefono">Telefono</label>
+    <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Enter value" value="<%= sede.get('telefono') %>"/>	
+    </div>
+    <div class="form-group" >
+    <label for="horario">Horario</label>
+    <input type="text" class="form-control" id="horario" name="horario" placeholder="Enter value" value="<%= sede.get('horario') %>"/>	
+    </div>
+    <div class="form-group" >
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name" name="name" placeholder="Enter value" value="<%= sede.get('name') %>"/>	
+    </div>
+    <div class="form-group" >
+    <label for="turno">Turno</label>
+    <input type="text" class="form-control" id="turno" name="turno" placeholder="Enter value" value="<%= sede.get('turno') %>"/>	
+    </div>
     </form>
     </div>
 </script> 

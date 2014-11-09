@@ -82,11 +82,15 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
                         console.log(JSON.stringify(data));
                     },
                     function (data) {
-
-                        console.log('Error l reservar turno: ' + JSON.stringify(data));
+                        self.actualizarDatosReserva();
+                        console.log('Error al reservar turno: ' + JSON.stringify(data));
                     }
             );
 
+        },
+        actualizarDatosReserva: function (){
+            
+            document.getElementById("panelReservar").style.display = 'none';
         },
         hideMap: function () {
             console.log('Hide Map');

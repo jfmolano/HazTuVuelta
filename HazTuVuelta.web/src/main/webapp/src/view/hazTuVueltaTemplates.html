@@ -14,11 +14,11 @@
 		<td><%= htmlEncode(hazTuVuelta.getDisplay('name')) %></td>
     <td>
     <% if(showEdit) {%>
-    <a onclick="Backbone.trigger('<%= componentId %>-hazTuVuelta-edit',{id:<%= hazTuVuelta.id %>}); return false" >Edit</a> |
-	<% } %> 
-	<% if(showDelete) {%>
-    <a onclick="Backbone.trigger('<%= componentId %>-hazTuVuelta-delete',{id:<%= hazTuVuelta.id %>}); return false" >Delete</a> 
-	<% } %>    
+        <a onclick="Backbone.trigger('<%= componentId %>-hazTuVuelta-edit',{id:<%= hazTuVuelta.id %>}); return false" >Edit</a> |
+    <% } %> 
+    <% if(showDelete) {%>
+        <a onclick="Backbone.trigger('<%= componentId %>-hazTuVuelta-delete',{id:<%= hazTuVuelta.id %>}); return false" >Delete</a> 
+    <% } %>    
 	</td>
     </tr>
     <% }); %>
