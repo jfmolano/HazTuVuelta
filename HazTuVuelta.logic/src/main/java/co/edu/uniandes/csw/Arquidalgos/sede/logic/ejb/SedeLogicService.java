@@ -75,7 +75,7 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
 
     public Date darUltimoInicioDeCita(Long idSede) {
         
-        return persistance.darUltimoInicioDeCita(idSede);
+        return persistance.darUltimoInicioDeTurno(idSede);
     }
 
     public Integer darUltimoTurnoAtendido(Long idSede) {
@@ -107,6 +107,16 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
     public int darTurnosNoAtendidosSede(Long idSede) {
     
         return persistance.darTurnosNoAtendidosSede(idSede);
+    }
+
+    public void cancelarTurnoOCita(String correo) {
+        
+        persistance.cancelarTurnoOCita(correo);
+    }
+
+    public int posicionCita(String correo) {
+        
+        return persistance.posicionCita(correo);
     }
 
 }

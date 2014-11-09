@@ -78,7 +78,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
     private ICitaPersistence citaPersistance;
 
     @Inject
-    private ITurnoPersistence turnoPersistence;
+    private ITurnoPersistence turnoPersistance;
 
     /**
      * Mock, ensayo primer prototipo
@@ -106,33 +106,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         return getSede(1L).getTurno();
     }
 
-    /**
-     * Returno todos los turnos de la fila en el dia de hoy en la sede
-     *
-     * @param idSede
-     * @return
-     */
-    public List<TurnoDTO> darTurnosSedeHoy(Long idSede) {
-
-        List< TurnoDTO> turnosSede = turnoPersistence.getTurnosSede(idSede);
-        List< TurnoDTO> resp = new ArrayList<TurnoDTO>();
-        Calendar calActual = new GregorianCalendar();
-        calActual.setTime(Tiempo.getCurrentDate());
-
-        for (TurnoDTO turno : turnosSede) {
-
-            Calendar calTurno = new GregorianCalendar();
-            calTurno.setTime(turno.getFechaTurno());
-            if (calActual.get(Calendar.YEAR) == calTurno.get(Calendar.YEAR)
-                    && calActual.get(Calendar.MONTH) == calTurno.get(Calendar.MONTH)
-                    && calActual.get(Calendar.DAY_OF_MONTH) == calTurno.get(Calendar.DAY_OF_MONTH)) {
-
-                // Son el mismo dia
-                resp.add(turno);
-            }
-        }
-        return resp;
-    }
+    
 
     /**
      * Asigna un nuevo turno al final de la fila de hoy en la cede dada, para el
@@ -156,7 +130,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
             usuario = usuarioPersistance.createUsuario(nuevoUser);
         }
 
-        List<TurnoDTO> turnosHoy = darTurnosSedeHoy(idSede);
+        List<TurnoDTO> turnosHoy = turnoPersistance.darTurnosSedeHoy(idSede);
 
         TurnoDTO nuevoTurno = new TurnoDTO();
 
@@ -175,9 +149,9 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         nuevoTurno.setSedeturnoId(idSede);
         nuevoTurno.setTurno(turnosHoy.size() + 1);
 
-        nuevoTurno = turnoPersistence.createTurno(nuevoTurno);
+        nuevoTurno = turnoPersistance.createTurno(nuevoTurno);
 
-        TurnoDTO turno2 = turnoPersistence.getTurno(nuevoTurno.getId());
+        TurnoDTO turno2 = turnoPersistance.getTurno(nuevoTurno.getId());
         System.out.println("Sede Persistance asignarSiguienteTurno - turno2: " + turno2.toString());
         System.out.println("Sede Persistance asignarSiguienteTurno - turno2 horas: ID "+ turno2.getId()
                 + " Fecha cita: " + turno2.getFechaTurno().toString()
@@ -204,8 +178,9 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
                 try {
                     //Falta relacionar cita-turno-usuario
                     cita.setEspera(false);
-                    asignarSiguienteTurno(idSede, usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCorreo());
-
+                    int turno = asignarSiguienteTurno(idSede, usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCorreo());
+                    cita.setTurnoAsignado(turno);
+                    citaPersistance.updateCita(cita);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     Logger.getLogger(SedePersistence.class.getName()).log(Level.SEVERE, null, ex);
@@ -231,7 +206,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         int turnoActual = sede.getTurno();
 
         //Correr tiempos por si se demora menos/mas
-        List<TurnoDTO> turnos = darTurnosSedeHoy(idSede);
+        List<TurnoDTO> turnos = turnoPersistance.darTurnosSedeHoy(idSede);
         Date temp = Tiempo.getCurrentDate();
         for (int i = turnoActual; i < turnos.size(); i++) {
 
@@ -250,8 +225,9 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
                 try {
                     //Falta relacionar cita-turno-usuario}
                     cita.setEspera(false);
-                    asignarSiguienteTurno(idSede, usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCorreo());
-
+                    int turno = asignarSiguienteTurno(idSede, usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCorreo());
+                    cita.setTurnoAsignado(turno);
+                    citaPersistance.updateCita(cita);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     Logger.getLogger(SedePersistence.class.getName()).log(Level.SEVERE, null, ex);
@@ -271,7 +247,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      */
     public int darUltimoTurnoAsignado(Long sede) {
 
-        return darTurnosSedeHoy(sede).size();
+        return turnoPersistance.darTurnosSedeHoy(sede).size();
     }
 
     /**
@@ -280,9 +256,9 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      * @param idSede
      * @return
      */
-    public Date darUltimoInicioDeCita(Long idSede) {
+    public Date darUltimoInicioDeTurno(Long idSede) {
 
-        List<TurnoDTO> turnos = darTurnosSedeHoy(idSede);
+        List<TurnoDTO> turnos = turnoPersistance.darTurnosSedeHoy(idSede);
 
         if (turnos.size() < 1) {
 
@@ -294,7 +270,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
                     " fecha "+turno.getFechaTurno()+" hora inic "+turno.getHoraInicio()+" hora fin "+
                     turno.getHoraFinal()+" sede "+turno.getSedeturnoId());
             
-            TurnoDTO turno2 = turnoPersistence.getTurno(turno.getId());
+            TurnoDTO turno2 = turnoPersistance.getTurno(turno.getId());
             System.out.println("SedePersistance darUltimoInicioDeCita - turno 2: "+turno2.getId()+
                     " fecha "+turno2.getFechaTurno()+" hora inic "+turno2.getHoraInicio()+" hora fin "+
                     turno2.getHoraFinal()+" sede "+turno2.getSedeturnoId());
@@ -326,7 +302,15 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      */
     public Date darHoraAproximadaAtencion(String correo) throws Exception {
 
-        CitaDTO cita = usuarioMasterPersistance.getCitaUsuarioHoy(usuarioPersistance.buscarUsuarioCorreo(correo).getId());
+        UsuarioDTO user = usuarioPersistance.buscarUsuarioCorreo(correo);
+        
+        if ( user == null){
+            
+            throw new Exception("El usuario no tiene registrado un turno el dia de hoy");
+
+        }
+        
+        CitaDTO cita = usuarioMasterPersistance.getCitaUsuarioHoy(user.getId());
 
         if (cita != null) {
 
@@ -335,18 +319,24 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
                 return cita.getHoraIni();
 
             } else {
-
-                Long inicioUltimoTurno = darUltimoInicioDeCita(cita.getSedecitaId()).getTime();
-                int turnoActual = darUltimoTurnoAtendido(cita.getSedecitaId());
-
-                return new Date(inicioUltimoTurno + (cita.getTurnoAsignado() - turnoActual) * ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS);
-
+                
+                TurnoDTO turno = turnoPersistance.darTurnoPorNumeroTurno(cita.getTurnoAsignado()
+                        , cita.getSedecitaId());
+                
+                return turno.getHoraInicio();
             }
 
         } else {
-
-            throw new Exception("El usuario con documento de identificación: " + correo + " no tiene registrado un turno el dia de hoy");
-
+            
+            TurnoDTO turno = usuarioMasterPersistance.getTurnoUsuarioHoy(user.getId());
+            
+            if ( turno == null){
+                
+                throw new Exception("El usuario no tiene registrado un turno el dia de hoy");
+            }
+            
+            return turno.getHoraInicio();
+            
         }
     }
 
@@ -394,10 +384,10 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
 
         Date horaFinUltimaCita;
         
-        if (darTurnosSedeHoy(nuevaCita.getSedecitaId()).size()<1) {
+        if (turnoPersistance.darTurnosSedeHoy(nuevaCita.getSedecitaId()).size()<1) {
             horaFinUltimaCita = ConstantesYMetodos.darHoraInicioSucursales();
         } else {
-            Date horaIniUltimaCita = darUltimoInicioDeCita(nuevaCita.getSedecitaId());
+            Date horaIniUltimaCita = darUltimoInicioDeTurno(nuevaCita.getSedecitaId());
             System.out.println("Reservar cita SedePersistance: horaInicUltimaCita " + horaIniUltimaCita.toString());
             
             Date temp = new Date (horaIniUltimaCita.getTime()+ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS);
@@ -477,14 +467,14 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
 
         SedeDTO sede = getSede(idSede);
 
-        return darTurnosSedeHoy(idSede).size() - sede.getTurno();
+        return turnoPersistance.darTurnosSedeHoy(idSede).size() - sede.getTurno();
     }
 
     private void enviarEmailNotificaciones(Long idSede) {
         
         // Turnos no atendidos
         
-        List<TurnoDTO> turnosHoy = darTurnosSedeHoy(idSede);
+        List<TurnoDTO> turnosHoy = turnoPersistance.darTurnosSedeHoy(idSede);
         SedeDTO sede = getSede(idSede);
         Calendar c = new GregorianCalendar();
         c.setTime(Tiempo.getCurrentDate());
@@ -545,7 +535,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         
         for (SedeDTO sede : sedes) {
             
-            List<TurnoDTO> turnos = darTurnosSedeHoy(sede.getId());
+            List<TurnoDTO> turnos = turnoPersistance.darTurnosSedeHoy(sede.getId());
             List<CitaDTO> citas = citaPersistance.darCitasHoy(sede.getId());
             
             for (TurnoDTO turno : turnos) {
@@ -567,4 +557,43 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         
         return false;
     }
+
+    public void cancelarTurnoOCita(String correo) {
+        
+        List<SedeDTO> sedes = getSedes();
+        for (SedeDTO sede : sedes) {
+            
+            List<CitaDTO> citasHoy = citaPersistance.darCitasHoy(sede.getId());
+            
+            
+                    
+                    
+        }
+        
+        
+    }
+
+    /**
+     * Retorna la posicion de la cita dentro del rango de citas que hay
+     * @param correo
+     * @return 
+     */
+    public int posicionCita(String correo) {
+        
+        UsuarioDTO user = usuarioPersistance.buscarUsuarioCorreo(correo);
+        if ( user == null){
+            return -1;
+        }
+        
+        CitaDTO cita = usuarioMasterPersistance.getCitaUsuarioHoy(user.getId());
+        
+        if ( !cita.isEspera()){
+            return 0;
+        }
+        
+        Calendar cCita = new GregorianCalendar();
+        cCita.setTime(cita.getHoraIni());
+        return ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN/cCita.get(Calendar.MINUTE);
+    }
+    
 }

@@ -36,8 +36,11 @@ import javax.enterprise.inject.Default;
 
 import co.edu.uniandes.csw.Arquidalgos.turno.persistence.api.ITurnoPersistence;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.ejb.LocalBean;
+import utilidadesHTV.Tiempo;
 
 @Default
 @Stateless 
@@ -58,5 +61,47 @@ public class TurnoPersistence extends _TurnoPersistence  implements ITurnoPersis
             }            
         }
         return resp;
+    }
+
+    /**
+     * Returno todos los turnos de la fila en el dia de hoy en la sede
+     *
+     * @param idSede
+     * @return
+     */
+    public List<TurnoDTO> darTurnosSedeHoy(Long idSede) {
+
+        List< TurnoDTO> turnosSede = getTurnosSede(idSede);
+        List< TurnoDTO> resp = new ArrayList<TurnoDTO>();
+        Calendar calActual = new GregorianCalendar();
+        calActual.setTime(Tiempo.getCurrentDate());
+
+        for (TurnoDTO turno : turnosSede) {
+
+            Calendar calTurno = new GregorianCalendar();
+            calTurno.setTime(turno.getFechaTurno());
+            if (calActual.get(Calendar.YEAR) == calTurno.get(Calendar.YEAR)
+                    && calActual.get(Calendar.MONTH) == calTurno.get(Calendar.MONTH)
+                    && calActual.get(Calendar.DAY_OF_MONTH) == calTurno.get(Calendar.DAY_OF_MONTH)) {
+
+                // Son el mismo dia
+                resp.add(turno);
+            }
+        }
+        return resp;
+    }
+    
+    
+    public TurnoDTO darTurnoPorNumeroTurno(int turno, Long idSede) {
+        
+        List <TurnoDTO> turnosHoy = darTurnosSedeHoy(idSede);
+        
+        for (TurnoDTO turnoX : turnosHoy) {
+            
+            if ( turnoX.getTurno() == turno){
+                return turnoX;
+            }
+        }
+        return null;
     }
 }

@@ -56,4 +56,7 @@ public interface ISedeLogicService extends _ISedeLogicService {
 
     public int darTurnosNoAtendidosSede ( Long idSede);
    
+    public void cancelarTurnoOCita( String correo);
+    
+    public int posicionCita ( String correo);
 }

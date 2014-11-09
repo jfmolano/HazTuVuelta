@@ -47,11 +47,15 @@ public interface ISedePersistence extends _ISedePersistence {
     
     public int darUltimoTurnoAsignado(Long sede);
     
-    public Date darUltimoInicioDeCita(Long idSede);
+    public Date darUltimoInicioDeTurno(Long idSede);
     
     public int darUltimoTurnoAtendido(Long idSede);
     
     public Date darHoraAproximadaAtencion(String correo)throws Exception;
     
     public void reservarCita(CitaDTO nuevaCita)throws Exception;
+    
+    public void cancelarTurnoOCita( String correo);
+    
+    public int posicionCita ( String correo);
 }
