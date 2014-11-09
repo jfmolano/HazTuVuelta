@@ -92,7 +92,9 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         Calendar c = new GregorianCalendar();
         c.setTime(date);
         String hora = (c.get(Calendar.HOUR)==0)?"12":""+c.get(Calendar.HOUR);
+        hora = (hora.length()==1)?"0"+hora:hora;
         String minuto = c.get(Calendar.MINUTE)+"";
+        minuto = (minuto.length()==1)?"0"+minuto:minuto;
         String amPm = (c.get(Calendar.AM_PM)==Calendar.AM)?"am":"pm";
         return hora+":"+minuto+" "+amPm;
     }
