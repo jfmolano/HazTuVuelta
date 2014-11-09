@@ -91,4 +91,9 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         persistance.reservarCita(nuevaCita, nuevaCita.getName());
     }
 
+    public int darTurnosNoAtendidosSede(Long idSede) {
+    
+        return persistance.darTurnosNoAtendidosSede(idSede);
+    }
+
 }

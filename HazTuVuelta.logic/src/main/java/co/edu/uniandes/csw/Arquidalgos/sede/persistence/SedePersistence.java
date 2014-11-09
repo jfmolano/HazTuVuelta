@@ -399,6 +399,13 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         }
     }
 
+    public int darTurnosNoAtendidosSede(Long idSede) {
+        
+        SedeDTO sede = getSede(idSede);
+    
+        return getTurnosSedeHoy(idSede).size()-sede.getTurno();
+    }
+
     
 
 }
