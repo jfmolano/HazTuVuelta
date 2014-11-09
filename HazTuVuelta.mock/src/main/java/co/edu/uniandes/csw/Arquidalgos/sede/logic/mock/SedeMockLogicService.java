@@ -54,7 +54,7 @@ public class SedeMockLogicService extends _SedeMockLogicService implements ISede
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int darUltimoTurnoAsignado(Long idSede) {
+    public Integer darUltimoTurnoAsignado(Long idSede) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -62,7 +62,7 @@ public class SedeMockLogicService extends _SedeMockLogicService implements ISede
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int darUltimoTurnoAtendido(Long idSede) {
+    public Integer darUltimoTurnoAtendido(Long idSede) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -75,6 +75,10 @@ public class SedeMockLogicService extends _SedeMockLogicService implements ISede
     }
 
     public int turnoActual(Long idSede) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void reservarCita(CitaDTO nuevaCita) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

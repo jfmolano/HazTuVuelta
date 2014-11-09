@@ -38,7 +38,7 @@
         <div class="bgimg" style="height:700px; background-image: url('img/index.jpg')">
             <div id="panelMap" style="padding-top: 20px">
                 <div id="contenedorMap" style = "float:left">
-                    <div id ="contenedor2Map" class="infoTurnoAtendido2" style="height: 654px; ">
+                    <div id ="contenedor2Map" class="infoTurnoAtendido2" style="height: 654px;width: 830px ">
                         <h1><font color = "red">Paso 1: </font><font color = "black">selecciona la sucursal en el mapa</font> </h1>
                         <div id="map" style="width:100%;height:554px;opacity: 1;"></div>
                     </div>
@@ -47,8 +47,41 @@
                             <img src="img/coloresMapa.png" width="230" alt="">
                         </div>
                     </div>
-                    <div id ="pnlReservarTurno" class="infoTurnoAtendido2" style="height: 654px; ">
+                    <div id ="pnlReservarTurno" class="infoTurnoAtendido2" style="height: 327px; ">
                         <h1><font color = "red">Paso 3: </font><font color = "black">reserva tu turno</font> </h1>
+                        <br>
+
+                        <div style="float:left;padding: 10px">
+                            Espera estimada:
+                            <div class = "panelInterno" style="width:250px">
+                            </div>
+                        </div>
+                        <div style="float:left;padding: 10px">
+                            Hora de atención:
+                            <div class = "panelInterno" style="width:250px">
+                            </div>
+                        </div>
+                        <div style="float:left;padding: 10px">
+                            Turno:
+                            <div class = "panelInterno" style="width:250px">
+                            </div>
+                        </div>
+                        <br>
+                        <div style="padding: 10px">
+                            <div class = "panelInterno" style="width:100%;height: 51px; clear:both;">
+                                <div style="float:left;width:60%">
+                                    <form role="form" id="infoUsuario">
+                                        <input type="text" class="form-control" id="cedula" name="cedula" placeholder="digita tu direción de correo electrónico"/>
+                                    </form>
+                                </div>
+                                <div style="float:left;width:38%;margin-left:10px">
+                                    <button class="btn" style="float:left;width:100%" onclick="Backbone.trigger('reservar', {id: 7});
+                return false">
+                                        Reservar turno
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

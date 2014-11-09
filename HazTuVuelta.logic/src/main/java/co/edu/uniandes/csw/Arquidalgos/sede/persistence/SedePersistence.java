@@ -139,7 +139,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
      * @return
      * @throws Exception 
      */
-    //TODO Verificar si hay citas en espera que puedan ser asignadas después de mi
+    //TODO Verificar si hay citas en espera que puedan ser asignadas despuï¿½s de mi
     public int asignarSiguienteTurno ( Long idSede, String cedula)throws Exception{
         
         
@@ -150,7 +150,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         
         if ( usuario == null){
             
-            throw new Exception ("No existe un usuario con ese documento de identificación");
+            throw new Exception ("No existe un usuario con ese documento de identificaciï¿½n");
 
         }   
             
@@ -179,7 +179,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         userMaster.setListturnoUsuario(turnoPersistir);
 
         
-        // Verificar si hay citas en espera, y añadirlas a la fila
+        // Verificar si hay citas en espera, y aï¿½adirlas a la fila
         
          List <CitaDTO> citas = citaPersistance.darCitasAnterioresOYa(turnosHoy.get(turnosHoy.size()-1).getHoraFinal());
         
@@ -200,7 +200,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
     }
 
     /**
-     * Método que se encarga de terminar el turno que se está atendiendo, y recalcular los tiempos de los otros turnos en fila
+     * Mï¿½todo que se encarga de terminar el turno que se estï¿½ atendiendo, y recalcular los tiempos de los otros turnos en fila
      * @param idSede 
      */
     public void atenderTurno(Long idSede){
@@ -250,7 +250,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
     }
 
     /**
-     * Hora en la que inicia el último turno de la fila
+     * Hora en la que inicia el ï¿½ltimo turno de la fila
      * @param idSede
      * @return 
      */
@@ -267,8 +267,10 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
      * @return 
      */
     public int darUltimoTurnoAtendido(Long idSede) {
-       
-        return getSede(idSede).getTurno();
+        System.out.println("sede id :" + idSede);
+        int x = getSede(idSede).getTurno();
+        System.out.println("Respuesta turno atendido: "+x);
+        return x;
     }
     
     /**
@@ -301,7 +303,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         
         else {
             
-            throw new Exception ( "El usuario con documento de identificación: "+cedula+" no tiene registrado un turno el dia de hoy");
+            throw new Exception ( "El usuario con documento de identificaciï¿½n: "+cedula+" no tiene registrado un turno el dia de hoy");
         }
     }
     
@@ -322,17 +324,17 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         
         if ( user == null){
             
-            throw new Exception ("No existe un usuario con ese documento de identificación");
+            throw new Exception ("No existe un usuario con ese documento de identificaciï¿½n");
             
         }
         int cupoCitasHora = ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN/ConstantesYMetodos.DURACION_APROX_TURNO_MIN;
 
-        // Verifica que no se pase el cupo máximo de citas que se pueden reservar a esa hora
+        // Verifica que no se pase el cupo mï¿½ximo de citas que se pueden reservar a esa hora
         
                
         if ( citaPersistance.darCitasRango(nuevaCita.getHoraIni()).size()>= cupoCitasHora){
 
-            throw new Exception("No se pueden reservar más turnos a esa hora");
+            throw new Exception("No se pueden reservar mï¿½s turnos a esa hora");
         }
         
         Date horaFinUltimaCita = new Date(darUltimoInicioDeCita(nuevaCita.getSedecitaId()).getTime()+ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS);
@@ -366,7 +368,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
             cita.setEspera(true);
             cita.setFechaCita(Tiempo.getCurrentDate());
             
-            // Verifica en que posición del rango se piensa asignar la cita
+            // Verifica en que posiciï¿½n del rango se piensa asignar la cita
             List <CitaDTO> citasRango = citaPersistance.darCitasRango(nuevaCita.getHoraIni());
             
             if ( citasRango.size()<1){
