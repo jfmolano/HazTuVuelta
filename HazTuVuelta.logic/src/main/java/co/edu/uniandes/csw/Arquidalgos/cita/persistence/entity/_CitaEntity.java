@@ -44,11 +44,11 @@ public abstract class _CitaEntity {
 	@Id
 	@GeneratedValue(generator = "Cita")
 	private Long id;
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date horaIni;
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date horaFin;
-        @Temporal(TemporalType.DATE)
+        @Temporal(TemporalType.TIMESTAMP)
 	private Date fechaCita;
         private String name;
 	private Long sedecitaId;

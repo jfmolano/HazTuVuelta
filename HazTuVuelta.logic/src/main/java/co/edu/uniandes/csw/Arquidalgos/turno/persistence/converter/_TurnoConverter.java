@@ -53,6 +53,14 @@ public abstract class _TurnoConverter {
                                         dto.setFechaTurno(entity.getFechaTurno());
                                         dto.setHoraFinal(entity.getHoraFinal());
                                         dto.setHoraInicio(entity.getHoraInicio());
+                                        System.out.println("TurnoConventer entity-dto Entity: ID "
+                                                +entity.getId()+" Fecha "+entity.getFechaTurno()+ " inicio "+
+                                                entity.getHoraInicio()+ " final "+ entity.getHoraFinal()+
+                                                " sede "+entity.getSedeturnoId());
+                                        System.out.println("TurnoConventer entity-dto DTO: ID "
+                                                +dto.getId()+" Fecha "+dto.getFechaTurno()+ " inicio "+
+                                                dto.getHoraInicio()+ " final "+ dto.getHoraFinal()+
+                                                " sede "+dto.getSedeturnoId());
 			return dto;
 		}else{
 			return null;
@@ -73,7 +81,14 @@ public abstract class _TurnoConverter {
                                         entity.setFechaTurno(dto.getFechaTurno());
                                         entity.setHoraFinal(dto.getHoraFinal());
                                         entity.setHoraInicio(dto.getHoraInicio());
-                                        
+                                        System.out.println("TurnoConventer dto-entity Entity: ID "
+                                                +entity.getId()+" Fecha "+entity.getFechaTurno()+ " inicio "+
+                                                entity.getHoraInicio()+ " final "+ entity.getHoraFinal()+
+                                                " sede "+entity.getSedeturnoId());
+                                        System.out.println("TurnoConventer dto-entity DTO: ID "
+                                                +dto.getId()+" Fecha "+dto.getFechaTurno()+ " inicio "+
+                                                dto.getHoraInicio()+ " final "+ dto.getHoraFinal()+
+                                                " sede "+dto.getSedeturnoId());
 			
 			return entity;
 		}else {
