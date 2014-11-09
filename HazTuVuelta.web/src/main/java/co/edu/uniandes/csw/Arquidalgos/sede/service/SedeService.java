@@ -32,6 +32,7 @@ package co.edu.uniandes.csw.Arquidalgos.sede.service;
 
 import co.edu.uniandes.csw.Arquidalgos.cita.logic.dto.CitaDTO;
 import co.edu.uniandes.csw.Arquidalgos.sede.logic.dto.SedeDTO;
+import co.edu.uniandes.csw.Arquidalgos.turno.logic.dto.TurnoDTO;
 import co.edu.uniandes.csw.Arquidalgos.usuario.logic.dto.UsuarioDTO;
 import java.util.List;
 
@@ -78,13 +79,13 @@ public class SedeService extends _SedeService {
         return this.sedeLogicService.darHoraAproximadaAtencion(correo);
     }
     
-//    @GET
-//    @Path("/turnos/{id}")
-//    public List<SedeDTO> turnosSede(@PathParam("id") Long id) throws Exception {
-//        Long idSede = new Long(id);
-//        System.out.println("Service, turno atendido: "+idSede);
-//        return this.sedeLogicService.darUltimoTurnoAtendido(idSede);
-//    }
+    @GET
+    @Path("/turnos/{id}")
+    public List<TurnoDTO> turnosSede(@PathParam("id") Long id) throws Exception {
+        Long idSede = new Long(id);
+        System.out.println("Service, turnos de la sede: "+idSede);
+        return this.sedeLogicService.darTurnosNoAtendidosSede(idSede);
+    }
     
     @POST
     @Path("/reservar")

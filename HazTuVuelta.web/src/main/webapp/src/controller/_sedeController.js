@@ -159,14 +159,18 @@ define(['model/sedeModel'], function (sedeModel) {
             });
         },
         _renderEdit: function () {
+            var self = this;
             this.sedeDelegate = new App.Delegate.SedeDelegate();
             this.sedeDelegate.darTrunosSedeDelegate(
                     self.currentSedeModel.id,
                     function (data) {
-                        var sede = new App.Model.SedeModel(data);
-                        console.log('turno sucursal: ' + JSON.stringify(data) + JSON.stringify(sede));
-                        $('.turno').empty();
-                        $('.turno').append('<p>' + sede.getDisplay('turno') + '</p>');
+                        console.log('lista de turnos: ' + JSON.stringify(data) );
+                        self.$el.slideUp("fast", function () {
+                            self.$el.html(self.editTemplate({sedes: self.sedeModelList.models, sedeSelected: self.currentSedeModel, turnosSede: data, componentId: self.componentId, showEdit: self.showEdit, showDelete: self.showDelete
+
+                            }));
+                            self.$el.slideDown("fast");
+                        });
                     },
                     function (data) {
 
@@ -174,13 +178,7 @@ define(['model/sedeModel'], function (sedeModel) {
                     }
             );
 
-            var self = this;
-            this.$el.slideUp("fast", function () {
-                self.$el.html(self.editTemplate({sedes: self.sedeModelList.models, sedeSelected: self.currentSedeModel, componentId: self.componentId, showEdit: self.showEdit, showDelete: self.showDelete
 
-                }));
-                self.$el.slideDown("fast");
-            });
         }
     });
     return App.Controller._SedeController;

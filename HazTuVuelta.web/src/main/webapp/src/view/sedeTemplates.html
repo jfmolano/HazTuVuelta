@@ -87,8 +87,16 @@
         <div class="panelInterno" style="float:right;width:40%">
             Turno Actual:
             <div class="turno" id="turnoAtendido" style="width: 106px">
-                <p><%= htmlEncode(sedeSelected.get('turno')) %></p>\n\
+                <p><%= htmlEncode(sedeSelected.get('turno')) %></p>
             </div>
+        </div>
+        <div class="panelInterno" style="clear:both;width:100%">
+            Turnos siguientes:
+            <% _.each(turnosSede, function(turno) { %>
+                <div class="turno" id="turnoAtendido" style="width: 106px">
+                    <p><%= htmlEncode(turno.turno) %></p>
+                </div>
+            <% }); %>
         </div>
     </div>
     
