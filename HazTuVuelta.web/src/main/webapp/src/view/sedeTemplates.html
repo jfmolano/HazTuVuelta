@@ -1,37 +1,35 @@
 <script type="text/template" id="sedeList">
-    <div class="panel panel-default">
+    <div  class="infoTurnoAtendido2" style="height: 654px;width: 420px; vertical-align: top;margin:10px">
     <!-- Default panel contents -->
     <table class="table striped">
-    <thead>
-    <tr>
-		 <th>Direccion</th>
-		 <th>Telefono</th>
-		 <th>Horario</th>
-		 <th>Name</th>
-		 <th>Turno</th>
-    <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% _.each(sedes, function(sede) { %>
-    <tr>
-		<td><%= htmlEncode(sede.getDisplay('direccion')) %></td>
-		<td><%= htmlEncode(sede.getDisplay('telefono')) %></td>
-		<td><%= htmlEncode(sede.getDisplay('horario')) %></td>
-		<td><%= htmlEncode(sede.getDisplay('name')) %></td>
-		<td><%= htmlEncode(sede.getDisplay('turno')) %></td>
-    <td>
-    <% if(showEdit) {%>
-    <a onclick="Backbone.trigger('<%= componentId %>-sede-edit',{id:<%= sede.id %>}); return false" >Edit</a> |
-	<% } %> 
-	<% if(showDelete) {%>
-    <a onclick="Backbone.trigger('<%= componentId %>-sede-delete',{id:<%= sede.id %>}); return false" >Delete</a> 
-	<% } %>    
-	</td>
-    </tr>
-    <% }); %>
-    </tbody>
+        <thead>
+            <tr>
+                <th>Sedes de SIM</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% _.each(sedes, function(sede) { %>
+
+            <tr>
+                <td>
+                <button class="btn" style = "width: 400px"onclick="Backbone.trigger('<%= componentId %>-sede-edit',{id:<%= sede.id %>}); return false" >
+                    <%= htmlEncode(sede.getDisplay('name')) %>	
+                </button>
+                </td>
+            </tr>
+
+            <% }); %>
+        </tbody>
     </table>
+    </div>
+    <div  class="infoTurnoAtendido2" style="height: 654px; vertical-align: top">
+        <div class="panelInterno" style="float:left;width:60%">
+            <div class="informacionSucursal" style="width: 212px"><p>SIM Siete de Agosto</p><p>Calle 68 #23-27</p><p>Lunes-Viernes: 7:00am-6:00pm</p><p>Sábado: 8:00am-1:00pm</p></div> 
+        </div>
+        <div class="panelInterno" style="float:right;width:40%">
+            Turno Actual:
+            <div class="turno" id="turnoAtendido" style="width: 106px"><p>0</p></div>
+        </div>
     </div>
 </script>
 
