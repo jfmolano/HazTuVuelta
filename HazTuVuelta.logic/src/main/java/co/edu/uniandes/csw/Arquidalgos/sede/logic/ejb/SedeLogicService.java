@@ -39,7 +39,9 @@ import javax.inject.Inject;
 import javax.enterprise.inject.Default;
 
 import co.edu.uniandes.csw.Arquidalgos.sede.logic.api.ISedeLogicService;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Default
 @Stateless
@@ -81,9 +83,16 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         return persistance.darUltimoTurnoAtendido(idSede);
     }
 
-    public Date darHoraAproximadaAtencion(String correo) throws Exception {
+    public String darHoraAproximadaAtencion(String correo) throws Exception {
        
-        return persistance.darHoraAproximadaAtencion(correo);
+       
+        Date date = persistance.darHoraAproximadaAtencion(correo);
+        Calendar c = new GregorianCalendar();
+        c.setTime(date);
+        String hora = (c.get(Calendar.HOUR)==0)?"12":""+c.get(Calendar.HOUR);
+        String minuto = c.get(Calendar.MINUTE)+"";
+        String amPm = (c.get(Calendar.AM_PM)==Calendar.AM)?"am":"pm";
+        return hora+":"+minuto+" "+amPm;
     }
 
     public void reservarCita(CitaDTO nuevaCita) throws Exception {

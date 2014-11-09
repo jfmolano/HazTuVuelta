@@ -66,7 +66,7 @@ public class SedeMockLogicService extends _SedeMockLogicService implements ISede
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Date darHoraAproximadaAtencion(String cedula) throws Exception {
+    public String darHoraAproximadaAtencion(String cedula) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

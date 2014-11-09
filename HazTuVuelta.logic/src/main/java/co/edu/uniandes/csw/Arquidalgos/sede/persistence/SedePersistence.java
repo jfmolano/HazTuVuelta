@@ -534,4 +534,37 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         
     }
 
+    /**
+     * Verifica si un usuario ya pidió un turno o una cita hoy en alguna sucursal
+     * @param correo
+     * @return 
+     */
+    public boolean yaReservoCitaOTurnoHoy(String correo){
+        
+        List<SedeDTO> sedes = getSedes();
+        
+        for (SedeDTO sede : sedes) {
+            
+            List<TurnoDTO> turnos = darTurnosSedeHoy(sede.getId());
+            List<CitaDTO> citas = citaPersistance.darCitasHoy(sede.getId());
+            
+            for (TurnoDTO turno : turnos) {
+                
+                String correoTurno = usuarioMasterPersistance.getUsuarioTurnoHoy(turno.getId()).getCorreo();
+                if ( correoTurno.equals(correo)){
+                    return true;
+                }
+            }
+            
+            for (CitaDTO cita : citas) {
+                String correoCita = usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCorreo();
+                
+                if ( correoCita.equals(correo)){
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
 }

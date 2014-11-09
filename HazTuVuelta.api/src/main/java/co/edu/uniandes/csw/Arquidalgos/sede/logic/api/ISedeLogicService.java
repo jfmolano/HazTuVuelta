@@ -50,7 +50,7 @@ public interface ISedeLogicService extends _ISedeLogicService {
     
     public Integer darUltimoTurnoAtendido(Long idSede);
     
-    public Date darHoraAproximadaAtencion(String correo)throws Exception;
+    public String darHoraAproximadaAtencion(String correo)throws Exception;
     
     public void reservarCita(CitaDTO nuevaCita)throws Exception;
 
