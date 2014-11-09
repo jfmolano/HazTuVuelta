@@ -47,6 +47,7 @@ import co.edu.uniandes.csw.Arquidalgos.usuario.master.persistence.UsuarioMasterP
 import co.edu.uniandes.csw.Arquidalgos.usuario.master.persistence.api.IUsuarioMasterPersistence;
 import co.edu.uniandes.csw.Arquidalgos.usuario.master.persistence.api._IUsuarioMasterPersistence;
 import co.edu.uniandes.csw.Arquidalgos.usuario.master.persistence.entity.UsuariocitasUsEntity;
+import co.edu.uniandes.csw.Arquidalgos.usuario.master.persistence.entity.UsuarioturnoUsuarioEntity;
 import co.edu.uniandes.csw.Arquidalgos.usuario.persistence.api.IUsuarioPersistence;
 import co.edu.uniandes.csw.Arquidalgos.usuario.persistence.converter.UsuarioConverter;
 import java.util.ArrayList;
@@ -160,13 +161,13 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         int turnoAsignado = turnosHoy.size();
 
         // Relacionar turno y usuario
-        List<TurnoDTO> turnoPersistir = new ArrayList<TurnoDTO>();
-        turnoPersistir.add(nuevoTurno);
-        UsuarioMasterDTO userMaster = new UsuarioMasterDTO();
-
-        userMaster.setId(usuario.getId());
-        userMaster.setListturnoUsuario(turnoPersistir);
-
+        UsuarioturnoUsuarioEntity userTurnoEntity = new UsuarioturnoUsuarioEntity();
+        
+        userTurnoEntity.setTurnoUsuarioId(nuevoTurno.getId());
+        userTurnoEntity.setUsuarioId(usuario.getId());
+        userTurnoEntity.setTurnoUsuarioIdEntity(TurnoConverter.persistenceDTO2Entity(nuevoTurno));
+        
+        usuarioMasterPersistance.createUsuarioturnoUsuarioEntity(userTurnoEntity);
         // Verificar si hay citas en espera, y a�adirlas a la fila
         if (turnosHoy.size() > 0) {
 
@@ -447,9 +448,8 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
             cita = citaPersistance.createCita(cita);
 
             // Relacionar cita y usuario
-            List<CitaDTO> citaPersistir = new ArrayList<CitaDTO>();
-            citaPersistir.add(cita);
-            UsuarioMasterDTO userMaster = new UsuarioMasterDTO();
+            
+            
 
             UsuariocitasUsEntity usCitas = new UsuariocitasUsEntity();
             usCitas.setCitasUsId(cita.getId());
