@@ -71,6 +71,13 @@ public class SedeService extends _SedeService {
         return this.sedeLogicService.darUltimoTurnoAtendido(idSede);
     }
     
+    @GET
+    @Path("/horaAtencion/{id}")
+    public String darHoraDeAtencion(@PathParam("id") String correo) throws Exception {
+        System.out.println("Service, hora de atención: "+correo);
+        return this.sedeLogicService.darHoraAproximadaAtencion(correo);
+    }
+    
 //    @GET
 //    @Path("/turnos/{id}")
 //    public List<SedeDTO> turnosSede(@PathParam("id") Long id) throws Exception {

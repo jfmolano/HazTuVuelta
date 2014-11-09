@@ -42,6 +42,19 @@ define(['delegate/_entidadDelegate'], function() {
                 callbackError(data);
             }, this));
         },
+        darHoraAtencionDelegate: function (param ,callback, callbackError) {
+            console.log('Dar hora de atención delegate: ');
+            $.ajax({
+                url: '/HazTuVuelta.web/webresources/Sede/horaAtencion/'+param,
+                type: 'GET',
+                data: '',
+                contentType: 'application/json'
+            }).done(_.bind(function (data) {
+                callback(data);
+            }, this)).error(_.bind(function (data) {
+                callbackError(data);
+            }, this));
+        },
         reservarTurnoDelagate: function (param ,callback, callbackError) {
             console.log('Reservar Turno delegate: ');
             $.ajax({

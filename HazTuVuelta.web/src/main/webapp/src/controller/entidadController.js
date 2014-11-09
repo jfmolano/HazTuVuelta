@@ -67,16 +67,16 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             var self = this;
             var model = $('#infoUsuario').serializeObject();
 
-            var cita = new App.Model.CitaModel();
-            cita.set("horaInicInt", this.horaSelecionada);
-            cita.set("name", model.cedula);
-            cita.set("sedecitaId", this.idSedeSelecionada);
+            self.cita = new App.Model.CitaModel();
+            self.cita.set("horaInicInt", this.horaSelecionada);
+            self.cita.set("name", model.cedula);
+            self.cita.set("sedecitaId", this.idSedeSelecionada);
 
-            console.log('info nueva cita: ' + JSON.stringify(cita));
+            console.log('info nueva cita: ' + JSON.stringify(self.cita));
 
             this.entidadDelegate = new App.Delegate.EntidadDelegate();
             this.entidadDelegate.reservarTurnoDelagate(
-                    cita,
+                    self.cita,
                     function (data) {
                         self.actualizarDatosReserva();
                         console.log(JSON.stringify(data));
@@ -88,9 +88,22 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             );
 
         },
-        actualizarDatosReserva: function (){
-            
+        actualizarDatosReserva: function () {
+            var self = this;
             document.getElementById("panelReservar").style.display = 'none';
+            this.entidadDelegate = new App.Delegate.EntidadDelegate();
+            this.entidadDelegate.darHoraAtencionDelegate(
+                    self.cita.get("name"),
+                    function (data) {
+                        console.log('turno sucursal: ' + JSON.stringify(data));
+                        $('#horaAtencion').html("<p>" + data + "</p>");
+                    },
+                    function (data) {
+
+                        console.log('Error en el refrescar info sucursal: ' + JSON.stringify(data));
+                    }
+            );
+
         },
         hideMap: function () {
             console.log('Hide Map');
