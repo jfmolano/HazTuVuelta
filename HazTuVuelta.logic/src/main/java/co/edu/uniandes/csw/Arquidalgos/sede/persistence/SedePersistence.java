@@ -461,7 +461,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         }
     }
 
-    public int darTurnosNoAtendidosSede(Long idSede) {
+    public int darNumeroTurnosNoAtendidosSede(Long idSede) {
 
         SedeDTO sede = getSede(idSede);
 
@@ -626,4 +626,18 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         return ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN / cCita.get(Calendar.MINUTE);
     }
 
+    public List<TurnoDTO> darTurnosNoAtendidosSede(Long idSede){
+        
+        SedeDTO sede = getSede(idSede);
+        
+        List<TurnoDTO> resp = new ArrayList<TurnoDTO>();
+        List<TurnoDTO> turnosSede = turnoPersistance.darTurnosSedeHoy(idSede);
+        
+        for (int i = sede.getTurno(); i < turnosSede.size(); i++) {
+            
+            resp.add(turnosSede.get(i));
+        }
+        
+        return resp;
+    }
 }
