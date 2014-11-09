@@ -82,6 +82,10 @@ public class SedeMockLogicService extends _SedeMockLogicService implements ISede
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public void reservarCita(CitaDTO nuevaCita) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 	
 }
