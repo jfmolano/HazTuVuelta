@@ -66,7 +66,7 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         persistance.atenderTurno(idSede);
     }
 
-    public int darUltimoTurnoAsignado(Long idSede) {
+    public Integer darUltimoTurnoAsignado(Long idSede) {
         
         return persistance.darUltimoTurnoAsignado(idSede);
     }
@@ -76,7 +76,7 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         return persistance.darUltimoInicioDeCita(idSede);
     }
 
-    public int darUltimoTurnoAtendido(Long idSede) {
+    public Integer darUltimoTurnoAtendido(Long idSede) {
         
         return persistance.darUltimoTurnoAtendido(idSede);
     }
@@ -88,7 +88,11 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
 
     public void reservarCita(CitaDTO nuevaCita) throws Exception {
         
+
+        
         persistance.reservarCita(nuevaCita);
+
+        
     }
 
     public int darTurnosNoAtendidosSede(Long idSede) {

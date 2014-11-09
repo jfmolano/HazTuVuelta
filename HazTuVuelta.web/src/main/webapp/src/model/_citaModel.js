@@ -31,7 +31,8 @@ define([], function() {
     App.Model._CitaModel = Backbone.Model.extend({
         defaults: {
  
-		 'horaIni' : '' ,  
+		 'horaIni' : '' ,
+                 'horaInicInt' : '' ,
 		 'horaFin' : '' ,  
 		 'name' : '' ,  
 		 'sedecitaId' : ''        },

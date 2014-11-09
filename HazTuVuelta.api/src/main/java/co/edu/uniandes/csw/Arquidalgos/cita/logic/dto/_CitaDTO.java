@@ -60,6 +60,16 @@ public abstract class _CitaDTO {
 
         private int turnoAsignado;
         
+        private int horaInicInt;
+
+    public int getHoraInicInt() {
+        return horaInicInt;
+    }
+
+    public void setHoraInicInt(int horaInicInt) {
+        this.horaInicInt = horaInicInt;
+    }
+        
         
 
         public int getTurnoAsignado() {

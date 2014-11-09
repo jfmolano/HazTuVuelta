@@ -35,8 +35,10 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -57,6 +59,14 @@ public class SedeService extends _SedeService {
     @Path("/turnoActual")
     public String turnoActual() throws Exception {
         return this.sedeLogicService.turnoActual();
+    }
+    
+    @GET
+    @Path("/turnoAtendido/{id}")
+    public Integer turnoAtendido(@PathParam("id") Long id) throws Exception {
+        Long idSede = new Long(id);
+        System.out.println("Service, turno atendido: "+idSede);
+        return this.sedeLogicService.darUltimoTurnoAtendido(idSede);
     }
     
     

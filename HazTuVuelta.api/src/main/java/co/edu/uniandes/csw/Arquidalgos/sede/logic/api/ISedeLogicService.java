@@ -44,15 +44,16 @@ public interface ISedeLogicService extends _ISedeLogicService {
     
     public void atenderTurno(Long idSede);
     
-    public int darUltimoTurnoAsignado(Long idSede);
+    public Integer darUltimoTurnoAsignado(Long idSede);
     
     public Date darUltimoInicioDeCita(Long idSede);
     
-    public int darUltimoTurnoAtendido(Long idSede);
+    public Integer darUltimoTurnoAtendido(Long idSede);
     
     public Date darHoraAproximadaAtencion(String correo)throws Exception;
     
     public void reservarCita(CitaDTO nuevaCita)throws Exception;
-    
+
     public int darTurnosNoAtendidosSede ( Long idSede);
+   
 }
