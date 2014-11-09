@@ -50,9 +50,9 @@ import utilidadesHTV.Tiempo;
 public class CitaPersistence extends _CitaPersistence  implements ICitaPersistence {
 
     //TODO Falta verificar que si se agrega la primera cita reservada, se agregen las seguidas
-    public List<CitaDTO> darCitasAnterioresOYa (Date fecha){
+    public List<CitaDTO> darCitasAnterioresOYa (Date fecha, Long idSede){
         
-        List<CitaDTO> citas = darCitasHoy();
+        List<CitaDTO> citas = darCitasHoy(idSede);
         List<CitaDTO> resp = new ArrayList<CitaDTO>();
         for (CitaDTO cita : citas) {
             
@@ -69,15 +69,16 @@ public class CitaPersistence extends _CitaPersistence  implements ICitaPersisten
     /**
      * Retorna todas las citas que se encuentran dentro del rango dado por parámetro
      * @param inicioRango
+     * @param idSede
      * @return 
      */
-    public List<CitaDTO> darCitasRango (Date inicioRango){
+    public List<CitaDTO> darCitasRango (Date inicioRango, Long idSede){
         
         List<CitaDTO> resp = new ArrayList<CitaDTO>();
         
         Date finRango = new Date (inicioRango.getTime()+ConstantesYMetodos.RANGO_RESERVAR_TURNO_MILISEGUNDOS);
         
-        List <CitaDTO> citas = darCitasHoy();
+        List <CitaDTO> citas = darCitasHoy(idSede);
        
         for (CitaDTO citaActual : citas) {
             
@@ -95,9 +96,10 @@ public class CitaPersistence extends _CitaPersistence  implements ICitaPersisten
     
     /**
      * Retorna todas las citas que estan agendadas para hoy
+     * @param idSede
      * @return 
      */
-    public List <CitaDTO> darCitasHoy (){
+    public List <CitaDTO> darCitasHoy (Long idSede){
         
         List <CitaDTO> resp = new ArrayList<CitaDTO>();
                
@@ -106,7 +108,8 @@ public class CitaPersistence extends _CitaPersistence  implements ICitaPersisten
         for (CitaDTO cita : citas) {
             
             
-            if ( ConstantesYMetodos.citasMismoDia(Tiempo.getCurrentDate(), cita.getFechaCita())){
+            if ( cita.getSedecitaId().equals(idSede) && 
+                    ConstantesYMetodos.citasMismoDia(Tiempo.getCurrentDate(), cita.getFechaCita())){
                                 
                 resp.add(cita);
             }
