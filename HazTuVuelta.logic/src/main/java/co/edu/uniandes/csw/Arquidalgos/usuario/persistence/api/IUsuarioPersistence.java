@@ -35,5 +35,5 @@ import co.edu.uniandes.csw.Arquidalgos.usuario.logic.dto.UsuarioDTO;
 public interface IUsuarioPersistence extends _IUsuarioPersistence {
 
     
-     public UsuarioDTO buscarUsuarioCedula(String cedula);
+     public UsuarioDTO buscarUsuarioCorreo(String correo);
 }

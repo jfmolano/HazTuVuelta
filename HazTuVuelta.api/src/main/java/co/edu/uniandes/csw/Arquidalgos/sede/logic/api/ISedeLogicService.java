@@ -40,7 +40,7 @@ public interface ISedeLogicService extends _ISedeLogicService {
     
     public String turnoActual();
     
-    public int asignarSiguienteTurno(Long idSede, String cedula) throws Exception;
+    public int asignarSiguienteTurno(Long idSede, String correo) throws Exception;
     
     public void atenderTurno(Long idSede);
     
@@ -50,9 +50,9 @@ public interface ISedeLogicService extends _ISedeLogicService {
     
     public int darUltimoTurnoAtendido(Long idSede);
     
-    public Date darHoraAproximadaAtencion(String cedula)throws Exception;
+    public Date darHoraAproximadaAtencion(String correo)throws Exception;
     
-    public void reservarCita(CitaDTO nuevaCita, String cedula)throws Exception;
+    public void reservarCita(CitaDTO nuevaCita)throws Exception;
     
     public int darTurnosNoAtendidosSede ( Long idSede);
 }

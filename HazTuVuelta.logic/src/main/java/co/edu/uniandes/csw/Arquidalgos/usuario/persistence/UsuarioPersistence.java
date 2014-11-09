@@ -45,17 +45,17 @@ public class UsuarioPersistence extends _UsuarioPersistence  implements IUsuario
 
     
      /**
-      * Retorna el usuario por cedula, o null si no lo encuentra
-      * @param cedula
+      * Retorna el usuario por correo, o null si no lo encuentra
+      * @param correo
       * @return 
       */   
-     public UsuarioDTO buscarUsuarioCedula(String cedula){
+     public UsuarioDTO buscarUsuarioCorreo(String correo){
          
          List <UsuarioDTO> usuarios = getUsuarios();
          
          for (UsuarioDTO usuarioDTO : usuarios) {
              
-             if ( usuarioDTO.getCedula().equals(cedula)){
+             if ( usuarioDTO.getCorreo().equals(correo)){
                  return usuarioDTO;
              }
          }         

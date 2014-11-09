@@ -59,6 +59,8 @@ public abstract class _CitaDTO {
         private boolean espera;
 
         private int turnoAsignado;
+        
+        
 
         public int getTurnoAsignado() {
             return turnoAsignado;

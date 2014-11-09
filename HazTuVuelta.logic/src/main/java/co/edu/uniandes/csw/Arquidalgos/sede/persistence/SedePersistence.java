@@ -135,17 +135,17 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
     /**
      * Asigna un nuevo turno al final de la fila de hoy en la cede dada, para el usuario dado
      * @param idSede
-     * @param cedula
+     * @param correo
      * @return
      * @throws Exception 
      */
     //TODO Verificar si hay citas en espera que puedan ser asignadas después de mi
-    public int asignarSiguienteTurno ( Long idSede, String cedula)throws Exception{
+    public int asignarSiguienteTurno ( Long idSede, String correo)throws Exception{
         
         
         // Verificar que exista usuario
         
-        UsuarioDTO usuario = usuarioPersistance.buscarUsuarioCedula(cedula);
+        UsuarioDTO usuario = usuarioPersistance.buscarUsuarioCorreo(correo);
         
         
         if ( usuario == null){
@@ -187,7 +187,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
             try {
                 //Falta relacionar cita-turno-usuario
                 cita.setEspera(false);
-                asignarSiguienteTurno(idSede,usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCedula());
+                asignarSiguienteTurno(idSede,usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCorreo());
                 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -227,7 +227,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
             try {
                 //Falta relacionar cita-turno-usuario}
                 cita.setEspera(false);
-                asignarSiguienteTurno(idSede,usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCedula());
+                asignarSiguienteTurno(idSede,usuarioMasterPersistance.getUsuarioCitaHoy(cita.getId()).getCorreo());
                 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -272,14 +272,14 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
     }
     
     /**
-     * Hora aproximada en la se atiende al usuario con la cedula dada
-     * @param cedula
+     * Hora aproximada en la se atiende al usuario con la correo dada
+     * @param correo
      * @return
      * @throws Exception 
      */
-    public Date darHoraAproximadaAtencion(String cedula) throws Exception{
+    public Date darHoraAproximadaAtencion(String correo) throws Exception{
     
-        CitaDTO cita = usuarioMasterPersistance.getCitaUsuarioHoy(usuarioPersistance.buscarUsuarioCedula(cedula).getId());
+        CitaDTO cita = usuarioMasterPersistance.getCitaUsuarioHoy(usuarioPersistance.buscarUsuarioCorreo(correo).getId());
         
         if ( cita != null){
         
@@ -301,7 +301,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         
         else {
             
-            throw new Exception ( "El usuario con documento de identificación: "+cedula+" no tiene registrado un turno el dia de hoy");
+            throw new Exception ( "El usuario con documento de identificación: "+correo+" no tiene registrado un turno el dia de hoy");
         }
     }
     
@@ -309,16 +309,16 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
     /**
      * Se le reserva una cita al usuario en el horario dado
      * @param nuevaCita TIENEN QUE PASARLE LA HORA INICIAL DEL RANGO, NO DEL PUESTO DE LA CITA EN EL RANGO
-     * @param cedula
      * @throws Exception 
      */
-    public void reservarCita(CitaDTO nuevaCita, String cedula) throws Exception {
+    public void reservarCita(CitaDTO nuevaCita) throws Exception {
         
         
         //TODO verificar cuando tiene sentido reservar la cita, y cuando no
         
+        String correoUser = nuevaCita.getName();
         
-        UsuarioDTO user = usuarioPersistance.buscarUsuarioCedula(cedula);
+        UsuarioDTO user = usuarioPersistance.buscarUsuarioCorreo(correoUser);
         
         if ( user == null){
             
@@ -356,7 +356,7 @@ public class SedePersistence extends _SedePersistence  implements ISedePersisten
         // Si ya hay turnos en el rango, en lugar de reservar cita, se pide el turno siguiente
         if ( cHoraFin.after(cInicioNuevaCita)){
             
-            asignarSiguienteTurno(nuevaCita.getSedecitaId(), cedula);
+            asignarSiguienteTurno(nuevaCita.getSedecitaId(), correoUser);
             
         }
         

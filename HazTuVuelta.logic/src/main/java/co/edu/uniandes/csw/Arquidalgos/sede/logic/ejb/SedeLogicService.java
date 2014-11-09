@@ -56,9 +56,9 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         return persistance.turnoActual()+"";
     }
 
-    public int asignarSiguienteTurno(Long idSede, String cedula) throws Exception{
+    public int asignarSiguienteTurno(Long idSede, String correo) throws Exception{
         
-        return persistance.asignarSiguienteTurno(idSede,cedula);
+        return persistance.asignarSiguienteTurno(idSede,correo);
     }
     
     public void atenderTurno(Long idSede) {
@@ -81,14 +81,14 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         return persistance.darUltimoTurnoAtendido(idSede);
     }
 
-    public Date darHoraAproximadaAtencion(String cedula) throws Exception {
+    public Date darHoraAproximadaAtencion(String correo) throws Exception {
        
-        return persistance.darHoraAproximadaAtencion(cedula);
+        return persistance.darHoraAproximadaAtencion(correo);
     }
 
-    public void reservarCita(CitaDTO nuevaCita, String cedula) throws Exception {
+    public void reservarCita(CitaDTO nuevaCita) throws Exception {
         
-        persistance.reservarCita(nuevaCita,cedula);
+        persistance.reservarCita(nuevaCita);
     }
 
     public int darTurnosNoAtendidosSede(Long idSede) {

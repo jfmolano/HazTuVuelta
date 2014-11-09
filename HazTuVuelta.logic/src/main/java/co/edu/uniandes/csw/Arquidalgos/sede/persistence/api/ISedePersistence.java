@@ -43,7 +43,7 @@ public interface ISedePersistence extends _ISedePersistence {
     
     public void atenderTurno(Long idSede);
     
-    public int asignarSiguienteTurno(Long idSede, String cedula)throws Exception;
+    public int asignarSiguienteTurno(Long idSede, String correo)throws Exception;
     
     public int darUltimoTurnoAsignado(Long sede);
     
@@ -51,7 +51,7 @@ public interface ISedePersistence extends _ISedePersistence {
     
     public int darUltimoTurnoAtendido(Long idSede);
     
-    public Date darHoraAproximadaAtencion(String cedula)throws Exception;
+    public Date darHoraAproximadaAtencion(String correo)throws Exception;
     
-    public void reservarCita(CitaDTO nuevaCita, String cedula)throws Exception;
+    public void reservarCita(CitaDTO nuevaCita)throws Exception;
 }
