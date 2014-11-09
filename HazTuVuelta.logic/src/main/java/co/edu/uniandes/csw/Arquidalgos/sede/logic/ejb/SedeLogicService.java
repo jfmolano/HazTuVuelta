@@ -39,9 +39,11 @@ import javax.inject.Inject;
 import javax.enterprise.inject.Default;
 
 import co.edu.uniandes.csw.Arquidalgos.sede.logic.api.ISedeLogicService;
+import co.edu.uniandes.csw.Arquidalgos.turno.logic.dto.TurnoDTO;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 @Default
 @Stateless
@@ -104,9 +106,9 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         
     }
 
-    public int darTurnosNoAtendidosSede(Long idSede) {
+    public int darNumeroTurnosNoAtendidosSede(Long idSede) {
     
-        return persistance.darTurnosNoAtendidosSede(idSede);
+        return persistance.darNumeroTurnosNoAtendidosSede(idSede);
     }
 
     public void cancelarTurnoOCita(String correo) {
@@ -119,4 +121,8 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         return persistance.posicionCita(correo);
     }
 
+    public List<TurnoDTO> darTurnosNoAtendidosSede(Long idSede){
+        
+        return persistance.darTurnosNoAtendidosSede(idSede);
+    }
 }

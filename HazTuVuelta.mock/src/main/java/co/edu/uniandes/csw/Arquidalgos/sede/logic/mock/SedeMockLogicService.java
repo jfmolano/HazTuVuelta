@@ -34,66 +34,13 @@ import javax.enterprise.inject.Alternative;
 import javax.inject.Singleton;
 
 import co.edu.uniandes.csw.Arquidalgos.sede.logic.api.ISedeLogicService;
+import co.edu.uniandes.csw.Arquidalgos.turno.logic.dto.TurnoDTO;
 import java.util.Date;
+import java.util.List;
 @Singleton
-public class SedeMockLogicService extends _SedeMockLogicService implements ISedeLogicService {
+public class SedeMockLogicService extends _SedeMockLogicService {
 
-    public String aumentarTurno() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public String turnoActual() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public int asignarSiguienteTurno(Long idSede, String cedula) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void atenderTurno(Long idSede) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public Integer darUltimoTurnoAsignado(Long idSede) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public Date darUltimoInicioDeCita(Long idSede) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public Integer darUltimoTurnoAtendido(Long idSede) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public String darHoraAproximadaAtencion(String cedula) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void reservarCita(CitaDTO nuevaCita, String cedula) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public int turnoActual(Long idSede) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public int darTurnosNoAtendidosSede(Long idSede) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void reservarCita(CitaDTO nuevaCita) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void cancelarTurnoOCita(String correo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public int posicionCita(String correo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
 
 	
 }
