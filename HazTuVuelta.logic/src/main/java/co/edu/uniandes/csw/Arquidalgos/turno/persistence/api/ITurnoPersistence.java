@@ -36,4 +36,9 @@ import java.util.List;
 public interface ITurnoPersistence extends _ITurnoPersistence {
 
     public List<TurnoDTO> getTurnosSede(Long idSede);
+    
+    public TurnoDTO darTurnoPorNumeroTurno ( int turno, Long idSede);
+    
+    public List<TurnoDTO> darTurnosSedeHoy(Long idSede);
+    
 }
