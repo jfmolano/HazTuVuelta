@@ -22,6 +22,9 @@ public class Tiempo {
     }
     public static Date getCurrentDate ()
     {
-        return Tiempo.date; 
+        if ( Tiempo.date == null){
+            return new Date();
+        }
+        else return Tiempo.date; 
     }
 }

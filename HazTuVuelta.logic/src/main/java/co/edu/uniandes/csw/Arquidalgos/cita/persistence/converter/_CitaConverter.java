@@ -97,6 +97,9 @@ public abstract class _CitaConverter {
 					entity.setName(dto.getName());
                                         entity.setTurnoAsignado(dto.getTurnoAsignado());
 					entity.setSedecitaId(dto.getSedecitaId());
+                                        if(dto.getFechaCita()!= null){
+					entity.setFechaCita(dto.getFechaCita());
+				}
 			
 			return entity;
 		}else {

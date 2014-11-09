@@ -23,6 +23,7 @@ public class ConstantesYMetodos {
     
     public static final int DURACION_APROX_TURNO_MILISEGUNDOS = DURACION_APROX_TURNO_MIN*60000;
     
+    private static final int HORA_INICIO_SUCURSAL = 7;
     public static boolean citasMismoDia(Date d1, Date d2){
         
         Calendar c1 = new GregorianCalendar();
@@ -35,6 +36,17 @@ public class ConstantesYMetodos {
         
     }
     
+    public static Date darHoraInicioSucursales (){
+        
+        Date d = new Date();
+        Calendar c = new GregorianCalendar();
+        c.setTime(d);
+        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_YEAR), HORA_INICIO_SUCURSAL
+                , 0);
+        
+        return c.getTime();
+        
+    }
     public static boolean citasMismoMinuto (Date d1, Date d2){
         
         Calendar c1 = new GregorianCalendar();
