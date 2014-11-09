@@ -41,6 +41,19 @@ define(['delegate/_entidadDelegate'], function() {
             }, this)).error(_.bind(function (data) {
                 callbackError(data);
             }, this));
+        },
+        reservarTurnoDelagate: function (param ,callback, callbackError) {
+            console.log('Reservar Turno delegate: ');
+            $.ajax({
+                url: '/HazTuVuelta.web/webresources/Sede/reservar',
+                type: 'POST',
+                data: JSON.stringify(param),
+                contentType: 'application/json'
+            }).done(_.bind(function (data) {
+                callback(data);
+            }, this)).error(_.bind(function (data) {
+                callbackError(data);
+            }, this));
         }
     });
 });
