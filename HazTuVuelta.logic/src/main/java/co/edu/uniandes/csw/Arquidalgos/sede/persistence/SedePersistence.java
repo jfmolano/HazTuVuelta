@@ -547,19 +547,19 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         String amPm = (c.get(Calendar.AM_PM)==Calendar.AM)?"am":"pm";
         if (tipoTurno == ConstantesYMetodos.TIPO_CITA_ESPERA) {
 
-            mensaje = "Usted acabó de reservar un turno en Haz Tu Vuelta. \n Se estima que te atenderan"
-                    + " a esta hora: "+hora+":"+minutos+amPm+". \n  "
-                    + "Si te gusta nuestra aplicación envíanos un mensaje a arquidalgos@hotmail.com";
+            mensaje = "Usted acabo de reservar un turno en Haz Tu Vuelta. \nSe estima que te atenderan"
+                    + " a esta hora: "+hora+":"+minutos+amPm+". \n"
+                    + "Si te gusta nuestra aplicacion envianos un mensaje a arquidalgos@hotmail.com";
             SendEmail sendEmail = new SendEmail(correo,mensaje, -2);
             sendEmail.start();
 
         } else if (tipoTurno == ConstantesYMetodos.TIPO_TURNO) {
             
             
-            mensaje = "Usted acabó de reservar un turno en Haz Tu Vuelta. \n Se estima que te atenderan"
-                    + " a esta hora: "+hora+":"+minutos+amPm+". \n Actualmente se está atendiendo el turno "
-                    +turnoActual+" y tu turno es el "+turnoUsuario
-                    + "Si te gusta nuestra aplicación envíanos un mensaje a arquidalgos@hotmail.com";
+            mensaje = "Usted acabo de reservar un turno en Haz Tu Vuelta. \nSe estima que te atenderan"
+                    + " a esta hora: "+hora+":"+minutos+amPm+". \nActualmente se esta atendiendo el turno "
+                    +turnoActual+" y tu turno es el "+turnoUsuario+". \n"
+                    + "Si te gusta nuestra aplicacion envianos un mensaje a arquidalgos@hotmail.com";
             SendEmail sendEmail = new SendEmail(correo,mensaje, -2);
             sendEmail.start();
         }
