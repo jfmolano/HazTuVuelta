@@ -103,6 +103,31 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
                         console.log('Error en el refrescar info sucursal: ' + JSON.stringify(data));
                     }
             );
+            self.map.removeMarkers();
+            self.map.addMarker({
+                lat: self.inicLat,
+                lng: self.inicLng,
+                title: 'Tu',
+                icon: 'img/punteroUsuario.png',
+                click: function (e) {
+                    self.mostrarTodosLosMarcadores();
+
+                },
+                infoWindow: {
+                    content: '<p>You are here!</p>'
+                }
+            });
+            self.map.addMarker({
+                lat: self.endLat,
+                lng: self.endLng,
+                title: 'SIM',
+                icon: 'img/punteroSIM.png',
+                click: function (e) {
+                },
+                infoWindow: {
+                    content: '<p>You are here!</p>'
+                }
+            });
             self.map.drawRoute({
                 origin: [self.inicLat, self.inicLng],
                 destination: [self.endLat, self.endLng],
@@ -112,6 +137,71 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
                 strokeWeight: 6
             });
 
+        },
+        mostrarTodosLosMarcadores: function () {
+            var self = this;
+            self.map.removeMarkers();
+            self.getLocation();
+            for (var i = 0; i < self.sucursales.length; i++)
+            {
+                var marker1 = self.map.createMarker({
+                    lat: self.sucursales[i].lat,
+                    lng: self.sucursales[i].lng,
+                    title: "" + i,
+                    icon: self.coloresMarcadores[parseInt(Math.random() * 2.9)],
+                    infoWindow: {
+                        content: '<p>' + self.sucursales[i].nombre + '</p>'
+                    },
+                    click: function (e) {
+                        var marcadorActual = parseInt(this.getTitle());
+                        refrescarInfoSucursal(marcadorActual);
+                        self.idSedeSelecionada = self.sucursales[marcadorActual].id;
+                        self.endLat = self.sucursales[marcadorActual].lat;
+                        self.endLng = self.sucursales[marcadorActual].lng;
+                    }
+                });
+                self.map.addMarker(marker1);
+            }
+            function refrescarInfoSucursal(iMarcadorActual)
+            {
+                this.entidadDelegate = new App.Delegate.EntidadDelegate();
+                this.entidadDelegate.darTurnoAtendidoDelegate(
+                        self.sucursales[iMarcadorActual].id,
+                        function (data) {
+                            var sede = new App.Model.SedeModel(data);
+                            console.log('turno sucursal: ' + JSON.stringify(data) + JSON.stringify(sede));
+                            $('.turno').empty();
+                            $('.turno').append('<p>' + sede.getDisplay('turno') + '</p>');
+                        },
+                        function (data) {
+
+                            console.log('Error en el refrescar info sucursal: ' + JSON.stringify(data));
+                        }
+                );
+
+                var divPaso2 = document.getElementById("main");
+                if (divPaso2.style.display === 'none')
+                {
+                    divPaso2.style.display = 'block';
+                }
+                var marcadorActual = iMarcadorActual;
+                $('.informacionSucursal').empty();
+
+                $('.infoEspera').empty();
+                $('.infoOpcionA').empty();
+                $('.informacionSucursal').append('<p>' + self.sucursales[marcadorActual].nombre + '</p>');
+                $('.informacionSucursal').append('<p>' + self.sucursales[marcadorActual].dire + '</p>');
+                $('.informacionSucursal').append('<p>Lunes-Viernes: 7:00am-6:00pm</p>');
+                $('.informacionSucursal').append('<p>Sábado: 8:00am-1:00pm</p>');
+
+                $('.infoEspera').append('<p>&#191Tienes tiempo de realizar tu vuelta en este momento? Pide el siguiente turno disponible</p>');
+                $('.infoEspera').append('<br>');
+                $('.infoEspera').append('<p>Espera estimada de:</p>');
+                $('.infoEspera').append('<a href="turnos.html"><button class="btbPedirTurno">Pedir Turno</button></a>');
+                $('.infoOpcionA').append('<p>Selecciona una hora en la que quieras hacer tu vuelta. Las horas en verde se encuentran disponibles.</p>');
+                $('.infoOpcionA').append('<br>');
+            }
+            ;
         },
         hideMap: function () {
             console.log('Hide Map');
@@ -161,8 +251,8 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
                     self.inicLng = position.coords.longitude;
                     // Creating marker of user location
                     self.map.addMarker({
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
+                        lat: self.inicLat,
+                        lng: self.inicLng,
                         title: 'Tu',
                         icon: 'img/punteroUsuario.png',
                         click: function (e) {
@@ -188,7 +278,7 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             var marcadorVerde = 'http://library.csun.edu/images/google_maps/marker-green.png';
             var marcadorRojo = 'http://inthespace.net/graphics/icon_google_maps2.png';
             var marcadorAmarillo = 'http://static.batchgeo.com/images/icons/yellow_shadow_Marker.png';
-            var coloresMarcadores = [marcadorVerde, marcadorAmarillo, marcadorRojo];
+            self.coloresMarcadores = [marcadorVerde, marcadorAmarillo, marcadorRojo];
             var coloresHorario = ["gray", "#2dcc70", "#e67d22", "#e74b3c", "#27ae61", "#d25400", "#c1392b"];
             var clasesHorario = ["horarioActivado", "horarioDesactivado"];
             var anteriorHorarioSel = -1;
@@ -309,7 +399,7 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
                     //if (sucursales[i].entidad==iEntidad)
                     //{
                     var estado = calcularEstadoSucursal(i);
-                    marcadores[i].icon = coloresMarcadores[estado];
+                    marcadores[i].icon = self.coloresMarcadores[estado];
                     self.map.addMarker(marcadores[i]);
                     //}
                 }
