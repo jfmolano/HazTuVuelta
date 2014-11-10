@@ -55,7 +55,7 @@ public interface ISedePersistence extends _ISedePersistence {
     
     public Date darHoraAproximadaAtencion(String correo)throws Exception;
     
-    public void reservarCita(CitaDTO nuevaCita)throws Exception;
+    public String reservarCita(CitaDTO nuevaCita)throws Exception;
     
     public void cancelarTurnoOCita( String correo);
     
