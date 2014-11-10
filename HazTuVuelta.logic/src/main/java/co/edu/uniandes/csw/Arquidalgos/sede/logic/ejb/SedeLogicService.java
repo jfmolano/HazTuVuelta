@@ -101,11 +101,8 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
 
     public void reservarCita(CitaDTO nuevaCita) throws Exception {
         
-
-        
         persistance.reservarCita(nuevaCita);
 
-        
     }
 
     public int darNumeroTurnosNoAtendidosSede(Long idSede) {
