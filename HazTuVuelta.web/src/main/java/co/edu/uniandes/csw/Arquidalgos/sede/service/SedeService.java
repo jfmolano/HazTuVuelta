@@ -91,8 +91,8 @@ public class SedeService extends _SedeService {
     @POST
     @Path("/reservar")
     public String turnoActual(CitaDTO cita) throws Exception {
-        this.sedeLogicService.reservarCita(cita);
-        return "ok";
+        
+        return this.sedeLogicService.reservarCita(cita);
     }
     
     @GET

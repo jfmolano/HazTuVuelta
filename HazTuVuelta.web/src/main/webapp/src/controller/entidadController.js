@@ -78,19 +78,21 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             this.entidadDelegate.reservarTurnoDelagate(
                     self.cita,
                     function (data) {
-                        self.actualizarDatosReserva();
+                        self.actualizarDatosReserva(data);
                         console.log(JSON.stringify(data));
                     },
                     function (data) {
-                        self.actualizarDatosReserva();
+                        self.actualizarDatosReserva(data);
                         console.log('Error al reservar turno: ' + JSON.stringify(data));
                     }
             );
 
         },
-        actualizarDatosReserva: function () {
+        actualizarDatosReserva: function (dataP) {
             var self = this;
             document.getElementById("panelReservar").style.display = 'none';
+            
+            $('#numeroDeTurnoAsignado').html("<font size=30px color=#3498db>" + dataP.responseText + "</font>");
             this.entidadDelegate = new App.Delegate.EntidadDelegate();
             this.entidadDelegate.darHoraAtencionDelegate(
                     self.cita.get("name"),
