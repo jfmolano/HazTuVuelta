@@ -58,25 +58,25 @@ public abstract class _CitaDTO {
         
         private boolean espera;
 
-        private int turnoAsignado;
+        private Integer turnoAsignado;
         
-        private int horaInicInt;
+        private Integer horaInicInt;
 
-    public int getHoraInicInt() {
+    public Integer getHoraInicInt() {
         return horaInicInt;
     }
 
-    public void setHoraInicInt(int horaInicInt) {
+    public void setHoraInicInt(Integer horaInicInt) {
         this.horaInicInt = horaInicInt;
     }
         
         
 
-        public int getTurnoAsignado() {
+        public Integer getTurnoAsignado() {
             return turnoAsignado;
         }
 
-        public void setTurnoAsignado(int turnoAsignado) {
+        public void setTurnoAsignado(Integer turnoAsignado) {
             this.turnoAsignado = turnoAsignado;
         }
 

@@ -24,6 +24,11 @@ public class ConstantesYMetodos {
     public static final int DURACION_APROX_TURNO_MILISEGUNDOS = DURACION_APROX_TURNO_MIN*60000;
     
     private static final int HORA_INICIO_SUCURSAL = 7;
+    
+    public static final int TIPO_TURNO = 1;
+    
+    public static final int TIPO_CITA_ESPERA = 2;
+    
     public static boolean citasMismoDia(Date d1, Date d2){
         
         Calendar c1 = new GregorianCalendar();
