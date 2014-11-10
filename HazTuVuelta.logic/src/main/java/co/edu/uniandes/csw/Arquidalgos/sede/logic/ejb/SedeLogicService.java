@@ -65,9 +65,9 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         return persistance.asignarSiguienteTurno(idSede,correo);
     }
     
-    public void atenderTurno(Long idSede) {
+    public int atenderTurno(Long idSede) {
         
-        persistance.atenderTurno(idSede);
+       return persistance.atenderTurno(idSede);
     }
 
     public Integer darUltimoTurnoAsignado(Long idSede) {

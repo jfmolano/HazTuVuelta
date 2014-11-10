@@ -44,7 +44,7 @@ public interface ISedeLogicService extends _ISedeLogicService {
     
     public int asignarSiguienteTurno(Long idSede, String correo) throws Exception;
     
-    public void atenderTurno(Long idSede);
+    public int atenderTurno(Long idSede);
     
     public Integer darUltimoTurnoAsignado(Long idSede);
     

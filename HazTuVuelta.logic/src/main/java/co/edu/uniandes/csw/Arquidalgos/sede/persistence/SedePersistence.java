@@ -198,8 +198,9 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      * recalcular los tiempos de los otros turnos en fila
      *
      * @param idSede
+     * @return 
      */
-    public void atenderTurno(Long idSede) {
+    public int atenderTurno(Long idSede) {
 
         SedeDTO sede = getSede(idSede);
         int turnoActual = sede.getTurno();
@@ -234,9 +235,11 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
                 }
             }
             sede.setTurno(turnoActual + 1);
+            updateSede(sede);
             enviarEmailNotificaciones(idSede);
         }
 
+        return sede.getTurno();
     }
 
     /**

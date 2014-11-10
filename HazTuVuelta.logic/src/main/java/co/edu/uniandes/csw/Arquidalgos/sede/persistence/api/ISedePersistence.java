@@ -43,7 +43,7 @@ public interface ISedePersistence extends _ISedePersistence {
     
     public int darNumeroTurnosNoAtendidosSede ( Long idSede);
     
-    public void atenderTurno(Long idSede);
+    public int atenderTurno(Long idSede);
     
     public int asignarSiguienteTurno(Long idSede, String correo)throws Exception;
     
