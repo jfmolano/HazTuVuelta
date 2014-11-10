@@ -25,6 +25,9 @@ public class Tiempo {
         if ( Tiempo.date == null){
             return new Date(System.currentTimeMillis());
         }
-        else return Tiempo.date; 
+        else return Tiempo.date;
+        
+//        return ThreadTiempo.darTiempo();
+        
     }
 }
