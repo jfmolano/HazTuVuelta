@@ -96,7 +96,7 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         String minuto = c.get(Calendar.MINUTE)+"";
         minuto = (minuto.length()==1)?"0"+minuto:minuto;
         String amPm = (c.get(Calendar.AM_PM)==Calendar.AM)?"am":"pm";
-        return hora+":"+minuto+" "+amPm;
+        return hora+":"+minuto+""+amPm;
     }
 
     public void reservarCita(CitaDTO nuevaCita) throws Exception {
