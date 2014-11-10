@@ -37,6 +37,7 @@ import co.edu.uniandes.csw.Arquidalgos.usuario.logic.dto.UsuarioDTO;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.json.Json;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -96,9 +97,10 @@ public class SedeService extends _SedeService {
     
     @GET
     @Path("/siguienteTurno/{id}")
-    public Integer siguienteTurno(@PathParam("id") Long id) throws Exception {
+    public String siguienteTurno(@PathParam("id") Long id) throws Exception {
         Long idSede = new Long(id);
         System.out.println("Service, siguiente turno de sede: "+idSede);
-        return this.sedeLogicService.atenderTurno(idSede);
+        
+        return  "{'data':" + this.sedeLogicService.atenderTurno(idSede)+ "}";
     }   
 }
