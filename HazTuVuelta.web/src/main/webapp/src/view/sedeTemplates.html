@@ -76,7 +76,7 @@
     </table>
     </div>
     <div  class="infoTurnoAtendido2" style="height: 654px; vertical-align: top">
-        <div class="panelInterno" style="float:left;width:60%">
+        <div class="panelInterno" style="float:left;width:50%">
             <div class="informacionSucursal">
                 <p><%= htmlEncode(sedeSelected.get('name')) %></p>
                 <p><%= htmlEncode(sedeSelected.get('direccion')) %></p>
@@ -84,19 +84,31 @@
                 <p>Sábado: 8:00am-1:00pm</p>
             </div> 
         </div>
-        <div class="panelInterno" style="float:right;width:40%">
+        <div class="panelInterno" style="float:left;width:25%">
             Turno Actual:
             <div class="turno" id="turnoAtendido" style="width: 106px">
-                <p><%= htmlEncode(sedeSelected.get('turno')) %></p>
+                <%= htmlEncode(sedeSelected.get('turno')) %>
             </div>
         </div>
+        <div class="panelInterno" style="width:25%;float:left">
+            Atender siguiente:
+            <button class="btn" style = "height: 100px;width:100%"onclick="Backbone.trigger('<%= componentId %>-sede-sigTurno',{id:<%= sedeSelected.id %>}); return false" >
+                Siguiente	
+            </button>
+        </div>
+
         <div class="panelInterno" style="clear:both;width:100%">
             Turnos siguientes:
+            <div style="overflow: scroll;height: 500px">
             <% _.each(turnosSede, function(turno) { %>
-                <div class="turno" id="turnoAtendido" style="width: 106px">
-                    <p><%= htmlEncode(turno.turno) %></p>
+                <div class="turnoPeque" id="turnoAtendido" style="width: 10%;float:left;height:70px">
+                    <%= htmlEncode(turno.turno) %>
+                </div>
+                <div id="turnoAtendido" style="height:70px ">
+                    <font size="60px"><%= htmlEncode(turno.name) %></font>
                 </div>
             <% }); %>
+            </div>
         </div>
     </div>
     

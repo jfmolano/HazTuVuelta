@@ -91,6 +91,15 @@
     padding: 0px;
     color: red;
 }
+.turnoPeque {
+    font-family: 'Segment7';
+    font-weight: normal;
+    font-style: italic;
+    font-size: 70px;
+    height:70px;
+    padding: 0px;
+    color: red;
+}
 
 .codigoColores {
     min-width: 260px;

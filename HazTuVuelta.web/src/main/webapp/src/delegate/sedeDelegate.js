@@ -41,6 +41,20 @@ define(['delegate/_sedeDelegate'], function() {
             }, this)).error(_.bind(function (data) {
                 callbackError(data);
             }, this));
-        }
+        },
+        siguienteTurnoDelagate: function (param ,callback, callbackError) {
+            console.log('Dar turnos sede delegate: ' + param);
+            $.ajax({
+                url: '/HazTuVuelta.web/webresources/Sede/siguienteTurno/'+param,
+                type: 'GET',
+                data: '',
+                contentType: 'application/json'
+            }).done(_.bind(function (data) {
+                callback(data);
+            }, this)).error(_.bind(function (data) {
+                callbackError(data);
+            }, this));
+        },
+        
     });
 });

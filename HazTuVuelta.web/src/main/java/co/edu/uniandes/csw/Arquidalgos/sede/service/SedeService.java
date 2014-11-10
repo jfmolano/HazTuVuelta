@@ -94,6 +94,11 @@ public class SedeService extends _SedeService {
         return "ok";
     }
     
-    
-    
+    @GET
+    @Path("/siguienteTurno/{id}")
+    public Integer siguienteTurno(@PathParam("id") Long id) throws Exception {
+        Long idSede = new Long(id);
+        System.out.println("Service, siguiente turno de sede: "+idSede);
+        return this.sedeLogicService.atenderTurno(idSede);
+    }   
 }
