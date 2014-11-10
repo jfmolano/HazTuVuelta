@@ -16,7 +16,7 @@
             </div>
             <p><p><p><b>Siguiente turno disponible:</b>
             <div class = "panelInterno">
-                <botton class="btn" style ="width: 340px" href>Ver siguiente turno disponible</botton>
+                <botton class="btn" style ="width: 340px" onclick="Backbone.trigger('<%= componentId %>select',{id:-1}); return false">Ver siguiente turno disponible</botton>
             </div>
             <p><p><p><b>Reserva un turno a la hora que quieras</b>
             <div class = "panelInterno" style="float:left;widht:50%">
