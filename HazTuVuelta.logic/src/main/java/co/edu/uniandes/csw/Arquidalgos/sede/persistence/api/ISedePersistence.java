@@ -37,21 +37,21 @@ import java.util.List;
 
 public interface ISedePersistence extends _ISedePersistence {
 
-    public int turnoActual();
+    public Integer turnoActual();
     
-    public int aumentarTurno(); 
+    public Integer aumentarTurno(); 
     
-    public int darNumeroTurnosNoAtendidosSede ( Long idSede);
+    public Integer darNumeroTurnosNoAtendidosSede ( Long idSede);
     
-    public int atenderTurno(Long idSede);
+    public Integer atenderTurno(Long idSede);
     
-    public int asignarSiguienteTurno(Long idSede, String correo)throws Exception;
+    public Integer asignarSiguienteTurno(Long idSede, String correo)throws Exception;
     
-    public int darUltimoTurnoAsignado(Long sede);
+    public Integer darUltimoTurnoAsignado(Long sede);
     
     public Date darUltimoInicioDeTurno(Long idSede);
     
-    public int darUltimoTurnoAtendido(Long idSede);
+    public Integer darUltimoTurnoAtendido(Long idSede);
     
     public Date darHoraAproximadaAtencion(String correo)throws Exception;
     
@@ -59,7 +59,7 @@ public interface ISedePersistence extends _ISedePersistence {
     
     public void cancelarTurnoOCita( String correo);
     
-    public int posicionCita ( String correo);
+    public Integer posicionCita ( String correo);
     
     public List<TurnoDTO> darTurnosNoAtendidosSede(Long idSede);
 }

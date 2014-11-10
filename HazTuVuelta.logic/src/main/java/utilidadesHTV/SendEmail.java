@@ -76,7 +76,11 @@ public class SendEmail extends Thread {
 
             MimeMultipart content = new MimeMultipart();
             MimeBodyPart bodyPart = new MimeBodyPart();
-            if (turnosFaltantes == -1) {
+            if ( turnosFaltantes == -2){
+                bodyPart.setText(esperaEstimada);
+                
+            }
+            else if (turnosFaltantes == -1) {
                 bodyPart.setText("Hola,\n Haz Tu Vuelta te avisa que faltan aproximadamente " + esperaEstimada + " "
                         + "para que sea tu turno.");
             } else {

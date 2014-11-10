@@ -44,6 +44,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import utilidadesHTV.Simulador;
 
 @Default
 @Stateless
@@ -60,12 +61,12 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         return persistance.turnoActual()+"";
     }
 
-    public int asignarSiguienteTurno(Long idSede, String correo) throws Exception{
+    public Integer asignarSiguienteTurno(Long idSede, String correo) throws Exception{
         
         return persistance.asignarSiguienteTurno(idSede,correo);
     }
     
-    public int atenderTurno(Long idSede) {
+    public Integer atenderTurno(Long idSede) {
         
        return persistance.atenderTurno(idSede);
     }
@@ -105,7 +106,7 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
 
     }
 
-    public int darNumeroTurnosNoAtendidosSede(Long idSede) {
+    public Integer darNumeroTurnosNoAtendidosSede(Long idSede) {
     
         return persistance.darNumeroTurnosNoAtendidosSede(idSede);
     }
@@ -115,7 +116,7 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         persistance.cancelarTurnoOCita(correo);
     }
 
-    public int posicionCita(String correo) {
+    public Integer posicionCita(String correo) {
         
         return persistance.posicionCita(correo);
     }
@@ -123,5 +124,15 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
     public List<TurnoDTO> darTurnosNoAtendidosSede(Long idSede){
         
         return persistance.darTurnosNoAtendidosSede(idSede);
+    }
+
+    public void startThread() {
+        
+        new Simulador(180, Simulador.PP_7AM, 9, Calendar.PM).start();
+    }
+
+    public Date darHoraActual() {
+    
+        return new Date();
     }
 }

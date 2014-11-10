@@ -86,7 +86,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      *
      * @return
      */
-    public int aumentarTurno() {
+    public Integer aumentarTurno() {
 
         SedeDTO sedeActual = getSede(1L);
 
@@ -102,7 +102,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      *
      * @return
      */
-    public int turnoActual() {
+    public Integer turnoActual() {
 
         return getSede(1L).getTurno();
     }
@@ -117,7 +117,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      * @throws Exception
      */
     //TODO Verificar si hay citas en espera que puedan ser asignadas después de mi
-    public int asignarSiguienteTurno(Long idSede, String correo) throws Exception {
+    public Integer asignarSiguienteTurno(Long idSede, String correo) throws Exception {
 
         // Verificar que exista usuario
         UsuarioDTO usuario = usuarioPersistance.buscarUsuarioCorreo(correo);
@@ -150,12 +150,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
 
         nuevoTurno = turnoPersistance.createTurno(nuevoTurno);
 
-        TurnoDTO turno2 = turnoPersistance.getTurno(nuevoTurno.getId());
-        System.out.println("Sede Persistance asignarSiguienteTurno - turno2: " + turno2.toString());
-        System.out.println("Sede Persistance asignarSiguienteTurno - turno2 horas: ID " + turno2.getId()
-                + " Fecha cita: " + turno2.getFechaTurno().toString()
-                + " Hora inic: " + turno2.getHoraInicio().toString()
-                + " Hora final: " + turno2.getHoraFinal().toString());
+        
         turnosHoy.add(nuevoTurno);
 
         int turnoAsignado = turnosHoy.size();
@@ -189,6 +184,8 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
             enviarEmailNotificaciones(idSede);
         }
 
+        enviarEmailNotificacionInicial(correo, nuevoTurno.getHoraInicio(), ConstantesYMetodos.TIPO_TURNO
+                , getSede(idSede).getTurno(), turnoAsignado);
         return turnoAsignado;
 
     }
@@ -198,9 +195,9 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      * recalcular los tiempos de los otros turnos en fila
      *
      * @param idSede
-     * @return 
+     * @return
      */
-    public int atenderTurno(Long idSede) {
+    public Integer atenderTurno(Long idSede) {
 
         SedeDTO sede = getSede(idSede);
         int turnoActual = sede.getTurno();
@@ -248,7 +245,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      * @param sede
      * @return
      */
-    public int darUltimoTurnoAsignado(Long sede) {
+    public Integer darUltimoTurnoAsignado(Long sede) {
 
         return turnoPersistance.darTurnosSedeHoy(sede).size();
     }
@@ -289,7 +286,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      * @param idSede
      * @return
      */
-    public int darUltimoTurnoAtendido(Long idSede) {
+    public Integer darUltimoTurnoAtendido(Long idSede) {
         System.out.println("sede id :" + idSede);
         int x = getSede(idSede).getTurno();
         System.out.println("Respuesta turno atendido: " + x);
@@ -448,6 +445,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
                 cita.setHoraIni(citasRango.get(citasRango.size() - 1).getHoraFin());
             }
             System.out.println("Reservar cita SedePersistance: 7 ");
+            cita.setName(correoUser);
             cita.setHoraFin(new Date(cita.getHoraIni().getTime() + ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS));
             cita.setSedecitaId(nuevaCita.getSedecitaId());
             cita.setTurnoAsignado(-1);
@@ -470,10 +468,12 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
 
             usuarioMasterPersistance.createUsuariocitasUsEntity(usCitas);
 
+            enviarEmailNotificacionInicial(correoUser, cita.getHoraIni(), ConstantesYMetodos.TIPO_CITA_ESPERA
+                    , 0, 0);
         }
     }
 
-    public int darNumeroTurnosNoAtendidosSede(Long idSede) {
+    public Integer darNumeroTurnosNoAtendidosSede(Long idSede) {
 
         SedeDTO sede = getSede(idSede);
 
@@ -481,6 +481,8 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
     }
 
     private void enviarEmailNotificaciones(Long idSede) {
+
+        System.out.println("SedePersistance enviarEmail - idSede: " + idSede);
 
         // Turnos no atendidos
         List<TurnoDTO> turnosHoy = turnoPersistance.darTurnosSedeHoy(idSede);
@@ -492,6 +494,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
 
             Calendar cTurno = new GregorianCalendar();
             cTurno.setTime(turnoHoy.getHoraInicio());
+            System.out.println("SedePersistance enviarEmail - calendarios: " + idSede);
             if (cTurno.after(c)) {
 
                 long minutos = (cTurno.getTimeInMillis() - c.getTimeInMillis()) * 60000;
@@ -529,6 +532,37 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
 
         }
 
+    }
+
+    private void enviarEmailNotificacionInicial(String correo, Date horaInicial, int tipoTurno, int turnoActual, int turnoUsuario) {
+
+        System.out.println("SedePersistance enviarEmailInicial - correo: " + correo);
+        String mensaje;
+        Calendar c = new GregorianCalendar();
+        c.setTime(horaInicial);
+        String hora = c.get(Calendar.HOUR)+"";
+        hora = (hora.length()==1)?"0"+hora:hora;
+        String minutos = c.get(Calendar.MINUTE)+"";
+        minutos = (minutos.length()==1)?"0"+minutos:minutos;
+        String amPm = (c.get(Calendar.AM_PM)==Calendar.AM)?"am":"pm";
+        if (tipoTurno == ConstantesYMetodos.TIPO_CITA_ESPERA) {
+
+            mensaje = "Usted acabó de reservar un turno en Haz Tu Vuelta. \n Se estima que te atenderan"
+                    + " a esta hora: "+hora+":"+minutos+amPm+". \n  "
+                    + "Si te gusta nuestra aplicación envíanos un mensaje a arquidalgos@hotmail.com";
+            SendEmail sendEmail = new SendEmail(correo,mensaje, -2);
+            sendEmail.start();
+
+        } else if (tipoTurno == ConstantesYMetodos.TIPO_TURNO) {
+            
+            
+            mensaje = "Usted acabó de reservar un turno en Haz Tu Vuelta. \n Se estima que te atenderan"
+                    + " a esta hora: "+hora+":"+minutos+amPm+". \n Actualmente se está atendiendo el turno "
+                    +turnoActual+" y tu turno es el "+turnoUsuario
+                    + "Si te gusta nuestra aplicación envíanos un mensaje a arquidalgos@hotmail.com";
+            SendEmail sendEmail = new SendEmail(correo,mensaje, -2);
+            sendEmail.start();
+        }
     }
 
     /**
@@ -620,7 +654,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      * @param correo
      * @return
      */
-    public int posicionCita(String correo) {
+    public Integer posicionCita(String correo) {
 
         UsuarioDTO user = usuarioPersistance.buscarUsuarioCorreo(correo);
         if (user == null) {

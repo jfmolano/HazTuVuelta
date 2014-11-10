@@ -53,13 +53,13 @@ public abstract class _CitaEntity {
         private String name;
 	private Long sedecitaId;
         private boolean espera;
-        private int turnoAsignado;
+        private Integer turnoAsignado;
 
-        public int getTurnoAsignado() {
+        public Integer getTurnoAsignado() {
             return turnoAsignado;
         }
 
-        public void setTurnoAsignado(int turnoAsignado) {
+        public void setTurnoAsignado(Integer turnoAsignado) {
             this.turnoAsignado = turnoAsignado;
         }
         
