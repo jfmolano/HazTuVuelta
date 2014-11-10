@@ -134,7 +134,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         TurnoDTO nuevoTurno = new TurnoDTO();
 
         nuevoTurno.setFechaTurno(Tiempo.getCurrentDate());
-
+        nuevoTurno.setName(correo);
         if (turnosHoy.size() < 1) {
             Date inic = ConstantesYMetodos.darHoraInicioSucursales();
             System.out.println("SedePersistance asignarSiguienteTurno - inic: " + inic.toString());
