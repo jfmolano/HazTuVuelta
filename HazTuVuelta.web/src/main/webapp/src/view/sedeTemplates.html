@@ -39,7 +39,8 @@
 </script>
 
 <script type="text/template" id="sede">
-    <div  class="infoTurnoAtendido2" style="height: 654px;width: 420px; vertical-align: top;margin:10px">
+    <div style ="padding:10px;float:left">
+    <div  class="infoTurnoAtendido2" style="height: 680px;width: 420px; vertical-align: top;margin:10px">
     <!-- Default panel contents -->
     <table class="table striped">
         <thead>
@@ -70,13 +71,19 @@
                 <% }%>  
                 </td>
             </tr>
-
+            
             <% }); %>
+            
         </tbody>
     </table>
     </div>
-    <div  class="infoTurnoAtendido2" style="height: 654px; vertical-align: top">
-        <div class="panelInterno" style="float:left;width:50%">
+    </div>
+    
+    
+    <div style ="padding:10px">
+    <div  class="infoTurnoAtendido2" style="height: 680px; vertical-align: top">
+        <div style="padding: 10px;float:left;width:50%">
+        <div class="panelInterno" >
             <div class="informacionSucursal">
                 <p><%= htmlEncode(sedeSelected.get('name')) %></p>
                 <p><%= htmlEncode(sedeSelected.get('direccion')) %></p>
@@ -84,22 +91,27 @@
                 <p>Sábado: 8:00am-1:00pm</p>
             </div> 
         </div>
-        <div class="panelInterno" style="float:left;width:25%">
+        </div>
+        <div style="padding: 10px;float:left;width:25%">
+        <div class="panelInterno">
             Turno Actual:
             <div class="turno" id="turnoAtendido" style="width: 106px">
                 <%= htmlEncode(sedeSelected.get('turno')) %>
             </div>
         </div>
-        <div class="panelInterno" style="width:25%;float:left">
+        </div>
+        <div style="padding: 10px;width:25%;float:left">
+        <div class="panelInterno" >
             Atender siguiente:
             <button class="btn" style = "height: 100px;width:100%"onclick="Backbone.trigger('<%= componentId %>-sede-sigTurno',{id:<%= sedeSelected.id %>}); return false" >
                 Siguiente	
             </button>
         </div>
-
-        <div class="panelInterno" style="clear:both;width:100%">
+        </div>
+        <div style="padding: 10px; clear:both;width:100%">
+        <div class="panelInterno">
             Turnos siguientes:
-            <div style="overflow: scroll;height: 500px">
+            <div style="overflow: scroll;height: 440px">
             <% _.each(turnosSede, function(turno) { %>
                 <div class="turnoPeque" id="turnoAtendido" style="width: 10%;float:left;height:60px">
                     <%= htmlEncode(turno.turno) %>
@@ -110,6 +122,8 @@
             <% }); %>
             </div>
         </div>
+        </div>
+    </div>
     </div>
     
 </script> 

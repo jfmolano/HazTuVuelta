@@ -103,6 +103,14 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
                         console.log('Error en el refrescar info sucursal: ' + JSON.stringify(data));
                     }
             );
+            self.map.drawRoute({
+                origin: [self.inicLat, self.inicLng],
+                destination: [self.endLat, self.endLng],
+                travelMode: 'driving',
+                strokeColor: '#01DF01',
+                strokeOpacity: 1,
+                strokeWeight: 6
+            });
 
         },
         hideMap: function () {
@@ -128,7 +136,7 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             document.getElementById("contenedor2Map").style.height = "327px";
             $("#pnlReservarTurno").show();
             $("#panelReservar").show();
-            
+
             //document.getElementById("pnlReservarTurno").show();
             //.style.display = 'flesh';
 
@@ -149,8 +157,8 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             GMaps.geolocate({
                 success: function (position) {
                     self.map.setCenter(position.coords.latitude, position.coords.longitude);
-
-
+                    self.inicLat = position.coords.latitude;
+                    self.inicLng = position.coords.longitude;
                     // Creating marker of user location
                     self.map.addMarker({
                         lat: position.coords.latitude,
@@ -189,7 +197,7 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             var lisaTramites;
 
             //Lista sucursares
-            var sucursales = [
+            self.sucursales = [
                 {"id": 1, "nombre": "SIM Cedritos", "lat": 4.7299483948472725, "lng": -74.04592265136054, "estado": 0, "entidad": 0, "dire": "Calle 147 #19-66 L31", "turnoAtencion": 20, "turnoPedido": 22, "horas": [0, 0, 0, 1, 2, 3, 2, 1, 1, 1, 1]},
                 {"id": 2, "nombre": "SIM Autopista 106", "lat": 4.694117579050114, "lng": -74.05666892177871, "estado": 1, "entidad": 0, "dire": "Autopista Norte #106-25/ Piso 2", "turnoAtencion": 10, "turnoPedido": 30, "horas": [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1]},
                 {"id": 3, "nombre": "SIM Nizza", "lat": 4.708157148841132, "lng": -74.07222036964706, "estado": 2, "entidad": 0, "dire": "Transversal 60 #124-20 Int. 5", "turnoAtencion": 1, "turnoPedido": 50, "horas": [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1]},
@@ -240,20 +248,22 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             //Marcadores
             //Inicializar marcadores
             var marcadores = [];
-            for (var i = 0; i < sucursales.length; i++)
+            for (var i = 0; i < self.sucursales.length; i++)
             {
                 var marker1 = self.map.createMarker({
-                    lat: sucursales[i].lat,
-                    lng: sucursales[i].lng,
+                    lat: self.sucursales[i].lat,
+                    lng: self.sucursales[i].lng,
                     title: "" + i,
                     icon: "",
                     infoWindow: {
-                        content: '<p>' + sucursales[i].nombre + '</p>'
+                        content: '<p>' + self.sucursales[i].nombre + '</p>'
                     },
                     click: function (e) {
                         var marcadorActual = parseInt(this.getTitle());
                         refrescarInfoSucursal(marcadorActual);
-                        self.idSedeSelecionada = sucursales[marcadorActual].id;
+                        self.idSedeSelecionada = self.sucursales[marcadorActual].id;
+                        self.endLat = self.sucursales[marcadorActual].lat;
+                        self.endLng = self.sucursales[marcadorActual].lng;
                     }
                 });
                 marcadores[marcadores.length] = marker1;
@@ -270,7 +280,7 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             });
 
             function calcularTiempoEsperaSucursal(iMarcador) {
-                return tiempoEspera = parseInt((sucursales[iMarcador].turnoPedido - sucursales[iMarcador].turnoAtencion) * 5);//5 minutos por turno
+                return tiempoEspera = parseInt((self.sucursales[iMarcador].turnoPedido - self.sucursales[iMarcador].turnoAtencion) * 5);//5 minutos por turno
             }
             ;
 
@@ -310,7 +320,7 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             {
                 this.entidadDelegate = new App.Delegate.EntidadDelegate();
                 this.entidadDelegate.darTurnoAtendidoDelegate(
-                        sucursales[iMarcadorActual].id,
+                        self.sucursales[iMarcadorActual].id,
                         function (data) {
                             var sede = new App.Model.SedeModel(data);
                             console.log('turno sucursal: ' + JSON.stringify(data) + JSON.stringify(sede));
@@ -333,8 +343,8 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
 
                 $('.infoEspera').empty();
                 $('.infoOpcionA').empty();
-                $('.informacionSucursal').append('<p>' + sucursales[marcadorActual].nombre + '</p>');
-                $('.informacionSucursal').append('<p>' + sucursales[marcadorActual].dire + '</p>');
+                $('.informacionSucursal').append('<p>' + self.sucursales[marcadorActual].nombre + '</p>');
+                $('.informacionSucursal').append('<p>' + self.sucursales[marcadorActual].dire + '</p>');
                 $('.informacionSucursal').append('<p>Lunes-Viernes: 7:00am-6:00pm</p>');
                 $('.informacionSucursal').append('<p>Sábado: 8:00am-1:00pm</p>');
 
@@ -401,7 +411,7 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             {
                 for (var i = 0; i < celdasHorarios.length; i++)
                 {
-                    celdasHorarios[i].estado = sucursales[iEntidad].horas[i];
+                    celdasHorarios[i].estado = self.sucursales[iEntidad].horas[i];
                     $("div[title='" + i + "']").css('background-color', coloresHorario[parseInt(celdasHorarios[i].estado)]);
                 }
             }
