@@ -150,7 +150,6 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
 
         nuevoTurno = turnoPersistance.createTurno(nuevoTurno);
 
-        
         turnosHoy.add(nuevoTurno);
 
         int turnoAsignado = turnosHoy.size();
@@ -184,8 +183,7 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
             enviarEmailNotificaciones(idSede);
         }
 
-        enviarEmailNotificacionInicial(correo, nuevoTurno.getHoraInicio(), ConstantesYMetodos.TIPO_TURNO
-                , getSede(idSede).getTurno(), turnoAsignado);
+        enviarEmailNotificacionInicial(correo, nuevoTurno.getHoraInicio(), ConstantesYMetodos.TIPO_TURNO, getSede(idSede).getTurno(), turnoAsignado);
         return turnoAsignado;
 
     }
@@ -353,123 +351,127 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      */
     public void reservarCita(CitaDTO nuevaCita) throws Exception {
 
-        Date date = Tiempo.getCurrentDate();
-        System.out.println("Reservar cita SedePersistance: Date " + date.toString());
-        Calendar c = new GregorianCalendar();
-        System.out.println("Reservar cita SedePersistance: Calendar " + c.toString());
-        c.setTime(date);
-        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),
-                nuevaCita.getHoraInicInt(), 0, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        nuevaCita.setHoraIni(c.getTime());
+        if (nuevaCita.getHoraInicInt() == -1) {
 
-        System.out.println("Reservar cita SedePersistance: nuevaCita horaini " + nuevaCita.getHoraIni().toString());
-        //TODO verificar cuando tiene sentido reservar la cita, y cuando no
-        String correoUser = nuevaCita.getName();
-
-        UsuarioDTO user = usuarioPersistance.buscarUsuarioCorreo(correoUser);
-
-        if (user == null) {
-
-            UsuarioDTO nuevoUser = new UsuarioDTO();
-            nuevoUser.setCorreo(correoUser);
-            user = usuarioPersistance.createUsuario(nuevoUser);
-
-        }
-        int cupoCitasHora = ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN / ConstantesYMetodos.DURACION_APROX_TURNO_MIN;
-
-        System.out.println("Reservar cita SedePersistance: 1 ");
-        // Verifica que no se pase el cupo m�ximo de citas que se pueden reservar a esa hora
-        if (citaPersistance.darCitasRango(nuevaCita.getHoraIni(), nuevaCita.getSedecitaId()).size() >= cupoCitasHora) {
-
-            throw new Exception("No se pueden reservar m�s turnos a esa hora");
-        }
-        System.out.println("Reservar cita SedePersistance: 2 ");
-
-        Date horaFinUltimaCita;
-
-        if (turnoPersistance.darTurnosSedeHoy(nuevaCita.getSedecitaId()).size() < 1) {
-            horaFinUltimaCita = ConstantesYMetodos.darHoraInicioSucursales();
+            asignarSiguienteTurno(nuevaCita.getSedecitaId(), nuevaCita.getName());
         } else {
-            Date horaIniUltimaCita = darUltimoInicioDeTurno(nuevaCita.getSedecitaId());
-            System.out.println("Reservar cita SedePersistance: horaInicUltimaCita " + horaIniUltimaCita.toString());
+            Date date = Tiempo.getCurrentDate();
+            System.out.println("Reservar cita SedePersistance: Date " + date.toString());
+            Calendar c = new GregorianCalendar();
+            System.out.println("Reservar cita SedePersistance: Calendar " + c.toString());
+            c.setTime(date);
+            c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH),
+                    nuevaCita.getHoraInicInt(), 0, 0);
+            c.set(Calendar.MILLISECOND, 0);
+            nuevaCita.setHoraIni(c.getTime());
 
-            Date temp = new Date(horaIniUltimaCita.getTime() + ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS);
+            System.out.println("Reservar cita SedePersistance: nuevaCita horaini " + nuevaCita.getHoraIni().toString());
+            //TODO verificar cuando tiene sentido reservar la cita, y cuando no
+            String correoUser = nuevaCita.getName();
 
-            System.out.println("Reservar cita SedePersistance: temo " + temp.toString());
+            UsuarioDTO user = usuarioPersistance.buscarUsuarioCorreo(correoUser);
 
-            horaFinUltimaCita = new Date(temp.getTime());
-        }
-        System.out.println("Reservar cita SedePersistance: horaFinUltimaCita " + horaFinUltimaCita.toString());
-        Calendar cHoraFin = new GregorianCalendar();
-        cHoraFin.setTime(horaFinUltimaCita);
+            if (user == null) {
 
-        Calendar cFinNuevaCita = new GregorianCalendar();
+                UsuarioDTO nuevoUser = new UsuarioDTO();
+                nuevoUser.setCorreo(correoUser);
+                user = usuarioPersistance.createUsuario(nuevoUser);
 
-        cFinNuevaCita.setTime(new Date(nuevaCita.getHoraIni().getTime() + ConstantesYMetodos.RANGO_RESERVAR_TURNO_MILISEGUNDOS));
-        System.out.println("Reservar cita SedePersistance: 3 ");
-        // Verifica que todavia se pueda reservar una cita en ese rango, es decir, que el ultimo puesto de la fila vaya antes del fin del rango
-        if (cHoraFin.after(cFinNuevaCita)) {
-
-            throw new Exception("No se pueden reservar turno a esa hora, reservar en otro rango de horas.");
-
-        }
-
-        Calendar cInicioNuevaCita = new GregorianCalendar();
-        cInicioNuevaCita.setTime(nuevaCita.getHoraIni());
-        System.out.println("Reservar cita SedePersistance: 4 ");
-        // Si ya hay turnos en el rango, en lugar de reservar cita, se pide el turno siguiente
-        if (cHoraFin.after(cInicioNuevaCita)
-                || ConstantesYMetodos.citasMismoMinuto(cHoraFin.getTime(), cInicioNuevaCita.getTime())) {
-            System.out.println("Reservar cita SedePersistance: 5 ");
-            asignarSiguienteTurno(nuevaCita.getSedecitaId(), correoUser);
-
-        } else {
-            System.out.println("Reservar cita SedePersistance: 6 ");
-            CitaDTO cita = new CitaDTO();
-            cita.setEspera(true);
-            Date fechaCita = Tiempo.getCurrentDate();
-            System.out.println("Reservar cita SedePersistance: Fecha Cita " + fechaCita.toString());
-            cita.setFechaCita(fechaCita);
-
-            // Verifica en que posici�n del rango se piensa asignar la cita
-            List<CitaDTO> citasRango = citaPersistance.darCitasRango(nuevaCita.getHoraIni(), nuevaCita.getSedecitaId());
-
-            if (citasRango.size() < 1) {
-
-                System.out.println("Reservar cita SedePersistance: citasRango < 1 ");
-                cita.setHoraIni(nuevaCita.getHoraIni());
-            } else {
-
-                System.out.println("Reservar cita SedePersistance: citasRango >= 1 ");
-                cita.setHoraIni(citasRango.get(citasRango.size() - 1).getHoraFin());
             }
-            System.out.println("Reservar cita SedePersistance: 7 ");
-            cita.setName(correoUser);
-            cita.setHoraFin(new Date(cita.getHoraIni().getTime() + ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS));
-            cita.setSedecitaId(nuevaCita.getSedecitaId());
-            cita.setTurnoAsignado(-1);
+            int cupoCitasHora = ConstantesYMetodos.RANGO_RESERVAR_TURNO_MIN / ConstantesYMetodos.DURACION_APROX_TURNO_MIN;
 
-            System.out.println("Reservar cita SedePersistance: Hora inicio " + cita.getHoraIni().toString());
-            System.out.println("Reservar cita SedePersistance: Hora final " + cita.getHoraFin().toString());
+            System.out.println("Reservar cita SedePersistance: 1 ");
+            // Verifica que no se pase el cupo m�ximo de citas que se pueden reservar a esa hora
+            if (citaPersistance.darCitasRango(nuevaCita.getHoraIni(), nuevaCita.getSedecitaId()).size() >= cupoCitasHora) {
 
-            System.out.println("Reservar cita SedePersistance: - cita: ID " + cita.getId() + " name "
-                    + cita.getName() + " fecha " + cita.getFechaCita() + " horaIni " + cita.getHoraIni()
-                    + " horaFin " + cita.getHoraFin() + " sede " + cita.getSedecitaId() + " numeroTurno "
-                    + cita.getTurnoAsignado() + " espera " + cita.isEspera());
+                throw new Exception("No se pueden reservar m�s turnos a esa hora");
+            }
+            System.out.println("Reservar cita SedePersistance: 2 ");
 
-            cita = citaPersistance.createCita(cita);
+            Date horaFinUltimaCita;
 
-            // Relacionar cita y usuario
-            UsuariocitasUsEntity usCitas = new UsuariocitasUsEntity();
-            usCitas.setCitasUsId(cita.getId());
-            usCitas.setCitasUsIdEntity(CitaConverter.persistenceDTO2Entity(cita));
-            usCitas.setUsuarioId(user.getId());
+            if (turnoPersistance.darTurnosSedeHoy(nuevaCita.getSedecitaId()).size() < 1) {
+                horaFinUltimaCita = ConstantesYMetodos.darHoraInicioSucursales();
+            } else {
+                Date horaIniUltimaCita = darUltimoInicioDeTurno(nuevaCita.getSedecitaId());
+                System.out.println("Reservar cita SedePersistance: horaInicUltimaCita " + horaIniUltimaCita.toString());
 
-            usuarioMasterPersistance.createUsuariocitasUsEntity(usCitas);
+                Date temp = new Date(horaIniUltimaCita.getTime() + ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS);
 
-            enviarEmailNotificacionInicial(correoUser, cita.getHoraIni(), ConstantesYMetodos.TIPO_CITA_ESPERA
-                    , 0, 0);
+                System.out.println("Reservar cita SedePersistance: temo " + temp.toString());
+
+                horaFinUltimaCita = new Date(temp.getTime());
+            }
+            System.out.println("Reservar cita SedePersistance: horaFinUltimaCita " + horaFinUltimaCita.toString());
+            Calendar cHoraFin = new GregorianCalendar();
+            cHoraFin.setTime(horaFinUltimaCita);
+
+            Calendar cFinNuevaCita = new GregorianCalendar();
+
+            cFinNuevaCita.setTime(new Date(nuevaCita.getHoraIni().getTime() + ConstantesYMetodos.RANGO_RESERVAR_TURNO_MILISEGUNDOS));
+            System.out.println("Reservar cita SedePersistance: 3 ");
+            // Verifica que todavia se pueda reservar una cita en ese rango, es decir, que el ultimo puesto de la fila vaya antes del fin del rango
+            if (cHoraFin.after(cFinNuevaCita)) {
+
+                throw new Exception("No se pueden reservar turno a esa hora, reservar en otro rango de horas.");
+
+            }
+
+            Calendar cInicioNuevaCita = new GregorianCalendar();
+            cInicioNuevaCita.setTime(nuevaCita.getHoraIni());
+            System.out.println("Reservar cita SedePersistance: 4 ");
+            // Si ya hay turnos en el rango, en lugar de reservar cita, se pide el turno siguiente
+            if (cHoraFin.after(cInicioNuevaCita)
+                    || ConstantesYMetodos.citasMismoMinuto(cHoraFin.getTime(), cInicioNuevaCita.getTime())) {
+                System.out.println("Reservar cita SedePersistance: 5 ");
+                asignarSiguienteTurno(nuevaCita.getSedecitaId(), correoUser);
+
+            } else {
+                System.out.println("Reservar cita SedePersistance: 6 ");
+                CitaDTO cita = new CitaDTO();
+                cita.setEspera(true);
+                Date fechaCita = Tiempo.getCurrentDate();
+                System.out.println("Reservar cita SedePersistance: Fecha Cita " + fechaCita.toString());
+                cita.setFechaCita(fechaCita);
+
+                // Verifica en que posici�n del rango se piensa asignar la cita
+                List<CitaDTO> citasRango = citaPersistance.darCitasRango(nuevaCita.getHoraIni(), nuevaCita.getSedecitaId());
+
+                if (citasRango.size() < 1) {
+
+                    System.out.println("Reservar cita SedePersistance: citasRango < 1 ");
+                    cita.setHoraIni(nuevaCita.getHoraIni());
+                } else {
+
+                    System.out.println("Reservar cita SedePersistance: citasRango >= 1 ");
+                    cita.setHoraIni(citasRango.get(citasRango.size() - 1).getHoraFin());
+                }
+                System.out.println("Reservar cita SedePersistance: 7 ");
+                cita.setName(correoUser);
+                cita.setHoraFin(new Date(cita.getHoraIni().getTime() + ConstantesYMetodos.DURACION_APROX_TURNO_MILISEGUNDOS));
+                cita.setSedecitaId(nuevaCita.getSedecitaId());
+                cita.setTurnoAsignado(-1);
+
+                System.out.println("Reservar cita SedePersistance: Hora inicio " + cita.getHoraIni().toString());
+                System.out.println("Reservar cita SedePersistance: Hora final " + cita.getHoraFin().toString());
+
+                System.out.println("Reservar cita SedePersistance: - cita: ID " + cita.getId() + " name "
+                        + cita.getName() + " fecha " + cita.getFechaCita() + " horaIni " + cita.getHoraIni()
+                        + " horaFin " + cita.getHoraFin() + " sede " + cita.getSedecitaId() + " numeroTurno "
+                        + cita.getTurnoAsignado() + " espera " + cita.isEspera());
+
+                cita = citaPersistance.createCita(cita);
+
+                // Relacionar cita y usuario
+                UsuariocitasUsEntity usCitas = new UsuariocitasUsEntity();
+                usCitas.setCitasUsId(cita.getId());
+                usCitas.setCitasUsIdEntity(CitaConverter.persistenceDTO2Entity(cita));
+                usCitas.setUsuarioId(user.getId());
+
+                usuarioMasterPersistance.createUsuariocitasUsEntity(usCitas);
+
+                enviarEmailNotificacionInicial(correoUser, cita.getHoraIni(), ConstantesYMetodos.TIPO_CITA_ESPERA, 0, 0);
+            }
         }
     }
 
@@ -540,27 +542,26 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
         String mensaje;
         Calendar c = new GregorianCalendar();
         c.setTime(horaInicial);
-        String hora = c.get(Calendar.HOUR)+"";
-        hora = (hora.length()==1)?"0"+hora:hora;
-        String minutos = c.get(Calendar.MINUTE)+"";
-        minutos = (minutos.length()==1)?"0"+minutos:minutos;
-        String amPm = (c.get(Calendar.AM_PM)==Calendar.AM)?"am":"pm";
+        String hora = c.get(Calendar.HOUR) + "";
+        hora = (hora.length() == 1) ? "0" + hora : hora;
+        String minutos = c.get(Calendar.MINUTE) + "";
+        minutos = (minutos.length() == 1) ? "0" + minutos : minutos;
+        String amPm = (c.get(Calendar.AM_PM) == Calendar.AM) ? "am" : "pm";
         if (tipoTurno == ConstantesYMetodos.TIPO_CITA_ESPERA) {
 
             mensaje = "Usted acabo de reservar un turno en Haz Tu Vuelta. \nSe estima que te atenderan"
-                    + " a esta hora: "+hora+":"+minutos+amPm+". \n"
+                    + " a esta hora: " + hora + ":" + minutos + amPm + ". \n"
                     + "Si te gusta nuestra aplicacion envianos un mensaje a arquidalgos@hotmail.com";
-            SendEmail sendEmail = new SendEmail(correo,mensaje, -2);
+            SendEmail sendEmail = new SendEmail(correo, mensaje, -2);
             sendEmail.start();
 
         } else if (tipoTurno == ConstantesYMetodos.TIPO_TURNO) {
-            
-            
+
             mensaje = "Usted acabo de reservar un turno en Haz Tu Vuelta. \nSe estima que te atenderan"
-                    + " a esta hora: "+hora+":"+minutos+amPm+". \nActualmente se esta atendiendo el turno "
-                    +turnoActual+" y tu turno es el "+turnoUsuario+". \n"
+                    + " a esta hora: " + hora + ":" + minutos + amPm + ". \nActualmente se esta atendiendo el turno "
+                    + turnoActual + " y tu turno es el " + turnoUsuario + ". \n"
                     + "Si te gusta nuestra aplicacion envianos un mensaje a arquidalgos@hotmail.com";
-            SendEmail sendEmail = new SendEmail(correo,mensaje, -2);
+            SendEmail sendEmail = new SendEmail(correo, mensaje, -2);
             sendEmail.start();
         }
     }
