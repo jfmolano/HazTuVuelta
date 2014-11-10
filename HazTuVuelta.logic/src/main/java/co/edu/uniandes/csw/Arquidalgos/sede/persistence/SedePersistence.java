@@ -347,13 +347,16 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
      *
      * @param nuevaCita TIENEN QUE PASARLE LA HORA INICIAL DEL RANGO, NO DEL
      * PUESTO DE LA CITA EN EL RANGO
+     * @return 
      * @throws Exception
      */
-    public void reservarCita(CitaDTO nuevaCita) throws Exception {
+    public String reservarCita(CitaDTO nuevaCita) throws Exception {
 
         if (nuevaCita.getHoraInicInt() == -1) {
 
-            asignarSiguienteTurno(nuevaCita.getSedecitaId(), nuevaCita.getName());
+            int resp = asignarSiguienteTurno(nuevaCita.getSedecitaId(), nuevaCita.getName());
+            
+            return resp+"";
         } else {
             Date date = Tiempo.getCurrentDate();
             System.out.println("Reservar cita SedePersistance: Date " + date.toString());
@@ -424,9 +427,11 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
             if (cHoraFin.after(cInicioNuevaCita)
                     || ConstantesYMetodos.citasMismoMinuto(cHoraFin.getTime(), cInicioNuevaCita.getTime())) {
                 System.out.println("Reservar cita SedePersistance: 5 ");
-                asignarSiguienteTurno(nuevaCita.getSedecitaId(), correoUser);
+                int resp = asignarSiguienteTurno(nuevaCita.getSedecitaId(), correoUser);
 
-            } else {
+                return resp+"";
+            } 
+            else {
                 System.out.println("Reservar cita SedePersistance: 6 ");
                 CitaDTO cita = new CitaDTO();
                 cita.setEspera(true);
@@ -471,6 +476,8 @@ public class SedePersistence extends _SedePersistence implements ISedePersistenc
                 usuarioMasterPersistance.createUsuariocitasUsEntity(usCitas);
 
                 enviarEmailNotificacionInicial(correoUser, cita.getHoraIni(), ConstantesYMetodos.TIPO_CITA_ESPERA, 0, 0);
+                
+                return "-1";
             }
         }
     }

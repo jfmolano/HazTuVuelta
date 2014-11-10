@@ -100,9 +100,9 @@ public class SedeLogicService extends _SedeLogicService implements ISedeLogicSer
         return hora+":"+minuto+""+amPm;
     }
 
-    public void reservarCita(CitaDTO nuevaCita) throws Exception {
+    public String reservarCita(CitaDTO nuevaCita) throws Exception {
         
-        persistance.reservarCita(nuevaCita);
+        return persistance.reservarCita(nuevaCita);
 
     }
 
