@@ -101,11 +101,11 @@
             Turnos siguientes:
             <div style="overflow: scroll;height: 500px">
             <% _.each(turnosSede, function(turno) { %>
-                <div class="turnoPeque" id="turnoAtendido" style="width: 10%;float:left;height:70px">
+                <div class="turnoPeque" id="turnoAtendido" style="width: 10%;float:left;height:60px">
                     <%= htmlEncode(turno.turno) %>
                 </div>
-                <div id="turnoAtendido" style="height:70px ">
-                    <font size="60px"><%= htmlEncode(turno.name) %></font>
+                <div id="turnoAtendido" style="height: 60px; font-size: 30px;padding:22px">
+                    <%= htmlEncode(turno.name) %>
                 </div>
             <% }); %>
             </div>

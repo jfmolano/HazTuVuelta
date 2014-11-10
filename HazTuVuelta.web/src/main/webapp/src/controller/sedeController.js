@@ -37,14 +37,20 @@ define(['controller/_sedeController', 'delegate/sedeDelegate'], function () {
 
         },
         siguienteTurno: function (params) {
+            var self = this;
             this.sedeDelegate = new App.Delegate.SedeDelegate();
             this.sedeDelegate.siguienteTurnoDelagate(
                     params.id,
                     function (data) {
                         $('#turnoAtendido').html( data );
+                        self.list();
+                        self._renderEdit();
                         console.log('Sin errores se pasó al siguiente turno');
                     },
                     function (data) {
+                         $('#turnoAtendido').html( data );
+                         self.list();
+                         self._renderEdit();
                         console.log('Error al pasar al siguiente turno: ' + JSON.stringify(data));
                     }
             );
