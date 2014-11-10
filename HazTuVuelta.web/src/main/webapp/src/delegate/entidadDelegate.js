@@ -51,8 +51,10 @@ define(['delegate/_entidadDelegate'], function() {
                 contentType: 'application/json'
             }).done(_.bind(function (data) {
                 callback(data);
+                console.log('Hora de atención:' + JSON.stringify(data));
             }, this)).error(_.bind(function (data) {
-                callbackError(data);
+                callbackError(data.responseText);
+                console.log('Hora de atención error:' + JSON.stringify(data));
             }, this));
         },
         reservarTurnoDelagate: function (param ,callback, callbackError) {

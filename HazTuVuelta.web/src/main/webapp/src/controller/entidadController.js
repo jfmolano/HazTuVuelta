@@ -99,7 +99,7 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
                         $('#horaAtencion').html("<p>" + data + "</p>");
                     },
                     function (data) {
-
+                        $('#horaAtencion').html("<font size=30px color=#3498db>" + data + "</font>");
                         console.log('Error en el refrescar info sucursal: ' + JSON.stringify(data));
                     }
             );
@@ -127,6 +127,8 @@ define(['controller/_entidadController', 'delegate/entidadDelegate', 'lib/gmaps'
             document.getElementById("infoColores").style.display = 'none';
             document.getElementById("contenedor2Map").style.height = "327px";
             $("#pnlReservarTurno").show();
+            $("#panelReservar").show();
+            
             //document.getElementById("pnlReservarTurno").show();
             //.style.display = 'flesh';
 
