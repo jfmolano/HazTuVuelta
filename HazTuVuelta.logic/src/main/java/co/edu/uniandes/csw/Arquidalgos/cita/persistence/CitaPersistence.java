@@ -74,15 +74,21 @@ public class CitaPersistence extends _CitaPersistence  implements ICitaPersisten
      */
     public List<CitaDTO> darCitasRango (Date inicioRango, Long idSede){
         
+        System.out.println("Cita Persistance darCitasRango - inicioRango: "+inicioRango.toString());
         List<CitaDTO> resp = new ArrayList<CitaDTO>();
         
         Date finRango = new Date (inicioRango.getTime()+ConstantesYMetodos.RANGO_RESERVAR_TURNO_MILISEGUNDOS);
-        
+        System.out.println("Cita Persistance darCitasRango - finRango: "+finRango.toString());
         List <CitaDTO> citas = darCitasHoy(idSede);
        
         for (CitaDTO citaActual : citas) {
             
-            if ( citaActual.getHoraIni().after(inicioRango) && citaActual.getHoraIni().before(finRango)){
+            Date horaIni = citaActual.getHoraIni();
+            System.out.println("Cita Persistance darCitasRango - for: ID"+citaActual.getId()+" correo "+
+                    citaActual.getName()+" horaIni"+ horaIni.toString());
+            if ( citaActual.isEspera() && 
+                (horaIni.after(inicioRango) || horaIni.equals(inicioRango))
+                  && horaIni.before(finRango)){
                 
                 resp.add(citaActual);
             }

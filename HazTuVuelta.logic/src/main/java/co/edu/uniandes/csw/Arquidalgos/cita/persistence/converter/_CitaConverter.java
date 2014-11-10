@@ -93,7 +93,7 @@ public abstract class _CitaConverter {
 				  } catch (Exception ex) {
                         Logger.getLogger(_CitaConverter.class.getName()).log(Level.SEVERE, null, ex);
                   }	
-			
+                                        entity.setEspera(dto.isEspera());
 					entity.setName(dto.getName());
                                         entity.setTurnoAsignado(dto.getTurnoAsignado());
 					entity.setSedecitaId(dto.getSedecitaId());
